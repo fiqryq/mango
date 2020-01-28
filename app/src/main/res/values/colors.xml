@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorNavigationIcon">#dae9f6</color>
+    <color name="colorNavigationText">#ffffff</color>
+
+<!--    Custom-->
+    <color name="white">#FFFFFF</color>
+    <color name="Cleanblack">#D1D1D1</color>
+    <color name="cleanwhite">#89dedede</color>
+    <color name="cleanblue">#1E88E5</color>
+    <color name="cleandarkblue">#1771C0</color>
+
+    <color name="putih">#ffff</color>
+    <color name="hitam">#161616</color>
+    <color name="abu">#89dedede</color>
+
+</resources>

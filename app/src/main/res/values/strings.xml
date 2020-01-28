@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Mango</string>
+
+
+    // TODO: 22/02/18
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite</string>
+    <string name="account">Account</string>
+
+    <color name="red_100">#F44336</color>
+    <color name="red_300">#3F51B5</color>
+    <color name="red_500">#9C27B0</color>
+    <color name="red_700">#2196F3</color>
+    <color name="blue_100">#00BCD4</color>
+    <color name="blue_300">#7BAAF7</color>
+    <color name="blue_500">#009688</color>
+    <color name="blue_700">#3367D6</color>
+    <color name="green_100">#CDDC39</color>
+    <color name="green_300">#57BB8A</color>
+    <color name="green_500">#673AB7</color>
+    <color name="green_700">#0B8043</color>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
