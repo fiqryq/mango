@@ -14,7 +14,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.mango.autumnleaves.MainActivity;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
@@ -80,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Util.saveData("account", "password", getpassword, getApplicationContext());
                                 Util.saveData("account", "id", id, getApplicationContext());
 
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
 
                                 Util.toastShow(getApplicationContext(), "Login Sukses");

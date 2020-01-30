@@ -5,8 +5,8 @@ public class Koneksi {
 
     public static final String login = URL + "api/login.php";
 
-    // presensi
-    public static final String presensi = URL + "api/presensi.php";
+    // history
+    public static final String presensi = URL + "api/history.php";
     public static final String presensi_post = URL + "api/presensi_tambah.php";
     public static final String presensi_pulang = URL + "api/presensi_update.php";
     public static final String presensi_cek = URL + "api/presensi_cek.php";
