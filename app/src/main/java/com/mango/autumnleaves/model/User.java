@@ -10,17 +10,6 @@ public class User {
     private String ttl;
     private String alamat;
 
-    public User(Integer id_mahasiswa, String nama, String username, String password, String telp, String kelamin, String ttl, String alamat) {
-        this.id_mahasiswa = id_mahasiswa;
-        this.nama = nama;
-        this.username = username;
-        this.password = password;
-        this.telp = telp;
-        this.kelamin = kelamin;
-        this.ttl = ttl;
-        this.alamat = alamat;
-    }
-
     public Integer getId_mahasiswa() {
         return id_mahasiswa;
     }

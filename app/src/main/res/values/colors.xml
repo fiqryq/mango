@@ -9,9 +9,11 @@
 
 <!--    Custom-->
     <color name="white">#FFFFFF</color>
+    <color name="orange">#FB8C00</color>
     <color name="Cleanblack">#D1D1D1</color>
     <color name="cleanwhite">#89dedede</color>
-    <color name="cleanblue">#1E88E5</color>
+    <color name="cleanblue">#3199F5</color>
+    <color name="cleangreen">#43A047</color>
     <color name="cleandarkblue">#1771C0</color>
 
     <color name="putih">#ffff</color>

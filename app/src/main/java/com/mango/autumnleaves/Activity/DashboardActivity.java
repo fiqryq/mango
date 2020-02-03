@@ -18,23 +18,29 @@ import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.User;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
+import com.mango.autumnleaves.util.SessionManager;
 import com.mango.autumnleaves.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class DashboardActivity extends AppCompatActivity {
 
     private ImageView imvPresensi ,imvJadwal,imvHistory,imvProfile;
     TextView dshUsername;
-
     String getid,getUsername;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        sessionManager = new SessionManager(this);
+        sessionManager.checkLogin();
 
         //Menu
         imvPresensi = findViewById(R.id.presensi);
@@ -44,7 +50,6 @@ public class DashboardActivity extends AppCompatActivity {
 
         //Content
         dshUsername = findViewById(R.id.dashUsername);
-        getid = Util.getData("account", "id", getApplicationContext());
 
 
         //Intent Menu Presensi
@@ -84,6 +89,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
     }
+
 
 }
 

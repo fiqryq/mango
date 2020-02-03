@@ -15,44 +15,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!--History-->
+        <activity android:name=".Activity.RegisterActivity"></activity>
+        <!-- History -->
         <activity
             android:name=".Activity.HistoryActivity"
             android:label="History">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
-        </activity>
-        <!--Profile-->
+        </activity> <!-- Profile -->
         <activity
             android:name=".Activity.ProfileActivity"
             android:label="Profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
-        </activity>
-        <!--Dashboard-->
+        </activity> <!-- Dashboard -->
         <activity
             android:name=".Activity.DashboardActivity"
-            android:theme="@style/AppTheme2" />
-        <!--Presensi-->
+            android:theme="@style/AppTheme2" /> <!-- Presensi -->
         <activity
             android:name=".Activity.PresensiActivity"
             android:label="Presensi">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
-        </activity>
-        <!--Jadwal-->
+        </activity> <!-- Jadwal -->
         <activity
             android:name=".Activity.JadwalActivity"
             android:label="Jadwal">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
-        </activity>
-        <!--Login-->
+        </activity> <!-- Login -->
         <activity
             android:name=".Activity.LoginActivity"
             android:theme="@style/AppTheme2">
@@ -61,9 +56,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!--Main-->
+        </activity> <!-- Main -->
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme3" />
