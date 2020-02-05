@@ -2,6 +2,7 @@ package com.mango.autumnleaves.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText username,password;
     private Button btLogin;
     String getusername, getpassword ;
+    private ProgressDialog progressDialog;
     SessionManager sessionManager;
 
     @Override
@@ -84,10 +86,10 @@ public class LoginActivity extends AppCompatActivity {
                                 Util.saveData("account", "password", getpassword, getApplicationContext());
                                 Util.saveData("account", "id", id, getApplicationContext());
 
-                                sessionManager.createSession(username,pass);
-
+                                progressDialog();
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
+                                finish();
 
                                 Util.toastShow(getApplicationContext(), "Login Sukses");
                             } else {
@@ -119,16 +121,16 @@ public class LoginActivity extends AppCompatActivity {
         Volley.getInstance().addToRequestQueue(request);
     }
 
-    boolean doubleBackToExitPressedOnce = false;
+    public void progressDialog(){
+        progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+    }
+
     @Override
     public void onBackPressed() {
-
-        if (doubleBackToExitPressedOnce) {
-            finishAffinity();
-            super.onBackPressed();
-            return;
-        }
-        this.doubleBackToExitPressedOnce = true;
+        progressDialog.dismiss();
     }
 }
 

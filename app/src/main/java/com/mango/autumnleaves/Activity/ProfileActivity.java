@@ -36,7 +36,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         tvUsername = findViewById(R.id.tvUser);
-        tvId = findViewById(R.id.userId);
 
         getid = Util.getData("account", "id", getApplicationContext());
         getprofile();
