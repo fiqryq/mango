@@ -18,7 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
-import com.mango.autumnleaves.util.SessionManager;
+import com.mango.autumnleaves.util.Session;
 import com.mango.autumnleaves.util.Util;
 
 import org.json.JSONException;
@@ -32,28 +32,29 @@ public class LoginActivity extends AppCompatActivity {
     private Button btLogin;
     String getusername, getpassword ;
     private ProgressDialog progressDialog;
-    SessionManager sessionManager;
+    private Session mSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sessionManager = new SessionManager(this);
+        //session
+        mSession = new Session(getApplicationContext());
+        if (mSession.loggedIn()) {
+            startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+            finish();
+        }
 
         username = findViewById(R.id.tvUser);
         password = findViewById(R.id.etpassword);
         btLogin = findViewById(R.id.button_login);
-
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getusername = username.getText().toString();
                 getpassword = password.getText().toString();
-
-                Log.e("user", "" +getusername);
-                Log.e("pass", "" +getpassword);
 
                 if (getusername.equals("")||getpassword.equals("")){
                     Util.toastShow(getApplicationContext(),"Harap Isi Form");
@@ -78,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                                 String pass = account.getString("password");
                                 String id = account.getString("id");
 
-//                                LOG
                                 Log.e("account", "" + username);
                                 Log.e("account", "" + pass);
 
@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Util.saveData("account", "id", id, getApplicationContext());
 
                                 progressDialog();
+                                mSession.setLoggedin(true);
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -132,5 +133,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         progressDialog.dismiss();
     }
+
 }
 

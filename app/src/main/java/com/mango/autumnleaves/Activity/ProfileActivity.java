@@ -3,6 +3,7 @@ package com.mango.autumnleaves.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +20,7 @@ import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.User;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
+import com.mango.autumnleaves.util.Session;
 import com.mango.autumnleaves.util.Util;
 
 import org.json.JSONArray;
@@ -27,15 +29,22 @@ import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView tvUsername,tvId;
-    String getid , getUsername ;
-    Button btLogout;
+    TextView tvUsername;
+    String getid;
+
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         tvUsername = findViewById(R.id.tvUser);
+
+        session = new Session(getApplicationContext());
+        if (!session.loggedIn()) {
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        }
 
         getid = Util.getData("account", "id", getApplicationContext());
         getprofile();
@@ -50,6 +59,15 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout :
+                session.setLoggedin(false);
+                finish();
+                Intent logout = new Intent(getApplicationContext(),LoginActivity.class);
+                startActivity(logout);
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
