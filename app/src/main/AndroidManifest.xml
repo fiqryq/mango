@@ -15,8 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.RegisterActivity"></activity>
-        <!-- History -->
+        <activity android:name=".Activity.PresensiDetailActivity"></activity>
+        <activity android:name=".Activity.RegisterActivity" /> <!-- History -->
         <activity
             android:name=".Activity.HistoryActivity"
             android:label="History">

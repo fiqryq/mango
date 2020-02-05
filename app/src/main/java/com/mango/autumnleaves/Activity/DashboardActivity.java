@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -50,6 +51,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         //Content
         dshUsername = findViewById(R.id.dashUsername);
+        getid = Util.getData("account", "id", getApplicationContext());
+        getprofile();
 
 
         //Intent Menu Presensi
@@ -90,6 +93,46 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    private void getprofile(){
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.mahasiswa_profil, null
+                , new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jsonArray = response.getJSONArray("mahasiswa");
 
+                    for (int i = 0; i <jsonArray.length() ; i++) {
+                        // Object Mahasiswa
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        User data = new User();
+                        data.setId_mahasiswa(jsonObject.getInt("id_mahasiswa"));
+                        data.setNama(jsonObject.getString("nama"));
+                        data.setUsername(jsonObject.getString("username"));
+                        data.setPassword(jsonObject.getString("password"));
+                        data.setTelp(jsonObject.getString("no_tlpn"));
+                        data.setKelamin(jsonObject.getString("jenis_kelamin"));
+                        data.setTtl(jsonObject.getString("tempat_tgl_lahir"));
+                        data.setAlamat(jsonObject.getString("alamat"));
+
+                        String id = String.valueOf(data.getId_mahasiswa());
+                        if (getid.equals(id)){
+                            dshUsername.setText(data.getNama());
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Error" + e.toString(),Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
 }
 
