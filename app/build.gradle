@@ -12,7 +12,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.mango.autumnleaves"
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -37,6 +37,14 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0-beta04'
     implementation 'androidx.fragment:fragment-ktx:1.2.0-alpha04'
     implementation 'com.google.android.material:material:1.1.0-alpha10'
+
+    // Custom Toast
+    implementation 'com.pranavpandey.android:dynamic-toasts:3.1.0'
+
+    // Beacon
+    implementation 'com.estimote:proximity-sdk:1.0.3'
+    implementation 'com.estimote:mustard:0.2.1'
+
 
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

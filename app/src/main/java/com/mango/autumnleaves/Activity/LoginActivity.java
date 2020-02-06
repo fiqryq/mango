@@ -20,6 +20,7 @@ import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.Session;
 import com.mango.autumnleaves.util.Util;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //session
+        //Jika Session login (True) maka akan langsung intent ke dashoard
         mSession = new Session(getApplicationContext());
         if (mSession.loggedIn()) {
             startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
@@ -66,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
+        // Volley Request Menggunakan Methode POST
         StringRequest request = new StringRequest(Request.Method.POST, Koneksi.login,
                 new Response.Listener<String>() {
                     @Override
@@ -79,9 +82,11 @@ public class LoginActivity extends AppCompatActivity {
                                 String pass = account.getString("password");
                                 String id = account.getString("id");
 
-                                Log.e("account", "" + username);
-                                Log.e("account", "" + pass);
+                                // Check Log DEBUG
+                                Log.d("account", "" + username);
+                                Log.d("account", "" + pass);
 
+                                // Save Data Ke tabel akun
                                 Util.saveData("account", "username", getusername, getApplicationContext());
                                 Util.saveData("account", "password", getpassword, getApplicationContext());
                                 Util.saveData("account", "id", id, getApplicationContext());
@@ -92,14 +97,14 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
 
-                                Util.toastShow(getApplicationContext(), "Login Sukses");
+                                DynamicToast.makeSuccess(getApplicationContext(), "Login berhasil").show();
                             } else {
-                                Util.toastShow(getApplicationContext(), "Login gagal");
+                                DynamicToast.makeError(getApplicationContext(), "Login Gagal").show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("error", "" + e);
-                            Util.toastShow(getApplicationContext(), "Login Gagal");
+                            DynamicToast.makeError(getApplicationContext(), "Login Gagal").show();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -107,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("error", "" + error);
-                Util.toastShow(getApplicationContext(), "Login Gagal");
+                DynamicToast.makeError(getApplicationContext(), "Login Gagal").show();
             }
 
         }) {
@@ -119,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 return params;
             }
         };
+
         Volley.getInstance().addToRequestQueue(request);
     }
 

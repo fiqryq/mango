@@ -6,35 +6,48 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:padding="10dp"
-        android:weightSum="2"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/form_rounded"
         android:elevation="3dp"
-        android:paddingBottom="10dp"
         android:orientation="vertical"
+        android:padding="10dp"
+        android:paddingBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
             android:layout_height="wrap_content">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/textviewcircle"
                 android:padding="5dp"
+                android:text="Presensi"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:text="History" />
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kamu Berada Di"
+                android:textColor="@color/hitam"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -44,47 +57,30 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:padding="10dp"
             android:background="@color/putih">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:padding="5dp"
                 android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nama Mahasiswa"
-                    android:textSize="13dp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/nama_mahasiswa"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="mahasiswa"
-                    android:textColor="@color/hitam"
-                    android:textSize="15dp"/>
-
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ruangan"
-                    android:textSize="13dp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="5dp"/>
+                    android:textSize="15dp"
+                    android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/beacon_tittle"
+                    android:id="@+id/beacon_kelas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="G8"
+                    android:text="ruangan"
                     android:textColor="@color/hitam"
-                    android:textSize="15dp"
-                    />
+                    android:textSize="15dp"/>
 
             </LinearLayout>
 
@@ -97,44 +93,53 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tanggal Presensi"
-                    android:textStyle="bold"
-                    android:textSize="13dp"/>
+                    android:text="Mata Kuliah"
+                    android:textSize="15dp"
+                    android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tanggal_presensi"
+                    android:id="@+id/beacon_matakuliah"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="tggl"
+                    android:text="matkul"
                     android:textColor="@color/hitam"
                     android:textSize="15dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Waktu presensi"
-                    android:textSize="13dp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="5dp"/>
-
-                <TextView
-                    android:id="@+id/beacon_subtittle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="waktu"
-                    android:textColor="@color/hitam"
-                    android:textSize="15dp"
-                    />
-
             </LinearLayout>
-
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_weight="1">
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_abaikan_rounded"
+                    android:text="Abaikan"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/button_presensi_rounded"
+                    android:text="Presensi"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

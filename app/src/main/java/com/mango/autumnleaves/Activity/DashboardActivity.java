@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +15,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement;
+import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
+import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.beacon.ProximityContentAdapter;
+import com.mango.autumnleaves.beacon.ProximityContentManager;
 import com.mango.autumnleaves.model.User;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
@@ -23,30 +30,53 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function1;
+
 public class DashboardActivity extends AppCompatActivity {
 
-    private ImageView imvPresensi ,imvJadwal,imvHistory,imvProfile;
+    private ImageView imvPresensi ,imvJadwal,imvHistory, imvProfile;
+
     TextView dshUsername;
-    String getid,getUsername;
+    String getid;
+
+    private ProximityContentManager proximityContentManager;
+    private ProximityContentAdapter proximityContentAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
 
-        //Menu
+        setContentView(R.layout.activity_dashboard);
         imvPresensi = findViewById(R.id.presensi);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
         imvProfile = findViewById(R.id.profile);
-
-        //Content
         dshUsername = findViewById(R.id.dashUsername);
+        GridView gridView = findViewById(R.id.gridView);
+
+
+
+        intentPresensi();
+        intentJadwal();
+        intentHistory();
+        intentProfile();
+
         getid = Util.getData("account", "id", getApplicationContext());
         getprofile();
 
+        proximityContentAdapter = new ProximityContentAdapter(this);
+        gridView.setAdapter(proximityContentAdapter);
+        getEstimote();
 
+    }
+
+
+    public void intentPresensi(){
         //Intent Menu Presensi
         imvPresensi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +85,8 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(presensi);
             }
         });
-
+    }
+    public void intentJadwal(){
         //intent menu jadwal
         imvJadwal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +95,8 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(jadwal);
             }
         });
-
+    }
+    public void intentHistory(){
         //intent Menu History
         imvHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +106,8 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void intentProfile(){
         //intent Menu profile
         imvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +116,6 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(profile);
             }
         });
-
     }
 
     private void getprofile(){
@@ -125,6 +158,50 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
         Volley.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void getEstimote(){
+
+        RequirementsWizardFactory
+                .createEstimoteRequirementsWizard()
+                .fulfillRequirements(this,
+                        new Function0<Unit>() {
+                            @Override
+                            public Unit invoke() {
+                                Log.d("app", "requirements fulfilled");
+                                startProximityContentManager();
+                                return null;
+                            }
+                        },
+
+                        new Function1<List<? extends Requirement>, Unit>() {
+                            @Override
+                            public Unit invoke(List<? extends Requirement> requirements) {
+                                Log.e("app", "requirements missing: " + requirements);
+                                return null;
+                            }
+                        },
+
+                        new Function1<Throwable, Unit>() {
+                            @Override
+                            public Unit invoke(Throwable throwable) {
+                                Log.e("app", "requirements error: " + throwable);
+                                return null;
+                            }
+                        });
+    }
+
+    private void startProximityContentManager() {
+        EstimoteCloudCredentials cloudCredentials = new EstimoteCloudCredentials("mango-master-2zw", "2501de53cda0da86930e7f9650032f0d");
+        proximityContentManager = new ProximityContentManager(this, proximityContentAdapter, cloudCredentials);
+        proximityContentManager.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (proximityContentManager != null)
+            proximityContentManager.stop();
     }
 }
 
