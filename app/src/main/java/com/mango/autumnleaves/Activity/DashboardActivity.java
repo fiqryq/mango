@@ -75,7 +75,6 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-
     public void intentPresensi(){
         //Intent Menu Presensi
         imvPresensi.setOnClickListener(new View.OnClickListener() {

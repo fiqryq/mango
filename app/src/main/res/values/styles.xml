@@ -22,4 +22,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ProfileTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/cleanblue</item>
+        <item name="colorPrimaryDark">@color/cleanblue</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 </resources>

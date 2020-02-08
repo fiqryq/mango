@@ -52,10 +52,9 @@ public class ProximityContentManager {
                 .onContextChange(new Function1<Set<? extends ProximityZoneContext>, Unit>() {
                     @Override
                     public Unit invoke(Set<? extends ProximityZoneContext> contexts) {
-
                         List<ProximityContent> nearbyContent = new ArrayList<>(contexts.size());
-
                         for (ProximityZoneContext proximityContext : contexts) {
+                            // Ngodingnya di sini
                             String kelas = proximityContext.getAttachments().get("kelas");
                             if (kelas == null) {
                                 kelas = "unknown";
@@ -63,10 +62,8 @@ public class ProximityContentManager {
                             String matakuliah = EstimoteUtils.getShortIdentifier(proximityContext.getDeviceId());
                             nearbyContent.add(new ProximityContent(kelas, matakuliah));
                         }
-
                         proximityContentAdapter.setNearbyContent(nearbyContent);
                         proximityContentAdapter.notifyDataSetChanged();
-
 
                         return null;
                     }

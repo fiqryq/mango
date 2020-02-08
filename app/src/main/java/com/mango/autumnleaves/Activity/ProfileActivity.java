@@ -1,14 +1,20 @@
 package com.mango.autumnleaves.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +35,9 @@ import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView tvUsername;
+    TextView tvUsername , tvNamaLengkap , tvNim , tvAlamat , tvKelas;
+    ImageView mBack;
+    Button btLogout;
     String getid;
 
     private Session session;
@@ -39,6 +47,12 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         tvUsername = findViewById(R.id.tvUser);
+        tvNamaLengkap = findViewById(R.id.tvUser);
+        tvNim = findViewById(R.id.tvNim);
+        tvKelas = findViewById(R.id.tvKelas);
+        tvAlamat = findViewById(R.id.tvAlamat);
+        mBack = findViewById(R.id.imgBack);
+        btLogout = findViewById(R.id.button_logout);
 
         session = new Session(getApplicationContext());
         if (!session.loggedIn()) {
@@ -48,6 +62,22 @@ public class ProfileActivity extends AppCompatActivity {
 
         getid = Util.getData("account", "id", getApplicationContext());
         getprofile();
+
+        //Button Logout
+        btLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+        //Image Back
+        mBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(getApplicationContext(),DashboardActivity.class);
+                startActivity(back);
+            }
+        });
     }
 
     @Override
@@ -61,16 +91,12 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout :
-                session.setLoggedin(false);
-                finish();
-                Intent logout = new Intent(getApplicationContext(),LoginActivity.class);
-                startActivity(logout);
+
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     private void getprofile(){
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.mahasiswa_profil, null
@@ -93,8 +119,12 @@ public class ProfileActivity extends AppCompatActivity {
                         data.setAlamat(jsonObject.getString("alamat"));
 
                         String id = String.valueOf(data.getId_mahasiswa());
+
                         if (getid.equals(id)){
                             tvUsername.setText(data.getNama());
+                            tvNamaLengkap.setText(data.getNama());
+                            tvNim.setText(data.getTelp());
+                            tvAlamat.setText(data.getAlamat());
                         }
 
                     }
@@ -111,5 +141,12 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         Volley.getInstance().addToRequestQueue(jsonObjectRequest);
+    }
+
+    private void logout(){
+        session.setLoggedin(false);
+        finish();
+        Intent logout = new Intent(getApplicationContext(),LoginActivity.class);
+        startActivity(logout);
     }
 }
