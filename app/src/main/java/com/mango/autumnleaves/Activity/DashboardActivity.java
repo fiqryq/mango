@@ -6,15 +6,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
@@ -25,12 +28,19 @@ import com.mango.autumnleaves.model.User;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.Util;
+import com.mango.autumnleaves.util.Waktu;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
@@ -39,9 +49,9 @@ import kotlin.jvm.functions.Function1;
 public class DashboardActivity extends AppCompatActivity {
 
     private ImageView imvPresensi ,imvJadwal,imvHistory, imvProfile;
-
-    TextView dshUsername;
-    String getid;
+//    private Button btPresensi;
+    TextView dshUsername,tvWaktu;
+    String getid,getruangan,gettanggal,getmatakuliah,getwaktu,getjam;
 
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;
@@ -57,14 +67,17 @@ public class DashboardActivity extends AppCompatActivity {
         imvHistory = findViewById(R.id.history);
         imvProfile = findViewById(R.id.profile);
         dshUsername = findViewById(R.id.dashUsername);
+//        btPresensi = findViewById(R.id.button_presensi);
         GridView gridView = findViewById(R.id.gridView);
-
-
 
         intentPresensi();
         intentJadwal();
         intentHistory();
         intentProfile();
+
+
+        Intent data = getIntent();
+        getmatakuliah = data.getStringExtra("data");
 
         getid = Util.getData("account", "id", getApplicationContext());
         getprofile();
@@ -72,6 +85,15 @@ public class DashboardActivity extends AppCompatActivity {
         proximityContentAdapter = new ProximityContentAdapter(this);
         gridView.setAdapter(proximityContentAdapter);
         getEstimote();
+
+
+        // Add Presensi
+//        btPresensi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                presensi();
+//            }
+//        });
 
     }
 
@@ -202,5 +224,56 @@ public class DashboardActivity extends AppCompatActivity {
         if (proximityContentManager != null)
             proximityContentManager.stop();
     }
+
+    private void presensi(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                DynamicToast.makeSuccess(getApplicationContext(),"Presensi Berhasil");
+//                try {
+//                    JSONObject obj = new JSONObject(response);
+//                    if (!obj.getBoolean("error")){
+//
+//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
+//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+//                        startActivity(intent);
+//                    } else {
+//
+//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
+//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+//                        startActivity(intent);
+//
+//                    }
+//
+//                } catch (Exception e) {
+//                    DynamicToast.makeError(getApplicationContext(),e+toString());
+//                    e.printStackTrace();
+//                    finish();
+//                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DynamicToast.makeError(getApplicationContext(),"Error");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+
+                params.put("id_mahasiswa", getid);
+//                params.put("waktu", getwaktu);
+//                params.put("tanggal", gettanggal);
+                params.put("ruangan", getruangan);
+                params.put("mata_kuliah", getmatakuliah);
+
+                return params;
+            }
+        };
+
+        Volley.getInstance().addToRequestQueue(stringRequest);
+    }
+
 }
 

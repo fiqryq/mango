@@ -10,11 +10,11 @@ public class ProximityContent {
         this.matakuliah = matakuliah;
     }
 
-    String getTitle() {
+    String getKelas() {
         return kelas;
     }
 
-    String getSubtitle() {
+    String getMatakuliah() {
         return matakuliah;
     }
 }

@@ -2,6 +2,7 @@ package com.mango.autumnleaves.beacon;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
 import com.estimote.proximity_sdk.api.ProximityObserver;
@@ -9,9 +10,13 @@ import com.estimote.proximity_sdk.api.ProximityObserverBuilder;
 import com.estimote.proximity_sdk.api.ProximityZone;
 import com.estimote.proximity_sdk.api.ProximityZoneBuilder;
 import com.estimote.proximity_sdk.api.ProximityZoneContext;
+import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.util.EstimoteUtils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -44,8 +49,6 @@ public class ProximityContentManager {
                 .withBalancedPowerMode()
                 .build();
 
-
-
         ProximityZone zone = new ProximityZoneBuilder()
                 .forTag("kelas")
                 .inCustomRange(3.0)
@@ -76,4 +79,5 @@ public class ProximityContentManager {
     public void stop() {
         proximityObserverHandler.stop();
     }
+
 }
