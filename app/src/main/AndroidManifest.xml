@@ -5,8 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".remote.Volley"
@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.PresensiDetailActivity"></activity>
+        <activity android:name=".SaveUidActivity"></activity>
+        <activity android:name=".Activity.PresensiDetailActivity" />
         <activity android:name=".Activity.RegisterActivity" /> <!-- History -->
         <activity
             android:name=".Activity.HistoryActivity"
@@ -28,8 +29,8 @@
         </activity> <!-- Profile -->
         <activity
             android:name=".Activity.ProfileActivity"
-            android:theme="@style/ProfileTheme"
-            android:label="Profile">
+            android:label="Profile"
+            android:theme="@style/ProfileTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mango.autumnleaves.Activity.DashboardActivity" />

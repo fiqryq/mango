@@ -1,18 +1,14 @@
 package com.mango.autumnleaves.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +24,7 @@ import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.Session;
 import com.mango.autumnleaves.util.Util;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +33,7 @@ import org.json.JSONObject;
 public class ProfileActivity extends AppCompatActivity {
 
     TextView tvUsername , tvNamaLengkap , tvNim , tvAlamat , tvKelas;
-    ImageView mBack;
+    ImageView mBack,mProfile;
     Button btLogout;
     String getid;
 
@@ -52,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvKelas = findViewById(R.id.tvKelas);
         tvAlamat = findViewById(R.id.tvAlamat);
         mBack = findViewById(R.id.imgBack);
+        mProfile = findViewById(R.id.profileImg);
         btLogout = findViewById(R.id.button_logout);
 
         session = new Session(getApplicationContext());
@@ -110,6 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         User data = new User();
                         data.setId_mahasiswa(jsonObject.getInt("id_mahasiswa"));
+                        data.setNim_mhs(jsonObject.getString("nim_mhs"));
                         data.setNama(jsonObject.getString("nama"));
                         data.setUsername(jsonObject.getString("username"));
                         data.setPassword(jsonObject.getString("password"));
@@ -117,6 +116,9 @@ public class ProfileActivity extends AppCompatActivity {
                         data.setKelamin(jsonObject.getString("jenis_kelamin"));
                         data.setTtl(jsonObject.getString("tempat_tgl_lahir"));
                         data.setAlamat(jsonObject.getString("alamat"));
+                        data.setKode_kelas(jsonObject.getString("kode_kelas"));
+                        data.setJurusan(jsonObject.getString("jurusan"));
+                        data.setGambar(jsonObject.getString("gambar"));
 
                         String id = String.valueOf(data.getId_mahasiswa());
 
@@ -125,6 +127,8 @@ public class ProfileActivity extends AppCompatActivity {
                             tvNamaLengkap.setText(data.getNama());
                             tvNim.setText(data.getTelp());
                             tvAlamat.setText(data.getAlamat());
+                            Picasso.get().load(data.getGambar()).into(mProfile);
+
                         }
 
                     }

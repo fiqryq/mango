@@ -2,6 +2,7 @@ package com.mango.autumnleaves.model;
 
 public class User {
     private Integer id_mahasiswa;
+    private String nim_mhs;
     private String nama;
     private String username;
     private String password;
@@ -9,6 +10,43 @@ public class User {
     private String kelamin;
     private String ttl;
     private String alamat;
+    private String kode_kelas;
+
+    public String getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(String gambar) {
+        this.gambar = gambar;
+    }
+
+    private String gambar;
+
+    public String getNim_mhs() {
+        return nim_mhs;
+    }
+
+    public void setNim_mhs(String nim_mhs) {
+        this.nim_mhs = nim_mhs;
+    }
+
+    public String getKode_kelas() {
+        return kode_kelas;
+    }
+
+    public void setKode_kelas(String kode_kelas) {
+        this.kode_kelas = kode_kelas;
+    }
+
+    public String getJurusan() {
+        return jurusan;
+    }
+
+    public void setJurusan(String jurusan) {
+        this.jurusan = jurusan;
+    }
+
+    private String jurusan;
 
     public Integer getId_mahasiswa() {
         return id_mahasiswa;

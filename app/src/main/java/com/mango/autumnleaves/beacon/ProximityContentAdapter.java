@@ -1,6 +1,7 @@
 package com.mango.autumnleaves.beacon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +10,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Presensi;
+import com.mango.autumnleaves.remote.Koneksi;
+import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.EstimoteUtils;
+import com.mango.autumnleaves.util.Util;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProximityContentAdapter extends BaseAdapter {
 
@@ -79,6 +90,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 DynamicToast.makeSuccess(v.getContext(),"Sukses Presensi " + content.getKelas()).show();
+                presensi();
             }
         });
 
@@ -95,4 +107,57 @@ public class ProximityContentAdapter extends BaseAdapter {
         gettanggal = date.format(calendar.getTime());
         getjam = jam.format(calendar.getTime());
     }
+
+
+
+    private void presensi(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                DynamicToast.makeSuccess(context,"Presensi Berhasil").show();
+//                try {
+//                    JSONObject obj = new JSONObject(response);
+//                    if (!obj.getBoolean("error")){
+//
+//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
+//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+//                        startActivity(intent);
+//                    } else {
+//
+//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
+//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+//                        startActivity(intent);
+//
+//                    }
+//
+//                } catch (Exception e) {
+//                    DynamicToast.makeError(getApplicationContext(),e+toString());
+//                    e.printStackTrace();
+//                    finish();
+//                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                String getid;
+                getid = Util.getData("account", "id", context);
+                params.put("id_mahasiswa", getid);
+                params.put("waktu", getwaktu);
+                params.put("tanggal", gettanggal);
+//                params.put("ruangan", getruangan);
+//                params.put("mata_kuliah", getmatakuliah);
+                return params;
+            }
+        };
+
+        Volley.getInstance().addToRequestQueue(stringRequest);
+    }
+
 }

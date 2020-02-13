@@ -30,6 +30,7 @@ import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.Util;
 import com.mango.autumnleaves.util.Waktu;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,9 +50,10 @@ import kotlin.jvm.functions.Function1;
 public class DashboardActivity extends AppCompatActivity {
 
     private ImageView imvPresensi ,imvJadwal,imvHistory, imvProfile;
-//    private Button btPresensi;
-    TextView dshUsername,tvWaktu;
-    String getid,getruangan,gettanggal,getmatakuliah,getwaktu,getjam;
+
+    TextView dshUsername,dshNim;
+    String getid,getmatakuliah;
+    ImageView dashImg;
 
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;
@@ -67,7 +69,8 @@ public class DashboardActivity extends AppCompatActivity {
         imvHistory = findViewById(R.id.history);
         imvProfile = findViewById(R.id.profile);
         dshUsername = findViewById(R.id.dashUsername);
-//        btPresensi = findViewById(R.id.button_presensi);
+        dshNim = findViewById(R.id.dashNim);
+        dashImg = findViewById(R.id.dashIgm);
         GridView gridView = findViewById(R.id.gridView);
 
         intentPresensi();
@@ -86,14 +89,6 @@ public class DashboardActivity extends AppCompatActivity {
         gridView.setAdapter(proximityContentAdapter);
         getEstimote();
 
-
-        // Add Presensi
-//        btPresensi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                presensi();
-//            }
-//        });
 
     }
 
@@ -152,6 +147,7 @@ public class DashboardActivity extends AppCompatActivity {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         User data = new User();
                         data.setId_mahasiswa(jsonObject.getInt("id_mahasiswa"));
+                        data.setNim_mhs(jsonObject.getString("nim_mhs"));
                         data.setNama(jsonObject.getString("nama"));
                         data.setUsername(jsonObject.getString("username"));
                         data.setPassword(jsonObject.getString("password"));
@@ -159,10 +155,15 @@ public class DashboardActivity extends AppCompatActivity {
                         data.setKelamin(jsonObject.getString("jenis_kelamin"));
                         data.setTtl(jsonObject.getString("tempat_tgl_lahir"));
                         data.setAlamat(jsonObject.getString("alamat"));
+                        data.setKode_kelas(jsonObject.getString("kode_kelas"));
+                        data.setJurusan(jsonObject.getString("jurusan"));
+                        data.setGambar(jsonObject.getString("gambar"));
 
                         String id = String.valueOf(data.getId_mahasiswa());
                         if (getid.equals(id)){
                             dshUsername.setText(data.getNama());
+                            dshNim.setText(data.getNim_mhs());
+                            Picasso.get().load(data.getGambar()).into(dashImg);
                         }
 
                     }
@@ -225,55 +226,6 @@ public class DashboardActivity extends AppCompatActivity {
             proximityContentManager.stop();
     }
 
-    private void presensi(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                DynamicToast.makeSuccess(getApplicationContext(),"Presensi Berhasil");
-//                try {
-//                    JSONObject obj = new JSONObject(response);
-//                    if (!obj.getBoolean("error")){
-//
-//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
-//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
-//                        startActivity(intent);
-//                    } else {
-//
-//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
-//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
-//                        startActivity(intent);
-//
-//                    }
-//
-//                } catch (Exception e) {
-//                    DynamicToast.makeError(getApplicationContext(),e+toString());
-//                    e.printStackTrace();
-//                    finish();
-//                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DynamicToast.makeError(getApplicationContext(),"Error");
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-
-                params.put("id_mahasiswa", getid);
-//                params.put("waktu", getwaktu);
-//                params.put("tanggal", gettanggal);
-                params.put("ruangan", getruangan);
-                params.put("mata_kuliah", getmatakuliah);
-
-                return params;
-            }
-        };
-
-        Volley.getInstance().addToRequestQueue(stringRequest);
-    }
 
 }
 
