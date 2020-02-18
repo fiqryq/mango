@@ -2,6 +2,7 @@ package com.mango.autumnleaves.beacon;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.mango.autumnleaves.util.EstimoteUtils;
 import com.mango.autumnleaves.util.Util;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class ProximityContentAdapter extends BaseAdapter {
 
     private Context context;
     private String getwaktu , gettanggal ,getjam;
+    String getid;
 
     public ProximityContentAdapter(Context context) {
         this.context = context;
@@ -71,11 +75,11 @@ public class ProximityContentAdapter extends BaseAdapter {
 
         }
 
-        ProximityContent content = nearbyContent.get(position);
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
         TextView matakuliah = convertView.findViewById(R.id.beacon_matakuliah);
         TextView waktu = convertView.findViewById(R.id.tVwaktu);
 
+        ProximityContent content = nearbyContent.get(position);
         kelas.setText(content.getKelas());
         matakuliah.setText(content.getMatakuliah());
 
@@ -89,11 +93,38 @@ public class ProximityContentAdapter extends BaseAdapter {
         presensiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DynamicToast.makeSuccess(v.getContext(),"Sukses Presensi " + content.getKelas()).show();
-                presensi();
+                ProximityContent data = nearbyContent.get(position);
+
+                getid = Util.getData("account", "id", context);
+                Log.d("getid",getid);
+                Log.d("matakuliah",content.getMatakuliah());
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Respone", response);
+                        DynamicToast.makeSuccess(context,"Presensi Berhasil").show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("id_mahasiswa", getid);
+                        params.put("waktu", getwaktu);
+                        params.put("tanggal", gettanggal);
+                        params.put("ruangan", data.getKelas());
+                        params.put("matakuliah", data.getKelas());
+                        return params;
+                    }
+                };
+                Volley.getInstance().addToRequestQueue(stringRequest);
             }
         });
-
         return convertView;
     }
 
@@ -106,58 +137,6 @@ public class ProximityContentAdapter extends BaseAdapter {
         getwaktu = time.format(calendar.getTime());
         gettanggal = date.format(calendar.getTime());
         getjam = jam.format(calendar.getTime());
-    }
-
-
-
-    private void presensi(){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                DynamicToast.makeSuccess(context,"Presensi Berhasil").show();
-//                try {
-//                    JSONObject obj = new JSONObject(response);
-//                    if (!obj.getBoolean("error")){
-//
-//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
-//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
-//                        startActivity(intent);
-//                    } else {
-//
-//                        DynamicToast.makeError(getApplicationContext(), obj.getString("message"));
-//                        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
-//                        startActivity(intent);
-//
-//                    }
-//
-//                } catch (Exception e) {
-//                    DynamicToast.makeError(getApplicationContext(),e+toString());
-//                    e.printStackTrace();
-//                    finish();
-//                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                String getid;
-                getid = Util.getData("account", "id", context);
-                params.put("id_mahasiswa", getid);
-                params.put("waktu", getwaktu);
-                params.put("tanggal", gettanggal);
-//                params.put("ruangan", getruangan);
-//                params.put("mata_kuliah", getmatakuliah);
-                return params;
-            }
-        };
-
-        Volley.getInstance().addToRequestQueue(stringRequest);
     }
 
 }

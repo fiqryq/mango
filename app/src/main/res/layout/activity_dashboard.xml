@@ -221,7 +221,7 @@
             android:layout_height="wrap_content"
             android:columnWidth="600dp"
             android:gravity="center"
-            android:numColumns="auto_fit"
+            android:numColumns="1"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp" />
 

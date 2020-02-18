@@ -58,5 +58,4 @@ public class PresensiAdapter extends ArrayAdapter<Presensi> {
 
     }
 
-
 }

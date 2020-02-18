@@ -44,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         tvUsername = findViewById(R.id.tvUser);
-        tvNamaLengkap = findViewById(R.id.tvUser);
+        tvNamaLengkap = findViewById(R.id.tvNamaLengkap);
         tvNim = findViewById(R.id.tvNim);
         tvKelas = findViewById(R.id.tvKelas);
         tvAlamat = findViewById(R.id.tvAlamat);

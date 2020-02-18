@@ -13,7 +13,6 @@ public class ProximityContent {
     String getKelas() {
         return kelas;
     }
-
     String getMatakuliah() {
         return matakuliah;
     }

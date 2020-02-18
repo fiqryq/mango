@@ -51,7 +51,7 @@ public class ProximityContentManager {
 
         ProximityZone zone = new ProximityZoneBuilder()
                 .forTag("kelas")
-                .inCustomRange(3.0)
+                .inCustomRange(1.0)
                 .onContextChange(new Function1<Set<? extends ProximityZoneContext>, Unit>() {
                     @Override
                     public Unit invoke(Set<? extends ProximityZoneContext> contexts) {
@@ -63,11 +63,11 @@ public class ProximityContentManager {
                                 kelas = "unknown";
                             }
                             String matakuliah = EstimoteUtils.getShortIdentifier(proximityContext.getDeviceId());
+
                             nearbyContent.add(new ProximityContent(kelas, matakuliah));
                         }
                         proximityContentAdapter.setNearbyContent(nearbyContent);
                         proximityContentAdapter.notifyDataSetChanged();
-
                         return null;
                     }
                 })
@@ -75,7 +75,6 @@ public class ProximityContentManager {
 
         proximityObserverHandler = proximityObserver.startObserving(zone);
     }
-
     public void stop() {
         proximityObserverHandler.stop();
     }
