@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,6 +25,7 @@ import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.EstimoteUtils;
 import com.mango.autumnleaves.util.Util;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
+import com.tapadoo.alerter.Alerter;
 
 import org.json.JSONObject;
 
@@ -36,6 +39,7 @@ import java.util.Map;
 
 public class ProximityContentAdapter extends BaseAdapter {
 
+    private AppCompatActivity activityAlert;
     private Context context;
     private String getwaktu , gettanggal ,getjam;
     String getid;
@@ -48,6 +52,11 @@ public class ProximityContentAdapter extends BaseAdapter {
 
     public void setNearbyContent(List<ProximityContent> nearbyContent) {
         this.nearbyContent = nearbyContent;
+    }
+
+    // Jangan lupa manggil ini
+    public void setActivityAlert(AppCompatActivity activityAlert) {
+        this.activityAlert = activityAlert;
     }
 
     @Override
@@ -82,6 +91,8 @@ public class ProximityContentAdapter extends BaseAdapter {
         ProximityContent content = nearbyContent.get(position);
         kelas.setText(content.getKelas());
         matakuliah.setText(content.getMatakuliah());
+
+        alert();
 
         // Get Waktu Dari Method Untuk Di tampilkan DI card
         // Waktu Terpisah dari model
@@ -130,13 +141,23 @@ public class ProximityContentAdapter extends BaseAdapter {
 
     // Method Get Waktu
     public void waktu(){
+
         Calendar calendar = Calendar.getInstance();
         DateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         DateFormat time = new SimpleDateFormat("kk:mm");
         DateFormat jam = new SimpleDateFormat("kk");
+        DateFormat bulan = new SimpleDateFormat("M");
+
         getwaktu = time.format(calendar.getTime());
         gettanggal = date.format(calendar.getTime());
         getjam = jam.format(calendar.getTime());
+
     }
 
+    public void alert(){
+        Alerter.create(activityAlert)
+                .setTitle("Alert Title")
+                .setText("Alert text...")
+                .show();
+    }
 }

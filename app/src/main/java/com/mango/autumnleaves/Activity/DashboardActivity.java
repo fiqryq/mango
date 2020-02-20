@@ -86,6 +86,7 @@ public class DashboardActivity extends AppCompatActivity {
         getprofile();
 
         proximityContentAdapter = new ProximityContentAdapter(this);
+
         gridView.setAdapter(proximityContentAdapter);
         getEstimote();
 

@@ -41,6 +41,7 @@
             android:theme="@style/AppTheme2" /> <!-- Presensi -->
         <activity
             android:name=".Activity.PresensiActivity"
+            android:theme="@style/AppTheme2"
             android:label="Presensi">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -48,6 +49,7 @@
         </activity> <!-- Jadwal -->
         <activity
             android:name=".Activity.JadwalActivity"
+            android:theme="@style/AppTheme2"
             android:label="Jadwal">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

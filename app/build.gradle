@@ -51,6 +51,9 @@ dependencies {
     //Rounded
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    //Notification
+    implementation 'com.tapadoo.android:alerter:5.1.2'
+
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
