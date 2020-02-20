@@ -1,15 +1,38 @@
 package com.mango.autumnleaves.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class User {
-    private Integer id_mahasiswa;
+    @Expose
+    @SerializedName("id_mahasiswa")
+    private int id_mahasiswa;
+    @Expose
+    @SerializedName("nim_mhs")
     private String nim_mhs;
+    @Expose
+    @SerializedName("nama")
     private String nama;
+    @Expose
+    @SerializedName("username")
     private String username;
+    @Expose
+    @SerializedName("password")
     private String password;
+    @Expose
+    @SerializedName("telp")
     private String telp;
+    @Expose
+    @SerializedName("kelamin")
     private String kelamin;
+    @Expose
+    @SerializedName("ttl")
     private String ttl;
+    @Expose
+    @SerializedName("alamat")
     private String alamat;
+    @Expose
+    @SerializedName("kode_kelas")
     private String kode_kelas;
 
     public String getGambar() {

@@ -142,7 +142,6 @@ public class DashboardActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray jsonArray = response.getJSONArray("mahasiswa");
-
                     for (int i = 0; i <jsonArray.length() ; i++) {
                         // Object Mahasiswa
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
