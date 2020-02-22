@@ -92,7 +92,7 @@ public class ProximityContentAdapter extends BaseAdapter {
         kelas.setText(content.getKelas());
         matakuliah.setText(content.getMatakuliah());
 
-        alert();
+//        alert();
 
         // Get Waktu Dari Method Untuk Di tampilkan DI card
         // Waktu Terpisah dari model

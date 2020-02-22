@@ -51,9 +51,9 @@ public class DashboardActivity extends AppCompatActivity {
 
     private ImageView imvPresensi ,imvJadwal,imvHistory, imvProfile;
 
-    TextView dshUsername,dshNim;
-    String getid,getmatakuliah;
-    ImageView dashImg;
+    private TextView dshUsername,dshNim;
+    private String getid,getmatakuliah;
+    private ImageView dashImg;
 
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;

@@ -1,61 +1,71 @@
 package com.mango.autumnleaves.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.model.Presensi;
+import com.mango.autumnleaves.model.Jadwal;
 
 import java.util.List;
 
-public class PresensiAdapter extends ArrayAdapter<Presensi> {
+public class PresensiAdapter extends RecyclerView.Adapter<PresensiAdapter.ViewHolder> {
 
-    Context context;
-    List<Presensi> list;
+    private Context mContext;
+    private List<Jadwal> mData;
 
-    public PresensiAdapter(Context context, List<Presensi> objects) {
-        super(context, R.layout.presensi_content_beacon, objects);
-        this.context = context;
-        list = objects;
+    public PresensiAdapter(Context mContext, List<Jadwal> mData) {
+        this.mContext = mContext;
+        this.mData = mData;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        view = inflater.inflate(R.layout.listitem_jadwal,parent,false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return super.getCount();
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.hari.setText(mData.get(position).getHari());
+        holder.matakuliah.setText(mData.get(position).getMatakuliah());
+        holder.dosen.setText(mData.get(position).getDosen());
+        holder.ruangan.setText(mData.get(position).getRuangan());
+        holder.waktu.setText(mData.get(position).getWaktu());
+        holder.waktu_selesai.setText(mData.get(position).getWaktu_selesai());
     }
 
-    @SuppressLint("StaticFieldLeak")
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public int getItemCount() {
+        return mData.size();
+    }
 
-        if (convertView == null) {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-            LayoutInflater layoutInflater;
+        TextView hari;
+        TextView matakuliah;
+        TextView dosen;
+        TextView ruangan;
+        TextView waktu;
+        TextView waktu_selesai;
 
-            layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.presensi_content_beacon, null);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            hari = itemView.findViewById(R.id.tvHari);
+            matakuliah = itemView.findViewById(R.id.tvMatakuliah);
+            dosen = itemView.findViewById(R.id.tvRuangan);
+            ruangan = itemView.findViewById(R.id.tvRuangan);
+            waktu = itemView.findViewById(R.id.tvWaktu);
+            waktu_selesai = itemView.findViewById(R.id.tvWaktuSelesai);
         }
-
-        View v = convertView;
-
-        final Presensi data = list.get(position);
-
-//        TextView nama = (TextView) v.findViewById(R.id.tv);
-//        TextView ruangan = (TextView) v.findViewById(R.id.lokasi);
-//        TextView tanggal = (TextView) v.findViewById(R.id.tanggal);
-//        TextView waktu = (TextView) v.findViewById(R.id.waktu);
-//
-//        nama.setText(data.getNama());
-//        lokasi.setText(data.getLokasi());
-//        tanggal.setText(data.getTanggal());
-//        waktu.setText(data.getWaktu());
-
-        return v;
-
     }
-
 }

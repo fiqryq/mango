@@ -6,9 +6,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:padding="10dp"
         android:weightSum="2"
         android:background="@drawable/form_rounded"
@@ -19,47 +16,52 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="8dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/putih">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/textviewcircle"
-                android:textColor="@color/white"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="10dp"
-                android:text="Ruangan"/>
-
-            <TextView
-                android:layout_marginLeft="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_waktu"
-                android:textColor="@color/white"
-                android:paddingVertical="5dp"
-                android:paddingHorizontal="1dp"
-                android:text="19:00"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:weightSum="2"
             android:paddingHorizontal="10dp"
             android:background="@color/putih">
 
             <TextView
+                android:id="@+id/tvHari"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="Mobile Programming"/>
+                android:text="Hari"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvMatakuliah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Matakuliah"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvDosen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dosen"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvRuangan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ruangan"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvWaktu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Waktu"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvWaktuSelesai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Waktu_selesai"
+                android:textSize="18sp" />
+
 
         </LinearLayout>
 

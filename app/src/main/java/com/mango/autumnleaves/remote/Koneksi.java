@@ -21,6 +21,10 @@ public class Koneksi {
     public static final String izin = URL + "api/izin.php";
     public static final String izin_post = URL + "api/izin_tambah.php";
 
+    // Jadwal
+    public static final String jadwal = URL + "api/jadwal.php";
+
+
     // Mahasiswa
     public static final String mahasiswa_post = URL + "api/mahasiswa_update.php";
     public static final String mahasiswa_profil = URL + "api/mahasiswa.php";

@@ -32,10 +32,10 @@ import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView tvUsername , tvNamaLengkap , tvNim , tvAlamat , tvKelas;
-    ImageView mBack,mProfile;
-    Button btLogout;
-    String getid;
+    private TextView tvUsername , tvNamaLengkap , tvNim , tvAlamat , tvKelas;
+    private ImageView mBack,mProfile;
+    private Button btLogout;
+    private String getid;
 
     private Session session;
 
@@ -128,7 +128,6 @@ public class ProfileActivity extends AppCompatActivity {
                             tvNim.setText(data.getTelp());
                             tvAlamat.setText(data.getAlamat());
                             Picasso.get().load(data.getGambar()).into(mProfile);
-
                         }
 
                     }

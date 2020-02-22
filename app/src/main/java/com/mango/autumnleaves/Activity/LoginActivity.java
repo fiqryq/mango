@@ -31,7 +31,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     private EditText username,password;
     private Button btLogin;
-    String getusername, getpassword ;
+    private String getusername, getpassword ;
     private ProgressDialog progressDialog;
     private Session mSession;
 
