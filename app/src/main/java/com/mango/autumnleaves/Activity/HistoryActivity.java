@@ -73,12 +73,17 @@ public class HistoryActivity extends AppCompatActivity {
                                 history.setTanggal(jsonObject.getString("tanggal"));
                                 history.setWaktu(jsonObject.getString("waktu"));
                                 history.setMatakuliah(jsonObject.getString("matakuliah"));
-                                arrayList.add(history);
+
                                 String id = String.valueOf(history.getId_mahasiswa());
+
+                                if (getid.equals(id)){
+                                    arrayList.add(history);
+                                }
+
                                 setuprecyclerview(arrayList);
                             }
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                                e.printStackTrace();
                         }
 
 
