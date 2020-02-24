@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FE6644</color>
+    <color name="colorPrimaryDark">#FE6644</color>
+    <color name="colorAccent">#FF034B</color>
 
     <color name="colorNavigationIcon">#dae9f6</color>
     <color name="colorNavigationText">#ffffff</color>
 
 <!--    Custom-->
     <color name="white">#FFFFFF</color>
-    <color name="orange">#FB8C00</color>
-    <color name="Cleanblack">#D1D1D1</color>
+    <color name="orangeprimary">#FB8C00</color>
+    <color name="orangesecondary">#FF034B</color>
+
+    <color name="cleanblack">#D1D1D1</color>
     <color name="cleanwhite">#89dedede</color>
     <color name="cleanblue">#00C6FF</color>
     <color name="cleangreen">#43A047</color>
@@ -19,6 +21,10 @@
     <color name="putih">#ffff</color>
     <color name="hitam">#161616</color>
     <color name="abu">#89F0F0F0</color>
+
+<!--    <color name="colorPrimary">#FE6644</color>-->
+<!--    <color name="colorPrimaryDark">#FF034B</color>-->
+<!--    <color name="colorAccent">#D81B60</color>-->
 
 
 </resources>

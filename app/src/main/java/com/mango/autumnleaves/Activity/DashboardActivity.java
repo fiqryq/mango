@@ -4,20 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
@@ -28,20 +27,15 @@ import com.mango.autumnleaves.model.User;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.Util;
-import com.mango.autumnleaves.util.Waktu;
-import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
@@ -50,10 +44,14 @@ import kotlin.jvm.functions.Function1;
 public class DashboardActivity extends AppCompatActivity {
 
     private ImageView imvPresensi ,imvJadwal,imvHistory, imvProfile;
-
     private TextView dshUsername,dshNim;
     private String getid,getmatakuliah;
     private ImageView dashImg;
+    private ProgressBar progressBar;
+
+    // nitip
+    private TextView tvHariIni, tvMatkul, tvDosen, tvJam, tvRuangan;
+    private String hari, timeNow;
 
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;
@@ -64,6 +62,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_dashboard);
+        progressBar = findViewById(R.id.progressBarImg);
         imvPresensi = findViewById(R.id.presensi);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
@@ -89,7 +88,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         gridView.setAdapter(proximityContentAdapter);
         getEstimote();
-
+        progressBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -98,7 +97,7 @@ public class DashboardActivity extends AppCompatActivity {
         imvPresensi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent presensi = new Intent(DashboardActivity.this,PresensiActivity.class);
+                Intent presensi = new Intent(DashboardActivity.this, CalendarActivity.class);
                 startActivity(presensi);
             }
         });
@@ -140,6 +139,7 @@ public class DashboardActivity extends AppCompatActivity {
                 , new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                progressBar.setVisibility(View.GONE);
                 try {
                     JSONArray jsonArray = response.getJSONArray("mahasiswa");
 
@@ -225,6 +225,66 @@ public class DashboardActivity extends AppCompatActivity {
         super.onDestroy();
         if (proximityContentManager != null)
             proximityContentManager.stop();
+    }
+
+    // Untuk Get Tanggal Hari ini
+    private void getBulan() {
+        Date date = Calendar.getInstance().getTime();
+        String tanggal = (String) android.text.format.DateFormat.format("d", date);
+        String mBulan = (String) android.text.format.DateFormat.format("M", date);
+        String tahun = (String) android.text.format.DateFormat.format("yyyy", date);
+
+        int month = Integer.parseInt(mBulan);
+        String bulan = null;
+
+        if (month == 1) {
+            bulan = "Januari";
+        } else if (month == 2) {
+            bulan = "Februari";
+        } else if (month == 3) {
+            bulan = "Maret";
+        } else if (month == 4) {
+            bulan = "April";
+        } else if (month == 5) {
+            bulan = "Mei";
+        } else if (month == 6) {
+            bulan = "Juni";
+        } else if (month == 7) {
+            bulan = "Juli";
+        } else if (month == 8) {
+            bulan = "Agustus";
+        } else if (month == 9) {
+            bulan = "September";
+        } else if (month == 10) {
+            bulan = "Oktober";
+        } else if (month == 11) {
+            bulan = "November";
+        } else if (month == 12) {
+            bulan = "Desember";
+        }
+
+        String sekarang = hari + ", " + tanggal + " " + bulan + " " + tahun;
+        tvHariIni.setText(String.valueOf(sekarang));
+    }
+    private void getHari() {
+        Date dateNow = Calendar.getInstance().getTime();
+        timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
+        hari = (String) DateFormat.format("EEEE", dateNow);
+        if (hari.equalsIgnoreCase("sunday")) {
+            hari = "Minggu";
+        } else if (hari.equalsIgnoreCase("monday")) {
+            hari = "Senin";
+        } else if (hari.equalsIgnoreCase("tuesday")) {
+            hari = "Selasa";
+        } else if (hari.equalsIgnoreCase("wednesday")) {
+            hari = "Rabu";
+        } else if (hari.equalsIgnoreCase("thursday")) {
+            hari = "Kamis";
+        } else if (hari.equalsIgnoreCase("friday")) {
+            hari = "Jumat";
+        } else if (hari.equalsIgnoreCase("saturday")) {
+            hari = "Sabtu";
+        }
     }
 
 

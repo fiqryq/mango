@@ -3,6 +3,7 @@ package com.mango.autumnleaves.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.Session;
 import com.mango.autumnleaves.util.Util;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -32,10 +34,11 @@ import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private TextView tvUsername , tvNamaLengkap , tvNim , tvAlamat , tvKelas;
+    private TextView tvUsername , tvNamaLengkap , tvNim , tvAlamat , tvKelas ,tvJurusan,tvTTL,tvKontak;
     private ImageView mBack,mProfile;
     private Button btLogout;
     private String getid;
+    private View progressDialog;
 
     private Session session;
 
@@ -43,11 +46,20 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
         tvUsername = findViewById(R.id.tvUser);
         tvNamaLengkap = findViewById(R.id.tvNamaLengkap);
         tvNim = findViewById(R.id.tvNim);
         tvKelas = findViewById(R.id.tvKelas);
         tvAlamat = findViewById(R.id.tvAlamat);
+        tvJurusan = findViewById(R.id.tvJurusan);
+        tvKelas = findViewById(R.id.tvKelas);
+        tvKontak = findViewById(R.id.tvKontak);
+        tvTTL = findViewById(R.id.tvTTL);
+        progressDialog = findViewById(R.id.progressBarProfile);
+
+
+
         mBack = findViewById(R.id.imgBack);
         mProfile = findViewById(R.id.profileImg);
         btLogout = findViewById(R.id.button_logout);
@@ -59,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         getid = Util.getData("account", "id", getApplicationContext());
+        progressDialog.setVisibility(View.VISIBLE);
         getprofile();
 
         //Button Logout
@@ -101,9 +114,9 @@ public class ProfileActivity extends AppCompatActivity {
                 , new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                progressDialog.setVisibility(View.GONE);
                 try {
                     JSONArray jsonArray = response.getJSONArray("mahasiswa");
-
                     for (int i = 0; i <jsonArray.length() ; i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         User data = new User();
@@ -125,8 +138,12 @@ public class ProfileActivity extends AppCompatActivity {
                         if (getid.equals(id)){
                             tvUsername.setText(data.getNama());
                             tvNamaLengkap.setText(data.getNama());
-                            tvNim.setText(data.getTelp());
+                            tvNim.setText(data.getNim_mhs());
                             tvAlamat.setText(data.getAlamat());
+                            tvKelas.setText(data.getKode_kelas());
+                            tvJurusan.setText(data.getJurusan());
+                            tvKontak.setText(data.getTelp());
+                            tvTTL.setText(data.getTtl());
                             Picasso.get().load(data.getGambar()).into(mProfile);
                         }
 
@@ -140,7 +157,7 @@ public class ProfileActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                DynamicToast.makeError(getApplicationContext(),"Error" + error.toString());
             }
         });
         Volley.getInstance().addToRequestQueue(jsonObjectRequest);

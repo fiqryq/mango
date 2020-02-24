@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog();
                 getusername = username.getText().toString();
                 getpassword = password.getText().toString();
 
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDialog.dismiss();
                         Log.e("response", " " + response);
                         try {
                             JSONObject data = new JSONObject(response);
@@ -91,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Util.saveData("account", "password", getpassword, getApplicationContext());
                                 Util.saveData("account", "id", id, getApplicationContext());
 
-                                progressDialog();
+
                                 mSession.setLoggedin(true);
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);

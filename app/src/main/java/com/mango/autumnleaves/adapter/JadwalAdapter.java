@@ -14,12 +14,12 @@ import com.mango.autumnleaves.model.Jadwal;
 
 import java.util.List;
 
-public class PresensiAdapter extends RecyclerView.Adapter<PresensiAdapter.ViewHolder> {
+public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Jadwal> mData;
 
-    public PresensiAdapter(Context mContext, List<Jadwal> mData) {
+    public JadwalAdapter(Context mContext, List<Jadwal> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -62,7 +62,7 @@ public class PresensiAdapter extends RecyclerView.Adapter<PresensiAdapter.ViewHo
 
             hari = itemView.findViewById(R.id.tvHari);
             matakuliah = itemView.findViewById(R.id.tvMatakuliah);
-            dosen = itemView.findViewById(R.id.tvRuangan);
+            dosen = itemView.findViewById(R.id.tvDosen);
             ruangan = itemView.findViewById(R.id.tvRuangan);
             waktu = itemView.findViewById(R.id.tvWaktu);
             waktu_selesai = itemView.findViewById(R.id.tvWaktuSelesai);

@@ -1,70 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:background="@color/abu"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
         android:weightSum="2"
         android:background="@drawable/form_rounded"
-        android:elevation="3dp"
-        android:paddingBottom="10dp"
-        android:orientation="vertical">
+        android:elevation="5dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:background="@color/putih">
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tvHari"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/textviewcircle"
+                android:padding="5dp"
                 android:text="Hari"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvMatakuliah"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Matakuliah"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvDosen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dosen"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvRuangan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ruangan"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvWaktu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Waktu"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tvWaktuSelesai"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Waktu_selesai"
-                android:textSize="18sp" />
-
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-    </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:padding="10dp"
+            android:background="@color/putih">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Matakuliah"
+                    android:textSize="13dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvMatakuliah"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mahasiswa"
+                    android:textColor="@color/hitam"
+                    android:textSize="15dp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ruangan"
+                    android:textSize="13dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"/>
+
+                <TextView
+                    android:id="@+id/tvRuangan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="G8"
+                    android:textColor="@color/hitam"
+                    android:textSize="15dp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dosen"
+                    android:textStyle="bold"
+                    android:textSize="13dp"/>
+
+                <TextView
+                    android:id="@+id/tvDosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="tggl"
+                    android:textColor="@color/hitam"
+                    android:textSize="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Waktu"
+                    android:textSize="13dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"/>
+
+                <TextView
+                    android:id="@+id/tvWaktu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="waktu"
+                    android:textColor="@color/hitam"
+                    android:textSize="15dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvWaktuSelesai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Waktu selesai"
+                    android:textColor="@color/hitam"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

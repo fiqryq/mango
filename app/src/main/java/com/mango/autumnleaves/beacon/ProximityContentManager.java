@@ -29,9 +29,7 @@ public class ProximityContentManager {
     private EstimoteCloudCredentials cloudCredentials;
     private ProximityObserver.Handler proximityObserverHandler;
 
-
-    public ProximityContentManager(Context context, ProximityContentAdapter proximityContentAdapter,
-                                   EstimoteCloudCredentials cloudCredentials) {
+    public ProximityContentManager(Context context, ProximityContentAdapter proximityContentAdapter, EstimoteCloudCredentials cloudCredentials) {
         this.context = context;
         this.proximityContentAdapter = proximityContentAdapter;
         this.cloudCredentials = cloudCredentials;
@@ -75,8 +73,8 @@ public class ProximityContentManager {
 
         proximityObserverHandler = proximityObserver.startObserving(zone);
     }
+
     public void stop() {
         proximityObserverHandler.stop();
     }
-
 }

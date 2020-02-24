@@ -92,7 +92,6 @@ public class ProximityContentAdapter extends BaseAdapter {
         kelas.setText(content.getKelas());
         matakuliah.setText(content.getMatakuliah());
 
-//        alert();
 
         // Get Waktu Dari Method Untuk Di tampilkan DI card
         // Waktu Terpisah dari model
@@ -155,9 +154,6 @@ public class ProximityContentAdapter extends BaseAdapter {
     }
 
     public void alert(){
-        Alerter.create(activityAlert)
-                .setTitle("Alert Title")
-                .setText("Alert text...")
-                .show();
+
     }
 }
