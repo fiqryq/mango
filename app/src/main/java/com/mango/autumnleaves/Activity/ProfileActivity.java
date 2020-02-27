@@ -59,10 +59,9 @@ public class ProfileActivity extends AppCompatActivity {
         progressDialog = findViewById(R.id.progressBarProfile);
 
 
-
-        mBack = findViewById(R.id.imgBack);
+//        mBack = findViewById(R.id.imgBack);
         mProfile = findViewById(R.id.profileImg);
-        btLogout = findViewById(R.id.button_logout);
+//        btLogout = findViewById(R.id.button_logout);
 
         session = new Session(getApplicationContext());
         if (!session.loggedIn()) {
@@ -75,20 +74,14 @@ public class ProfileActivity extends AppCompatActivity {
         getprofile();
 
         //Button Logout
-        btLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
+//        btLogout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                logout();
+//            }
+//        });
+
         //Image Back
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent back = new Intent(getApplicationContext(),DashboardActivity.class);
-                startActivity(back);
-            }
-        });
     }
 
     @Override
@@ -102,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout :
-
+                logout();
                 break;
         }
 

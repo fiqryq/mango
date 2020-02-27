@@ -128,7 +128,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginBottom="8dp"
-                    android:src="@drawable/presensi" />
+                    android:src="@drawable/jadwal" />
 
                 <TextView
                     android:layout_width="wrap_content"

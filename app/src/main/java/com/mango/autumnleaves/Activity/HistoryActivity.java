@@ -34,6 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     private ArrayList<History> arrayList;
     RecyclerView recyclerView;
+    private TextView emptyView;
     private String getid;
     private ProgressBar progressBar;
 
@@ -49,10 +50,10 @@ public class HistoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<>();
 
-
         getid = Util.getData("account", "id", getApplicationContext());
-        progressBar.setVisibility(View.VISIBLE);
         getHistory();
+
+        progressBar.setVisibility(View.VISIBLE);
 
     }
 
