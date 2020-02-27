@@ -12,7 +12,8 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.mango.autumnleaves"
-        minSdkVersion 18
+        minSdkVersion 20
+        multiDexEnabled true
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"

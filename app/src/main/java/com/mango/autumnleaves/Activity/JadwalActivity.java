@@ -25,12 +25,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class JadwalActivity extends AppCompatActivity {
 
     private ArrayList<Jadwal> arrayList;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private String hari, timeNow;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,28 @@ public class JadwalActivity extends AppCompatActivity {
         JadwalAdapter jadwalAdapter= new JadwalAdapter(this,arrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(jadwalAdapter);
+    }
+
+    private void getHari() {
+        Date dateNow = Calendar.getInstance().getTime();
+        timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
+        hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
+
+        if (hari.equalsIgnoreCase("sunday")) {
+            hari = "minggu";
+        } else if (hari.equalsIgnoreCase("monday")) {
+            hari = "senin";
+        } else if (hari.equalsIgnoreCase("tuesday")) {
+            hari = "selasa";
+        } else if (hari.equalsIgnoreCase("wednesday")) {
+            hari = "rabu";
+        } else if (hari.equalsIgnoreCase("thursday")) {
+            hari = "kamis";
+        } else if (hari.equalsIgnoreCase("friday")) {
+            hari = "jumat";
+        } else if (hari.equalsIgnoreCase("saturday")) {
+            hari = "sabtu";
+        }
     }
 }
 

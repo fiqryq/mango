@@ -1,59 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="2"
-        android:elevation="5dp"
-        android:orientation="vertical">
-
-        <LinearLayout
+    <TableRow
+        android:background="#DAE8FC"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/tvHistoryMatakuliah"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Matakuliah" />
 
-            <TextView
-                android:id="@+id/tvHistoryMatakuliah"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:padding="4dp"
-                android:text="Matakuliah" />
+        <TextView
+            android:id="@+id/tvHistoryRuangan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ruangan" />
 
+        <TextView
+            android:id="@+id/tvHistoryTanggal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tanggal" />
 
-            <TextView
-                android:id="@+id/tvHistoryRuangan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:padding="4dp"
-                android:text="Ruangan" />
+        <TextView
+            android:id="@+id/tvHistoryWaktu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Waktu" />
+    </TableRow>
 
-            <TextView
-                android:id="@+id/tvHistoryTanggal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:padding="4dp"
-                android:text="Tanggal" />
-
-            <TextView
-                android:id="@+id/tvHistoryWaktu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:padding="4dp"
-                android:text="Waktu" />
-
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</LinearLayout>
+</TableLayout>

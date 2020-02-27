@@ -88,33 +88,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="3">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical">-->
 
-                <ImageView
-                    android:id="@+id/presensi"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/calendar" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/presensi"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:layout_width="55dp"-->
+<!--                    android:layout_height="55dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:src="@drawable/calendar" />-->
 
-                <TextView
-                    android:id="@+id/review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/history"
-                    android:text="Calendar"
-                    android:textColor="#172646"
-                    android:textSize="16sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/review"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/history"-->
+<!--                    android:text="Calendar"-->
+<!--                    android:textColor="#172646"-->
+<!--                    android:textSize="16sp" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="0dp"

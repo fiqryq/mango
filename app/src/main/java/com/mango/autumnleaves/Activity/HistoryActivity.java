@@ -86,8 +86,7 @@ public class HistoryActivity extends AppCompatActivity {
                                 e.printStackTrace();
                         }
 
-
-                        Log.d("jsonhistory", response.toString());
+//                        Log.d("jsonhistory", response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override

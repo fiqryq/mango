@@ -63,7 +63,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_dashboard);
         progressBar = findViewById(R.id.progressBarImg);
-        imvPresensi = findViewById(R.id.presensi);
+//        imvPresensi = findViewById(R.id.presensi);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
         imvProfile = findViewById(R.id.profile);
@@ -72,7 +72,7 @@ public class DashboardActivity extends AppCompatActivity {
         dashImg = findViewById(R.id.dashIgm);
         GridView gridView = findViewById(R.id.gridView);
 
-        intentPresensi();
+//        intentPresensi();
         intentJadwal();
         intentHistory();
         intentProfile();
@@ -92,16 +92,16 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    public void intentPresensi(){
-        //Intent Menu Presensi
-        imvPresensi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent presensi = new Intent(DashboardActivity.this, CalendarActivity.class);
-                startActivity(presensi);
-            }
-        });
-    }
+//    public void intentPresensi(){
+//        //Intent Menu Presensi
+//        imvPresensi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent presensi = new Intent(DashboardActivity.this, CalendarActivity.class);
+//                startActivity(presensi);
+//            }
+//        });
+//    }
     public void intentJadwal(){
         //intent menu jadwal
         imvJadwal.setOnClickListener(new View.OnClickListener() {
@@ -266,27 +266,27 @@ public class DashboardActivity extends AppCompatActivity {
         String sekarang = hari + ", " + tanggal + " " + bulan + " " + tahun;
         tvHariIni.setText(String.valueOf(sekarang));
     }
+
     private void getHari() {
         Date dateNow = Calendar.getInstance().getTime();
         timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
         hari = (String) DateFormat.format("EEEE", dateNow);
         if (hari.equalsIgnoreCase("sunday")) {
-            hari = "Minggu";
+            hari = "minggu";
         } else if (hari.equalsIgnoreCase("monday")) {
-            hari = "Senin";
+            hari = "senin";
         } else if (hari.equalsIgnoreCase("tuesday")) {
-            hari = "Selasa";
+            hari = "selasa";
         } else if (hari.equalsIgnoreCase("wednesday")) {
-            hari = "Rabu";
+            hari = "rabu";
         } else if (hari.equalsIgnoreCase("thursday")) {
-            hari = "Kamis";
+            hari = "kamis";
         } else if (hari.equalsIgnoreCase("friday")) {
-            hari = "Jumat";
+            hari = "jumat";
         } else if (hari.equalsIgnoreCase("saturday")) {
-            hari = "Sabtu";
+            hari = "sabtu";
         }
     }
-
 
 }
 
