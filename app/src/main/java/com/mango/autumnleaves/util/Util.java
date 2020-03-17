@@ -17,7 +17,6 @@ public class Util {
     }
 
     public static String getData (String DBNAME, String Tablekey, Context context){
-
         SharedPreferences settings;
         String text;
         settings = context.getSharedPreferences(DBNAME, Context.MODE_PRIVATE);
@@ -65,7 +64,6 @@ public class Util {
 
     public static void toastShow(Activity activity, String message) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
-
     }
 
     public static void toastShow(Context context, String message) {

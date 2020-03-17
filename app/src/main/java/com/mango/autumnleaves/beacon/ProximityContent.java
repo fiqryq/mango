@@ -1,23 +1,20 @@
 package com.mango.autumnleaves.beacon;
 
 public class ProximityContent {
+    private String kelas;
+    private String idbeacon;
 
     private int id;
     private String hari;
     private String matakuliah;
     private String dosen;
-    private String ruangan;
-    private String waktu;
-    private String waktu_selesai;
 
-    public ProximityContent(String hari, String matakuliah) {
-        this.id = id;
-        this.hari = hari;
-        this.matakuliah = matakuliah;
-        this.dosen = dosen;
-        this.ruangan = ruangan;
-        this.waktu = waktu;
-        this.waktu_selesai = waktu_selesai;
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
+
+    public void setIdbeacon(String idbeacon) {
+        this.idbeacon = idbeacon;
     }
 
     public int getId() {
@@ -74,5 +71,36 @@ public class ProximityContent {
 
     public void setWaktu_selesai(String waktu_selesai) {
         this.waktu_selesai = waktu_selesai;
+    }
+
+    private String ruangan;
+
+    public ProximityContent(String kelas, String idbeacon, int id, String hari, String matakuliah, String dosen, String ruangan, String waktu, String waktu_selesai) {
+        this.kelas = kelas;
+        this.idbeacon = idbeacon;
+        this.id = id;
+        this.hari = hari;
+        this.matakuliah = matakuliah;
+        this.dosen = dosen;
+        this.ruangan = ruangan;
+        this.waktu = waktu;
+        this.waktu_selesai = waktu_selesai;
+    }
+
+    private String waktu;
+    private String waktu_selesai;
+
+
+    public ProximityContent(String kelas, String idbeacon) {
+        this.kelas = kelas;
+        this.idbeacon = idbeacon;
+    }
+
+    public String getKelas() {
+        return kelas;
+    }
+
+    public String getIdbeacon() {
+        return idbeacon;
     }
 }

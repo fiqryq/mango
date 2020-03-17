@@ -1,5 +1,6 @@
 package com.mango.autumnleaves.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,6 +21,16 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.beacon.ProximityContentAdapter;
 import com.mango.autumnleaves.beacon.ProximityContentManager;
@@ -49,6 +60,10 @@ public class DashboardActivity extends AppCompatActivity {
     private ImageView dashImg;
     private ProgressBar progressBar;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseFirestore firebaseFirestore;
+
     // nitip
     private TextView tvHariIni, tvMatkul, tvDosen, tvJam, tvRuangan;
     private String hari, timeNow;
@@ -56,30 +71,29 @@ public class DashboardActivity extends AppCompatActivity {
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_dashboard);
         progressBar = findViewById(R.id.progressBarImg);
-//        imvPresensi = findViewById(R.id.presensi);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
         imvProfile = findViewById(R.id.profile);
         dshUsername = findViewById(R.id.dashUsername);
         dshNim = findViewById(R.id.dashNim);
         dashImg = findViewById(R.id.dashIgm);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
         GridView gridView = findViewById(R.id.gridView);
 
 //        intentPresensi();
         intentJadwal();
         intentHistory();
         intentProfile();
-
-
-        Intent data = getIntent();
-        getmatakuliah = data.getStringExtra("data");
 
         getid = Util.getData("account", "id", getApplicationContext());
         getprofile();
@@ -92,17 +106,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-//    public void intentPresensi(){
-//        //Intent Menu Presensi
-//        imvPresensi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent presensi = new Intent(DashboardActivity.this, CalendarActivity.class);
-//                startActivity(presensi);
-//            }
-//        });
-//    }
-    public void intentJadwal(){
+    private void intentJadwal(){
         //intent menu jadwal
         imvJadwal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +116,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
-    public void intentHistory(){
+    private void intentHistory(){
         //intent Menu History
         imvHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +127,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
     }
-    public void intentProfile(){
+    private void intentProfile(){
         //intent Menu profile
         imvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,56 +139,84 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void getprofile(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.mahasiswa_profil, null
-                , new Response.Listener<JSONObject>() {
+        String idUser;
+        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onResponse(JSONObject response) {
-                progressBar.setVisibility(View.GONE);
-                try {
-                    JSONArray jsonArray = response.getJSONArray("mahasiswa");
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    progressBar.setVisibility(View.GONE);
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        User user = new User();
+                        user.setNama(document.getString("nama"));
+                        user.setNim_mhs(document.getString("nim_mhs"));
+                        user.setAlamat(document.getString("alamat"));
+                        user.setGambar(document.getString("gambar"));
 
-                    for (int i = 0; i <jsonArray.length() ; i++) {
-                        // Object Mahasiswa
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        User data = new User();
-                        data.setId_mahasiswa(jsonObject.getInt("id_mahasiswa"));
-                        data.setNim_mhs(jsonObject.getString("nim_mhs"));
-                        data.setNama(jsonObject.getString("nama"));
-                        data.setUsername(jsonObject.getString("username"));
-                        data.setPassword(jsonObject.getString("password"));
-                        data.setTelp(jsonObject.getString("no_tlpn"));
-                        data.setKelamin(jsonObject.getString("jenis_kelamin"));
-                        data.setTtl(jsonObject.getString("tempat_tgl_lahir"));
-                        data.setAlamat(jsonObject.getString("alamat"));
-                        data.setKode_kelas(jsonObject.getString("kode_kelas"));
-                        data.setJurusan(jsonObject.getString("jurusan"));
-                        data.setGambar(jsonObject.getString("gambar"));
-
-                        String id = String.valueOf(data.getId_mahasiswa());
-                        if (getid.equals(id)){
-                            dshUsername.setText(data.getNama());
-                            dshNim.setText(data.getNim_mhs());
-                            Picasso.get().load(data.getGambar()).into(dashImg);
-                        }
-
+                        dshUsername.setText(user.getNama());
+                        dshNim.setText(user.getNim_mhs());
+                        Picasso.get().load(user.getGambar()).into(dashImg);
+                    } else {
+                        Log.d("gagal", "Documment tidak ada");
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),"Error" + e.toString(),Toast.LENGTH_LONG).show();
+                } else {
+                    Log.d("TAG", "gagal", task.getException());
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
         });
-        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
-    public void getEstimote(){
-
+//    private void getprofile(){
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.mahasiswa_profil, null
+//                , new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                progressBar.setVisibility(View.GONE);
+//                try {
+//                    JSONArray jsonArray = response.getJSONArray("mahasiswa");
+//
+//                    for (int i = 0; i <jsonArray.length() ; i++) {
+//                        // Object Mahasiswa
+//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                        User data = new User();
+//                        data.setId_mahasiswa(jsonObject.getInt("id_mahasiswa"));
+//                        data.setNim_mhs(jsonObject.getString("nim_mhs"));
+//                        data.setNama(jsonObject.getString("nama"));
+//                        data.setUsername(jsonObject.getString("username"));
+//                        data.setPassword(jsonObject.getString("password"));
+//                        data.setTelp(jsonObject.getString("no_tlpn"));
+//                        data.setKelamin(jsonObject.getString("jenis_kelamin"));
+//                        data.setTtl(jsonObject.getString("tempat_tgl_lahir"));
+//                        data.setAlamat(jsonObject.getString("alamat"));
+//                        data.setKode_kelas(jsonObject.getString("kode_kelas"));
+//                        data.setJurusan(jsonObject.getString("jurusan"));
+//                        data.setGambar(jsonObject.getString("gambar"));
+//
+//                        String id = String.valueOf(data.getId_mahasiswa());
+//                        if (getid.equals(id)){
+//                            dshUsername.setText(data.getNama());
+//                            dshNim.setText(data.getNim_mhs());
+//                            Picasso.get().load(data.getGambar()).into(dashImg);
+//                        }
+//
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    Toast.makeText(getApplicationContext(),"Error" + e.toString(),Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
+//    }
+    private void getEstimote(){
         RequirementsWizardFactory
                 .createEstimoteRequirementsWizard()
                 .fulfillRequirements(this,
@@ -213,9 +245,10 @@ public class DashboardActivity extends AppCompatActivity {
                             }
                         });
     }
-
     private void startProximityContentManager() {
-        EstimoteCloudCredentials cloudCredentials = new EstimoteCloudCredentials("mango-master-2zw", "2501de53cda0da86930e7f9650032f0d");
+        EstimoteCloudCredentials
+                 cloudCredentials = new EstimoteCloudCredentials("mango-master-2zw",
+                "2501de53cda0da86930e7f9650032f0d");
         proximityContentManager = new ProximityContentManager(this, proximityContentAdapter, cloudCredentials);
         proximityContentManager.start();
     }
