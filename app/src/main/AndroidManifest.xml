@@ -68,7 +68,7 @@
             android:theme="@style/AppTheme3" />
 
         <service
-            android:name=".java.MyFirebaseMessagingService"
+            android:name=".util.MessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

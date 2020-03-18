@@ -114,6 +114,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
+                    progressDialog.setVisibility(View.GONE);
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         User user = new User();
@@ -121,11 +122,19 @@ public class ProfileActivity extends AppCompatActivity {
                         user.setNim_mhs(document.getString("nim_mhs"));
                         user.setAlamat(document.getString("alamat"));
                         user.setTelp(document.getString("telp"));
+                        user.setTtl(document.getString("ttl"));
                         user.setKelamin(document.getString("jenis_kelamin"));
                         user.setKode_kelas(document.getString("kode_kelas"));
                         user.setGambar(document.getString("gambar"));
+                        user.setJurusan(document.getString("jurusan"));
 
                         tvUsername.setText(user.getNama());
+                        tvNamaLengkap.setText(user.getNama());
+                        tvKontak.setText(user.getTelp());
+                        tvTTL.setText(user.getTtl());
+                        tvAlamat.setText(user.getAlamat());
+                        tvKelas.setText(user.getKode_kelas());
+                        tvJurusan.setText(user.getJurusan());
                         tvNim.setText(user.getNim_mhs());
                         Picasso.get().load(user.getGambar()).into(mProfile);
                     } else {

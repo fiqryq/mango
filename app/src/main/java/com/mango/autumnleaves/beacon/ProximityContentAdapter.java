@@ -31,6 +31,7 @@ import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.EstimoteUtils;
+import com.mango.autumnleaves.util.NotificationHelper;
 import com.mango.autumnleaves.util.Util;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.tapadoo.alerter.Alerter;
@@ -99,58 +100,6 @@ public class ProximityContentAdapter extends BaseAdapter {
         TextView idbeacon = convertView.findViewById(R.id.beacon_matakuliah);
         TextView waktu = convertView.findViewById(R.id.tVwaktu);
 
-//        Date cDate = new Date();
-//        String fDate = new SimpleDateFormat("HH:mm").format(cDate);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.jadwal, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        getHari();
-                        try {
-//                            response.put("hari", hari);
-//                            response.put("jam_selesai", fDate);
-                            JSONArray jsonArray = response.getJSONArray("jadwal_kuliah");
-                            for (int i = 0; i <jsonArray.length() ; i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                Jadwal data = new Jadwal();
-                                data.setId(jsonObject.getInt("id"));
-                                data.setHari(jsonObject.getString("hari"));
-                                data.setMatakuliah(jsonObject.getString("matakuliah"));
-                                data.setDosen(jsonObject.getString("dosen"));
-                                data.setRuangan(jsonObject.getString("ruangan"));
-                                data.setWaktu_mulai(jsonObject.getString("waktu"));
-                                data.setWaktu_selesai(jsonObject.getString("waktu_selesai"));
-
-                                int id = jsonObject.getInt("id");
-                                String dtHari = jsonObject.getString("hari");
-                                String dtMatkul = jsonObject.getString("matakuliah");
-                                String dosen = jsonObject.getString("dosen");
-                                String ruangan = jsonObject.getString("ruangan");
-                                String waktu = jsonObject.getString("waktu");
-                                String waktu_selesai = jsonObject.getString("waktu_selesai");
-
-                                mMatkul = data.getMatakuliah();
-                                mKelas = data.getRuangan();
-
-                                Log.d("hari",dtMatkul);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("json",response.toString());
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
-
-
         ProximityContent content = nearbyContent.get(position);
         kelas.setText(content.getKelas());
         idbeacon.setText(content.getIdbeacon());
@@ -162,13 +111,12 @@ public class ProximityContentAdapter extends BaseAdapter {
 
         // Test Button
         Button presensiButton = convertView.findViewById(R.id.button_presensi);
+
         presensiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ProximityContent data = nearbyContent.get(position);
                 getid = Util.getData("account", "id", context);
-
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

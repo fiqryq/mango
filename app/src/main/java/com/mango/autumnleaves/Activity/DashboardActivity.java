@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -31,12 +32,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.beacon.ProximityContentAdapter;
 import com.mango.autumnleaves.beacon.ProximityContentManager;
 import com.mango.autumnleaves.model.User;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
+import com.mango.autumnleaves.util.NotificationHelper;
 import com.mango.autumnleaves.util.Util;
 import com.squareup.picasso.Picasso;
 
@@ -54,9 +57,9 @@ import kotlin.jvm.functions.Function1;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private ImageView imvPresensi ,imvJadwal,imvHistory, imvProfile;
-    private TextView dshUsername,dshNim;
-    private String getid,getmatakuliah;
+    private ImageView imvPresensi, imvJadwal, imvHistory, imvProfile;
+    private TextView dshUsername, dshNim;
+    private String getid, getmatakuliah;
     private ImageView dashImg;
     private ProgressBar progressBar;
 
@@ -74,8 +77,9 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_dashboard);
+
+        final NotificationHelper notificationHelper = new NotificationHelper(this);
         progressBar = findViewById(R.id.progressBarImg);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
@@ -90,7 +94,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         GridView gridView = findViewById(R.id.gridView);
 
-//        intentPresensi();
+        //intentPresensi();
         intentJadwal();
         intentHistory();
         intentProfile();
@@ -106,39 +110,39 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    private void intentJadwal(){
+    private void intentJadwal() {
         //intent menu jadwal
         imvJadwal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent jadwal = new Intent(DashboardActivity.this,JadwalActivity.class);
+                Intent jadwal = new Intent(DashboardActivity.this, JadwalActivity.class);
                 startActivity(jadwal);
             }
         });
     }
-    private void intentHistory(){
+    private void intentHistory() {
         //intent Menu History
         imvHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent history = new Intent(DashboardActivity.this,HistoryActivity.class);
+                Intent history = new Intent(DashboardActivity.this, HistoryActivity.class);
                 startActivity(history);
             }
         });
 
     }
-    private void intentProfile(){
+    private void intentProfile() {
         //intent Menu profile
         imvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent profile = new Intent(DashboardActivity.this,ProfileActivity.class);
+                Intent profile = new Intent(DashboardActivity.this, ProfileActivity.class);
                 startActivity(profile);
             }
         });
     }
 
-    private void getprofile(){
+    private void getprofile() {
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
@@ -168,55 +172,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-//    private void getprofile(){
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.mahasiswa_profil, null
-//                , new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                progressBar.setVisibility(View.GONE);
-//                try {
-//                    JSONArray jsonArray = response.getJSONArray("mahasiswa");
-//
-//                    for (int i = 0; i <jsonArray.length() ; i++) {
-//                        // Object Mahasiswa
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        User data = new User();
-//                        data.setId_mahasiswa(jsonObject.getInt("id_mahasiswa"));
-//                        data.setNim_mhs(jsonObject.getString("nim_mhs"));
-//                        data.setNama(jsonObject.getString("nama"));
-//                        data.setUsername(jsonObject.getString("username"));
-//                        data.setPassword(jsonObject.getString("password"));
-//                        data.setTelp(jsonObject.getString("no_tlpn"));
-//                        data.setKelamin(jsonObject.getString("jenis_kelamin"));
-//                        data.setTtl(jsonObject.getString("tempat_tgl_lahir"));
-//                        data.setAlamat(jsonObject.getString("alamat"));
-//                        data.setKode_kelas(jsonObject.getString("kode_kelas"));
-//                        data.setJurusan(jsonObject.getString("jurusan"));
-//                        data.setGambar(jsonObject.getString("gambar"));
-//
-//                        String id = String.valueOf(data.getId_mahasiswa());
-//                        if (getid.equals(id)){
-//                            dshUsername.setText(data.getNama());
-//                            dshNim.setText(data.getNim_mhs());
-//                            Picasso.get().load(data.getGambar()).into(dashImg);
-//                        }
-//
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(getApplicationContext(),"Error" + e.toString(),Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
-//    }
-    private void getEstimote(){
+    private void getEstimote() {
         RequirementsWizardFactory
                 .createEstimoteRequirementsWizard()
                 .fulfillRequirements(this,
@@ -245,9 +201,10 @@ public class DashboardActivity extends AppCompatActivity {
                             }
                         });
     }
+
     private void startProximityContentManager() {
         EstimoteCloudCredentials
-                 cloudCredentials = new EstimoteCloudCredentials("mango-master-2zw",
+                cloudCredentials = new EstimoteCloudCredentials("mango-master-2zw",
                 "2501de53cda0da86930e7f9650032f0d");
         proximityContentManager = new ProximityContentManager(this, proximityContentAdapter, cloudCredentials);
         proximityContentManager.start();
