@@ -77,9 +77,10 @@ public class ProximityContentManager {
                             if (kelas == null) {
                                 kelas = "unknown";
                             }
-                            String matakuliah = EstimoteUtils.getShortIdentifier(proximityContext.getDeviceId());
+                            Log.d("kelas",kelas);
+                            String idbeacon = EstimoteUtils.getShortIdentifier(proximityContext.getDeviceId());
 
-                            nearbyContent.add(new ProximityContent(kelas, matakuliah));
+                            nearbyContent.add(new ProximityContent(kelas, idbeacon));
                         }
                         proximityContentAdapter.setNearbyContent(nearbyContent);
                         proximityContentAdapter.notifyDataSetChanged();
@@ -109,11 +110,8 @@ public class ProximityContentManager {
                                 data.setMatakuliah(jsonObject.getString("matakuliah"));
                                 data.setDosen(jsonObject.getString("dosen"));
                                 data.setRuangan(jsonObject.getString("ruangan"));
-                                data.setWaktu(jsonObject.getString("waktu"));
+                                data.setWaktu_mulai(jsonObject.getString("waktu"));
                                 data.setWaktu_selesai(jsonObject.getString("waktu_selesai"));
-
-                                getHari();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -132,27 +130,6 @@ public class ProximityContentManager {
 
         // Akhir Request
 
-    }
-    private void getHari() {
-        Date dateNow = Calendar.getInstance().getTime();
-        timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
-        hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
-
-        if (hari.equalsIgnoreCase("sunday")) {
-            hari = "minggu";
-        } else if (hari.equalsIgnoreCase("monday")) {
-            hari = "senin";
-        } else if (hari.equalsIgnoreCase("tuesday")) {
-            hari = "selasa";
-        } else if (hari.equalsIgnoreCase("wednesday")) {
-            hari = "rabu";
-        } else if (hari.equalsIgnoreCase("thursday")) {
-            hari = "kamis";
-        } else if (hari.equalsIgnoreCase("friday")) {
-            hari = "jumat";
-        } else if (hari.equalsIgnoreCase("saturday")) {
-            hari = "sabtu";
-        }
     }
 
 }

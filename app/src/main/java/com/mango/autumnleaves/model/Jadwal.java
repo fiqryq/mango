@@ -7,9 +7,6 @@ public class Jadwal {
    private String matakuliah;
    private String dosen;
    private String ruangan;
-   private String waktu;
-   private String waktu_selesai;
-
 
     public int getId() {
         return id;
@@ -51,12 +48,12 @@ public class Jadwal {
         this.ruangan = ruangan;
     }
 
-    public String getWaktu() {
-        return waktu;
+    public String getWaktu_mulai() {
+        return waktu_mulai;
     }
 
-    public void setWaktu(String waktu) {
-        this.waktu = waktu;
+    public void setWaktu_mulai(String waktu_mulai) {
+        this.waktu_mulai = waktu_mulai;
     }
 
     public String getWaktu_selesai() {
@@ -66,5 +63,8 @@ public class Jadwal {
     public void setWaktu_selesai(String waktu_selesai) {
         this.waktu_selesai = waktu_selesai;
     }
+
+    private String waktu_mulai;
+   private String waktu_selesai;
 
 }

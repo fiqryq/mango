@@ -15,6 +15,15 @@ public class Session {
         editor = preferences.edit();
     }
 
+    private void loginmhs(boolean loginmhs){
+        editor.putBoolean("loginmhs",loginmhs);
+        editor.commit();
+    }
+
+    public boolean loginmhs(){
+        return preferences.getBoolean("loginmhs", false);
+    }
+
     public void setLoggedin(boolean loggedin){
         editor.putBoolean("loggedInmode", loggedin);
         editor.commit();

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "13089511183",
+    "firebase_url": "https://mango-master.firebaseio.com",
+    "project_id": "mango-master",
+    "storage_bucket": "mango-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13089511183:android:896c5a2a8a6d5df15a907a",
+        "android_client_info": {
+          "package_name": "com.mango.autumnleaves"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13089511183-rerc3m87b9i871fluencepueicubnd2k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mango.autumnleaves",
+            "certificate_hash": "4ee547df616aec8ffae8d3740623f4ed37c180af"
+          }
+        },
+        {
+          "client_id": "13089511183-lnlva951sk6rm6622pft0r8spctfj96k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa_6zecqOSsEQNXebll10v3k4U1-ydD9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13089511183-lnlva951sk6rm6622pft0r8spctfj96k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

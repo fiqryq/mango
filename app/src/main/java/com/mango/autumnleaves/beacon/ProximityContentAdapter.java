@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
@@ -19,12 +20,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.remote.Koneksi;
 import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.EstimoteUtils;
+import com.mango.autumnleaves.util.NotificationHelper;
 import com.mango.autumnleaves.util.Util;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.tapadoo.alerter.Alerter;
@@ -45,11 +52,11 @@ import java.util.Map;
 
 public class ProximityContentAdapter extends BaseAdapter {
 
-    private AppCompatActivity activityAlert;
     private Context context;
     private String getwaktu , gettanggal ,getjam;
     private String mKelas , mMatkul;
-    String getid;
+    private DatabaseReference databaseReference;
+    private String getid;
     private String hari, timeNow;
 
     public ProximityContentAdapter(Context context) {
@@ -61,11 +68,6 @@ public class ProximityContentAdapter extends BaseAdapter {
 
     public void setNearbyContent(List<ProximityContent> nearbyContent) {
         this.nearbyContent = nearbyContent;
-    }
-
-    // Jangan lupa manggil ini
-    public void setActivityAlert(AppCompatActivity activityAlert) {
-        this.activityAlert = activityAlert;
     }
 
     @Override
@@ -92,86 +94,15 @@ public class ProximityContentAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.presensi_content_beacon, parent, false);
 
         }
+        // Inisialisasi Di sini
 
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
-        TextView matakuliah = convertView.findViewById(R.id.beacon_matakuliah);
+        TextView idbeacon = convertView.findViewById(R.id.beacon_matakuliah);
         TextView waktu = convertView.findViewById(R.id.tVwaktu);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.jadwal_jumat, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("jumat");
-                            for (int i = 0; i <jsonArray.length() ; i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                Jadwal data = new Jadwal();
-                                data.setId(jsonObject.getInt("id"));
-                                data.setHari(jsonObject.getString("hari"));
-                                data.setMatakuliah(jsonObject.getString("matakuliah"));
-                                data.setDosen(jsonObject.getString("dosen"));
-                                data.setRuangan(jsonObject.getString("ruangan"));
-                                data.setWaktu(jsonObject.getString("waktu"));
-                                data.setWaktu_selesai(jsonObject.getString("waktu_selesai"));
-
-                                int id = jsonObject.getInt("id");
-                                String dtHari = jsonObject.getString("hari");
-                                String dtMatkul = jsonObject.getString("matakuliah");
-                                String dosen = jsonObject.getString("dosen");
-                                String ruangan = jsonObject.getString("ruangan");
-                                String waktu = jsonObject.getString("waktu");
-                                String waktu_selesai = jsonObject.getString("waktu_selesai");
-
-                                // Waktu
-                                Date dateNow = Calendar.getInstance().getTime();
-                                timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
-                                hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
-
-                                if (hari.equalsIgnoreCase("sunday")) {
-                                    hari = "minggu";
-                                } else if (hari.equalsIgnoreCase("monday")) {
-                                    hari = "senin";
-                                } else if (hari.equalsIgnoreCase("tuesday")) {
-                                    hari = "selasa";
-                                } else if (hari.equalsIgnoreCase("wednesday")) {
-                                    hari = "rabu";
-                                } else if (hari.equalsIgnoreCase("thursday")) {
-                                    hari = "kamis";
-                                } else if (hari.equalsIgnoreCase("friday")) {
-                                    hari = "jumat";
-                                } else if (hari.equalsIgnoreCase("saturday")) {
-                                    hari = "sabtu";
-                                }
-
-                                mMatkul = data.getMatakuliah();
-                                mKelas = data.getRuangan();
-
-                                kelas.setText(ruangan);
-                                matakuliah.setText(dtMatkul);
-
-//                                Log.d("hari",mData);
-                                Log.d("hari2",hari);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("json",response.toString());
-
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
-
         ProximityContent content = nearbyContent.get(position);
-
-//        kelas.setText(content.getRuangan());
-//        matakuliah.setText(content.getMatakuliah());
+        kelas.setText(content.getKelas());
+        idbeacon.setText(content.getIdbeacon());
 
         // Get Waktu Dari Method Untuk Di tampilkan DI card
         // Waktu Terpisah dari model
@@ -180,15 +111,12 @@ public class ProximityContentAdapter extends BaseAdapter {
 
         // Test Button
         Button presensiButton = convertView.findViewById(R.id.button_presensi);
+
         presensiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ProximityContent data = nearbyContent.get(position);
                 getid = Util.getData("account", "id", context);
-                Log.d("getid",getid);
-                Log.d("matakuliah",content.getMatakuliah());
-
-
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -207,8 +135,8 @@ public class ProximityContentAdapter extends BaseAdapter {
                         params.put("id_mahasiswa", getid);
                         params.put("waktu", getwaktu);
                         params.put("tanggal", gettanggal);
-                        params.put("ruangan", mKelas);
-                        params.put("matakuliah", mMatkul);
+                        params.put("ruangan", data.getKelas());
+                        params.put("matakuliah", data.getKelas());
                         return params;
                     }
                 };
