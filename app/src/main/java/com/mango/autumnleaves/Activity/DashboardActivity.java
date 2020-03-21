@@ -1,9 +1,14 @@
 package com.mango.autumnleaves.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.format.DateFormat;
@@ -33,6 +38,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.protobuf.Internal;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.beacon.ProximityContentAdapter;
 import com.mango.autumnleaves.beacon.ProximityContentManager;
@@ -78,7 +84,20 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        final NotificationHelper notificationHelper = new NotificationHelper(this);
+        if (!isConnected()){
+            new AlertDialog.Builder(this)
+                    .setIcon(R.drawable.adt_ic_warning)
+                    .setTitle("Mango")
+                    .setMessage("Tidak Ada Koneksi Internet , Periksa Koneksi Internet Anda.")
+                    .setPositiveButton("keluar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+
         progressBar = findViewById(R.id.progressBarImg);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
@@ -273,6 +292,12 @@ public class DashboardActivity extends AppCompatActivity {
         } else if (hari.equalsIgnoreCase("saturday")) {
             hari = "sabtu";
         }
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return  networkInfo !=null && networkInfo.isConnected();
     }
 
 }
