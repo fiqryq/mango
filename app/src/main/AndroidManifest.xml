@@ -30,7 +30,7 @@
         <activity
             android:name=".Activity.ProfileActivity"
             android:label="Profile"
-            android:theme="@style/AppTheme2">
+            android:theme="@style/ProfileTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
