@@ -96,41 +96,6 @@ public class ProximityContentManager {
         proximityObserverHandler.stop();
     }
 
-    private void jadwal(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.jadwal_jumat, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("jumat");
-                            for (int i = 0; i <jsonArray.length() ; i++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                Jadwal data = new Jadwal();
-                                data.setHari(jsonObject.getString("hari"));
-                                data.setMatakuliah(jsonObject.getString("matakuliah"));
-                                data.setDosen(jsonObject.getString("dosen"));
-                                data.setRuangan(jsonObject.getString("ruangan"));
-                                data.setWaktu_mulai(jsonObject.getString("waktu"));
-                                data.setWaktu_selesai(jsonObject.getString("waktu_selesai"));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("json",response.toString());
-                        Log.d("dataMatkul",dataMatakuliah);
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
-
-        // Akhir Request
-
-    }
 
 }
 

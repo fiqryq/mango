@@ -1,14 +1,17 @@
 package com.mango.autumnleaves.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,9 +22,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
@@ -48,7 +54,7 @@ public class JadwalActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String hari, waktusekarang;
-
+    private TextView tvSekarang,tvDosen,tvMatakuliah,tvWaktuMulai,tvWaktuSelesai,tvRuangan;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
@@ -63,16 +69,27 @@ public class JadwalActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
+        tvDosen = findViewById(R.id.tv_detail_dosen);
+        tvRuangan = findViewById(R.id.tv_detail_ruangan);
+        tvWaktuMulai = findViewById(R.id.tv_waktu_mulai);
+        tvWaktuSelesai = findViewById(R.id.tv_waktu_selesai);
+        tvSekarang = findViewById(R.id.tvSekarang);
+        tvMatakuliah= findViewById(R.id.tv_detail_matkul);
+
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.rvJadwalView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<>();
-        getnotification();
+
+        getjadwalSelanjutnya();
         showJadwal();
+        getNamaHari();
+        getWaktuSekarang();
         progressBar.setVisibility(View.VISIBLE);
     }
 
+    // Show Jadwal
     private void showJadwal(){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -136,7 +153,8 @@ public class JadwalActivity extends AppCompatActivity {
         recyclerView.setAdapter(jadwalAdapter);
     }
 
-    private void getnotification(){
+    // Get Jadwal selanjutnya
+    private void getjadwalSelanjutnya(){
         final NotificationHelper notificationHelper = new NotificationHelper(this);
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -158,14 +176,7 @@ public class JadwalActivity extends AppCompatActivity {
                         String kelasRef = user.getKode_kelas();
 
                         // Querysnapshot untuk mendapatkan data jadwal hari ini
-                        getHari();
-
-                        CollectionReference collectionReference = firebaseFirestore
-                                .collection("prodi")
-                                .document(jurusanRef)
-                                .collection("kelas")
-                                .document(kelasRef)
-                                .collection("jadwal");
+                        getNamaHari();
 
                         firebaseFirestore
                                 .collection("prodi")
@@ -173,20 +184,37 @@ public class JadwalActivity extends AppCompatActivity {
                                 .collection("kelas")
                                 .document(kelasRef)
                                 .collection("jadwal")
-                                .whereEqualTo("hari",hari).whereGreaterThanOrEqualTo("waktu_mulai",waktusekarang)
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        notificationHelper.notify("Manggo","Kamu Berada Di dalam Kelas " + "wadaw");
-                                        Log.d("jadwal", document.getData().toString());
+                                .whereEqualTo("hari",hari).whereGreaterThan("waktu_mulai",waktusekarang)
+                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                        if (e != null) {
+                                            Log.w("TAG", "Listen failed.", e);
+                                            return;
+                                        }
+                                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                                            Jadwal jadwal = new Jadwal();
+                                            jadwal.setHari(documentSnapshot.getString("hari"));
+                                            jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
+                                            jadwal.setDosen(documentSnapshot.getString("dosen"));
+                                            jadwal.setRuangan(documentSnapshot.getString("ruangan"));
+                                            jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
+                                            jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
+
+                                            tvDosen.setText(jadwal.getDosen());
+                                            tvRuangan.setText(jadwal.getRuangan());
+                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+                                            tvMatakuliah.setText(jadwal.getMatakuliah());
+
+                                            notificationHelper.notify(
+                                                    "Matakuliah : " + jadwal.getMatakuliah()
+                                                    + " Ruangan : " + jadwal.getRuangan(),
+                                                    "Jadwal Selanjutnya");
+                                        }
                                     }
-                                } else {
-                                    Log.d("tes", "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
+                                });
+
                     } else {
                         Log.d("gagal", "Documment tidak ada");
                     }
@@ -196,11 +224,49 @@ public class JadwalActivity extends AppCompatActivity {
             }
         });
     }
-    private void getHari() {
+
+    public void getWaktuSekarang(){
+        Date date = Calendar.getInstance().getTime();
+        String tanggal = (String) DateFormat.format("d",   date); // 20
+        String monthNumber  = (String) DateFormat.format("M",   date); // 06
+        String year         = (String) DateFormat.format("yyyy", date); // 2013
+
+        int month = Integer.parseInt(monthNumber);
+        String bulan = null;
+
+        if (month == 1){
+            bulan = "Januari";
+        }else if (month == 2){
+            bulan = "Februari";
+        }else if (month == 3){
+            bulan = "Maret";
+        }else if (month == 4){
+            bulan = "April";
+        }else if (month == 5){
+            bulan = "Mei";
+        }else if (month == 6){
+            bulan = "Juni";
+        }else if (month == 7){
+            bulan = "Juli";
+        }else if (month == 8){
+            bulan = "Agustus";
+        }else if (month == 9){
+            bulan = "September";
+        }else if (month == 10){
+            bulan = "Oktober";
+        }else if (month == 11){
+            bulan = "November";
+        }else if (month == 12){
+            bulan = "Desember";
+        }
+        String formatFix = hari + ", "+tanggal+" "+bulan+" "+year;
+        tvSekarang.setText(String.valueOf(formatFix));
+    }
+
+    private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
         waktusekarang = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
         hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
-
         if (hari.equalsIgnoreCase("sunday")) {
             hari = "minggu";
         } else if (hari.equalsIgnoreCase("monday")) {
