@@ -30,7 +30,7 @@
         <activity
             android:name=".Activity.ProfileActivity"
             android:label="Profile"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
@@ -63,9 +63,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Main -->
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme3" />
 
         <service
             android:name=".util.MessagingService"

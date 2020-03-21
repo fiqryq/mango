@@ -37,7 +37,6 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     private EditText username,password;
     private Button btLogin;
-    private String getusername, getpassword ;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private Session mSession;
@@ -63,88 +62,12 @@ public class LoginActivity extends AppCompatActivity {
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog();
                 login();
             }
         });
-
-//        btLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                progressDialog();
-//                getusername = username.getText().toString();
-//                getpassword = password.getText().toString();
-//
-//                if (getusername.equals("")||getpassword.equals("")){
-//                    Util.toastShow(getApplicationContext(),"Harap Isi Form");
-//                } else {
-//                    login();
-//                }
-//            }
-//        });
     }
 
-//    public void login() {
-//        // Volley Request Menggunakan Methode POST
-//        StringRequest request = new StringRequest(Request.Method.POST, Koneksi.login,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        progressDialog.dismiss();
-//                        Log.e("response", " " + response);
-//                        try {
-//                            JSONObject data = new JSONObject(response);
-//                            if (!data.getBoolean("error")) {
-//                                JSONObject account = data.getJSONObject("user");
-//                                String username = account.getString("username");
-//                                String pass = account.getString("password");
-//                                String id = account.getString("id");
-//
-//                                // Check Log DEBUG
-//                                Log.d("account", "" + username);
-//                                Log.d("account", "" + pass);
-//
-//                                // Save Data Ke tabel akun
-//                                Util.saveData("account", "username", getusername, getApplicationContext());
-//                                Util.saveData("account", "password", getpassword, getApplicationContext());
-//                                Util.saveData("account", "id", id, getApplicationContext());
-//
-//
-//                                mSession.setLoggedin(true);
-//                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-//                                startActivity(intent);
-//                                finish();
-//
-//                                DynamicToast.makeSuccess(getApplicationContext(), "Login berhasil").show();
-//                            } else {
-//                                DynamicToast.makeError(getApplicationContext(), "Login Gagal").show();
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            Log.e("error", "" + e);
-//                            DynamicToast.makeError(getApplicationContext(), "Login Gagal").show();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("error", "" + error);
-//                DynamicToast.makeError(getApplicationContext(), "Login Gagal").show();
-//            }
-//
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("username", getusername);
-//                params.put("password", getpassword);
-//                return params;
-//            }
-//        };
-//
-//        Volley.getInstance().addToRequestQueue(request);
-//    }
-//Firebase
     private void login(){
         String mUsername = username.getText().toString().trim();
         String mPassword = password.getText().toString().trim();

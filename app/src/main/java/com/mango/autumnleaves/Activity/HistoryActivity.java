@@ -97,7 +97,6 @@ public class HistoryActivity extends AppCompatActivity {
         });
         Volley.getInstance().addToRequestQueue(jsonObjectRequest);
     }
-
     private void setuprecyclerview(ArrayList<History> arrayList) {
         HistoryAdapter historyAdapter = new HistoryAdapter(this,arrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

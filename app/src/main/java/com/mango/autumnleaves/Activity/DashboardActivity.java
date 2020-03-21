@@ -59,7 +59,6 @@ public class DashboardActivity extends AppCompatActivity {
 
     private ImageView imvPresensi, imvJadwal, imvHistory, imvProfile;
     private TextView dshUsername, dshNim;
-    private String getid, getmatakuliah;
     private ImageView dashImg;
     private ProgressBar progressBar;
 
@@ -87,26 +86,24 @@ public class DashboardActivity extends AppCompatActivity {
         dshUsername = findViewById(R.id.dashUsername);
         dshNim = findViewById(R.id.dashNim);
         dashImg = findViewById(R.id.dashIgm);
+        GridView gridView = findViewById(R.id.gridView);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-        GridView gridView = findViewById(R.id.gridView);
-
+        progressBar.setVisibility(View.VISIBLE);
         //intentPresensi();
         intentJadwal();
         intentHistory();
         intentProfile();
 
-        getid = Util.getData("account", "id", getApplicationContext());
+        // get menthod
         getprofile();
 
         proximityContentAdapter = new ProximityContentAdapter(this);
-
         gridView.setAdapter(proximityContentAdapter);
         getEstimote();
-        progressBar.setVisibility(View.VISIBLE);
 
     }
 
@@ -172,6 +169,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
+    // Log Beacon
     private void getEstimote() {
         RequirementsWizardFactory
                 .createEstimoteRequirementsWizard()
@@ -201,7 +199,7 @@ public class DashboardActivity extends AppCompatActivity {
                             }
                         });
     }
-
+    // Credentials App Cloud Estimote Beacon
     private void startProximityContentManager() {
         EstimoteCloudCredentials
                 cloudCredentials = new EstimoteCloudCredentials("mango-master-2zw",
@@ -218,7 +216,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     // Untuk Get Tanggal Hari ini
-    private void getBulan() {
+    private void getWaktuSekarang() {
         Date date = Calendar.getInstance().getTime();
         String tanggal = (String) android.text.format.DateFormat.format("d", date);
         String mBulan = (String) android.text.format.DateFormat.format("M", date);
@@ -256,8 +254,7 @@ public class DashboardActivity extends AppCompatActivity {
         String sekarang = hari + ", " + tanggal + " " + bulan + " " + tahun;
         tvHariIni.setText(String.valueOf(sekarang));
     }
-
-    private void getHari() {
+    private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
         timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
         hari = (String) DateFormat.format("EEEE", dateNow);

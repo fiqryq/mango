@@ -65,7 +65,6 @@ public class ProximityContentAdapter extends BaseAdapter {
 
     private List<ProximityContent> nearbyContent = new ArrayList<>();
 
-
     public void setNearbyContent(List<ProximityContent> nearbyContent) {
         this.nearbyContent = nearbyContent;
     }
@@ -160,8 +159,7 @@ public class ProximityContentAdapter extends BaseAdapter {
         getjam = jam.format(calendar.getTime());
 
     }
-
-    private void getHari() {
+    private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
         timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
         hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
