@@ -1,37 +1,18 @@
-package com.mango.autumnleaves.beacon;
+package com.mango.autumnleaves.Beacon;
 
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
 import com.estimote.proximity_sdk.api.ProximityObserver;
 import com.estimote.proximity_sdk.api.ProximityObserverBuilder;
 import com.estimote.proximity_sdk.api.ProximityZone;
 import com.estimote.proximity_sdk.api.ProximityZoneBuilder;
 import com.estimote.proximity_sdk.api.ProximityZoneContext;
-import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.remote.Koneksi;
-import com.mango.autumnleaves.remote.Volley;
 import com.mango.autumnleaves.util.EstimoteUtils;
-import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import kotlin.Unit;
@@ -42,8 +23,7 @@ public class ProximityContentManager {
     private ProximityContentAdapter proximityContentAdapter;
     private EstimoteCloudCredentials cloudCredentials;
     private ProximityObserver.Handler proximityObserverHandler;
-    private String dataMatakuliah;
-    private String hari, timeNow;
+
 
     public ProximityContentManager(Context context, ProximityContentAdapter proximityContentAdapter, EstimoteCloudCredentials cloudCredentials) {
         this.context = context;
@@ -65,7 +45,7 @@ public class ProximityContentManager {
 
         ProximityZone zone = new ProximityZoneBuilder()
                 .forTag("kelas")
-                .inCustomRange(1.0)
+                .inCustomRange(5.0)
                 .onContextChange(new Function1<Set<? extends ProximityZoneContext>, Unit>() {
                     @Override
                     public Unit invoke(Set<? extends ProximityZoneContext> contexts) {

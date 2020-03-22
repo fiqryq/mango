@@ -1,7 +1,6 @@
-package com.mango.autumnleaves.Activity;
+package com.mango.autumnleaves.activity.mahasiswa;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,11 +10,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,23 +19,16 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.adapter.HistoryAdapter;
-import com.mango.autumnleaves.adapter.JadwalAdapter;
+import com.mango.autumnleaves.Adapter.AdapterMahasiswa.HistoryAdapter;
 import com.mango.autumnleaves.model.History;
-import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.model.User;
-import com.mango.autumnleaves.remote.Koneksi;
-import com.mango.autumnleaves.remote.Volley;
+import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.util.Util;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends BaseActivity {
 
     private ArrayList<History> arrayList;
     RecyclerView recyclerView;
@@ -50,9 +37,7 @@ public class HistoryActivity extends AppCompatActivity {
     private String getid;
     private ProgressBar progressBar;
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,13 +113,13 @@ public class HistoryActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    User user = new User();
-                    user.setJurusan(document.getString("jurusan"));
-                    user.setKode_kelas(document.getString("kode_kelas"));
+                    UserMahasiswa userMahasiswa = new UserMahasiswa();
+                    userMahasiswa.setJurusan(document.getString("jurusan"));
+                    userMahasiswa.setKode_kelas(document.getString("kode_kelas"));
 
                     // Doc Ref Dari user
-                    String jurusanRef = user.getJurusan();
-                    String kelasRef = user.getKode_kelas();
+                    String jurusanRef = userMahasiswa.getJurusan();
+                    String kelasRef = userMahasiswa.getKode_kelas();
 
                     // Querysnapshot untuk mendapatkan semua data dari doccument
                     firebaseFirestore

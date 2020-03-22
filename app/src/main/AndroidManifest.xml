@@ -4,13 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".remote.Volley"
+        android:name=".util.Volley.Volley"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
@@ -18,45 +18,47 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SaveUidActivity"></activity>
-        <activity android:name=".Activity.PresensiDetailActivity" />
-        <activity android:name=".Activity.RegisterActivity" /> <!-- History -->
+        <activity android:name=".activity.Main2Activity"></activity>
+        <activity android:name=".activity.dosen.DashboardDosenActivity" />
+        <activity android:name=".SaveUidActivity" />
+        <activity android:name=".activity.mahasiswa.PresensiDetailActivity" />
+        <activity android:name=".activity.mahasiswa.RegisterActivity" /> <!-- History -->
         <activity
-            android:name=".Activity.HistoryActivity"
+            android:name=".activity.mahasiswa.HistoryActivity"
             android:label="History">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardActivity" />
         </activity> <!-- Profile -->
         <activity
-            android:name=".Activity.ProfileActivity"
+            android:name=".activity.mahasiswa.ProfileActivity"
             android:label="Profile"
             android:theme="@style/ProfileTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardActivity" />
         </activity> <!-- Dashboard -->
         <activity
-            android:name=".Activity.DashboardActivity"
-            android:theme="@style/AppTheme2" /> <!-- Calendar -->
+            android:name=".activity.mahasiswa.DashboardActivity"
+            android:theme="@style/AppTheme2" /> <!-- Info -->
         <activity
-            android:name=".Activity.CalendarActivity"
-            android:theme="@style/AppTheme"
-            android:label="Calendar">
+            android:name=".activity.mahasiswa.InfoActivity"
+            android:label="Informasi"
+            android:theme="@style/InfoTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardActivity" />
         </activity> <!-- Jadwal -->
         <activity
-            android:name=".Activity.JadwalActivity"
-            android:theme="@style/AppTheme"
-            android:label="Jadwal">
+            android:name=".activity.mahasiswa.JadwalActivity"
+            android:label="Jadwal"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mango.autumnleaves.Activity.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardActivity" />
         </activity> <!-- Login -->
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".activity.base.LoginActivity"
             android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,7 +66,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Main -->
-
         <service
             android:name=".util.MessagingService"
             android:exported="false">
@@ -72,7 +73,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

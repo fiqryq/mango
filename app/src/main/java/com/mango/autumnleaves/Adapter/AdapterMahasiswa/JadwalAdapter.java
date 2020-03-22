@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.adapter;
+package com.mango.autumnleaves.Adapter.AdapterMahasiswa;
 
 import android.content.Context;
 import android.view.LayoutInflater;

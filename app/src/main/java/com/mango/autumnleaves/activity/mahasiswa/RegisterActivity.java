@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.Activity;
+package com.mango.autumnleaves.activity.mahasiswa;
 
 import androidx.appcompat.app.AppCompatActivity;
 

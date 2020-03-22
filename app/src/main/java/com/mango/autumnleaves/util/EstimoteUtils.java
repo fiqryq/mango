@@ -1,25 +1,8 @@
 package com.mango.autumnleaves.util;
 
 import android.graphics.Color;
-import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.remote.Koneksi;
-import com.mango.autumnleaves.remote.Volley;
-import com.pranavpandey.android.dynamic.toasts.DynamicToast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class EstimoteUtils {
 

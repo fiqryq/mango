@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.beacon;
+package com.mango.autumnleaves.Beacon;
 
 public class ProximityContent {
     private String kelas;

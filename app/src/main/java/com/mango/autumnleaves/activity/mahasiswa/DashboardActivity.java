@@ -1,8 +1,7 @@
-package com.mango.autumnleaves.Activity;
+package com.mango.autumnleaves.activity.mahasiswa;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -18,40 +16,20 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.protobuf.Internal;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.beacon.ProximityContentAdapter;
-import com.mango.autumnleaves.beacon.ProximityContentManager;
-import com.mango.autumnleaves.model.User;
-import com.mango.autumnleaves.remote.Koneksi;
-import com.mango.autumnleaves.remote.Volley;
-import com.mango.autumnleaves.util.NotificationHelper;
-import com.mango.autumnleaves.util.Util;
+import com.mango.autumnleaves.Beacon.ProximityContentAdapter;
+import com.mango.autumnleaves.Beacon.ProximityContentManager;
+import com.mango.autumnleaves.model.UserMahasiswa;
+import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -61,16 +39,12 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends BaseActivity {
 
     private ImageView imvPresensi, imvJadwal, imvHistory, imvProfile;
     private TextView dshUsername, dshNim;
     private ImageView dashImg;
     private ProgressBar progressBar;
-
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
-    private FirebaseFirestore firebaseFirestore;
 
     // nitip
     private TextView tvHariIni, tvMatkul, tvDosen, tvJam, tvRuangan;
@@ -84,7 +58,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        if (!isConnected()){
+        if (!isConnected()) {
             new AlertDialog.Builder(this)
                     .setIcon(R.drawable.adt_ic_warning)
                     .setTitle("Mango")
@@ -101,21 +75,17 @@ public class DashboardActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBarImg);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
-        imvProfile = findViewById(R.id.profile);
+        imvProfile = findViewById(R.id.informasi);
         dshUsername = findViewById(R.id.dashUsername);
         dshNim = findViewById(R.id.dashNim);
         dashImg = findViewById(R.id.dashIgm);
         GridView gridView = findViewById(R.id.gridView);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-
         progressBar.setVisibility(View.VISIBLE);
         //intentPresensi();
         intentJadwal();
         intentHistory();
-        intentProfile();
+        intentInformasi();
 
         // get menthod
         getprofile();
@@ -136,6 +106,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
     }
+
     private void intentHistory() {
         //intent Menu History
         imvHistory.setOnClickListener(new View.OnClickListener() {
@@ -147,21 +118,20 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
     }
-    private void intentProfile() {
+
+    private void intentInformasi() {
         //intent Menu profile
         imvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent profile = new Intent(DashboardActivity.this, ProfileActivity.class);
-                startActivity(profile);
+                Intent informasi = new Intent(DashboardActivity.this, InfoActivity.class);
+                startActivity(informasi);
             }
         });
     }
 
     private void getprofile() {
-        String idUser;
-        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
+        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -169,15 +139,15 @@ public class DashboardActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        User user = new User();
-                        user.setNama(document.getString("nama"));
-                        user.setNim_mhs(document.getString("nim_mhs"));
-                        user.setAlamat(document.getString("alamat"));
-                        user.setGambar(document.getString("gambar"));
+                        UserMahasiswa userMahasiswa = new UserMahasiswa();
+                        userMahasiswa.setNama(document.getString("nama"));
+                        userMahasiswa.setNim_mhs(document.getString("nim_mhs"));
+                        userMahasiswa.setAlamat(document.getString("alamat"));
+                        userMahasiswa.setGambar(document.getString("gambar"));
 
-                        dshUsername.setText(user.getNama());
-                        dshNim.setText(user.getNim_mhs());
-                        Picasso.get().load(user.getGambar()).into(dashImg);
+                        dshUsername.setText(userMahasiswa.getNama());
+                        dshNim.setText(userMahasiswa.getNim_mhs());
+                        Picasso.get().load(userMahasiswa.getGambar()).into(dashImg);
                     } else {
                         Log.d("gagal", "Documment tidak ada");
                     }
@@ -218,6 +188,7 @@ public class DashboardActivity extends AppCompatActivity {
                             }
                         });
     }
+
     // Credentials App Cloud Estimote Beacon
     private void startProximityContentManager() {
         EstimoteCloudCredentials
@@ -273,6 +244,7 @@ public class DashboardActivity extends AppCompatActivity {
         String sekarang = hari + ", " + tanggal + " " + bulan + " " + tahun;
         tvHariIni.setText(String.valueOf(sekarang));
     }
+
     private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
         timeNow = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
@@ -294,10 +266,10 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isConnected(){
+    private boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return  networkInfo !=null && networkInfo.isConnected();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 }

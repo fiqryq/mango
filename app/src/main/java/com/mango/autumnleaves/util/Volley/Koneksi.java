@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.remote;
+package com.mango.autumnleaves.util.Volley;
 
 public class Koneksi {
     public static final String URL = "http://mangodb.online/";

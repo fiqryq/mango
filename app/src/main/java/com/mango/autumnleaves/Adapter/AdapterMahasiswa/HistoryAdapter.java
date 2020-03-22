@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.adapter;
+package com.mango.autumnleaves.Adapter.AdapterMahasiswa;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,16 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Response;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.History;
-import com.mango.autumnleaves.model.Jadwal;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 

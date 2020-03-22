@@ -1,6 +1,6 @@
 package com.mango.autumnleaves.model;
 
-public class User {
+public class UserMahasiswa {
     private Integer id_mahasiswa;
     private String nim_mhs;
     private String nama;
@@ -11,6 +11,25 @@ public class User {
     private String ttl;
     private String alamat;
     private String kode_kelas;
+    private String uId;
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    private String tag;
 
     public String getGambar() {
         return gambar;

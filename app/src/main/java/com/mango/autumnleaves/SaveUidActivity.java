@@ -1,10 +1,10 @@
 package com.mango.autumnleaves;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-public class SaveUidActivity extends AppCompatActivity {
+import com.mango.autumnleaves.activity.base.BaseActivity;
+
+public class SaveUidActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

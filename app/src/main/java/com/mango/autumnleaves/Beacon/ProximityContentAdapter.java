@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.beacon;
+package com.mango.autumnleaves.Beacon;
 
 import android.content.Context;
 import android.text.format.DateFormat;
@@ -26,9 +26,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.model.User;
+import com.mango.autumnleaves.util.NotificationHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,18 +85,66 @@ public class ProximityContentAdapter extends BaseAdapter {
 
         }
         // Inisialisasi Di sini
-
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
-        TextView idbeacon = convertView.findViewById(R.id.beacon_matakuliah);
+        TextView contentMatakuliah = convertView.findViewById(R.id.beacon_matakuliah);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        final NotificationHelper notificationHelper = new NotificationHelper(context);
+        String idUser;
+        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
+        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        UserMahasiswa userMahasiswa = new UserMahasiswa();
+                        userMahasiswa.setJurusan(document.getString("jurusan"));
+                        userMahasiswa.setKode_kelas(document.getString("kode_kelas"));
+
+                        // Doc Ref Dari user
+                        String jurusanRef = userMahasiswa.getJurusan();
+                        String kelasRef = userMahasiswa.getKode_kelas();
+
+                        getNamaHari();
+                        firebaseFirestore
+                                .collection("prodi")
+                                .document(jurusanRef)
+                                .collection("kelas")
+                                .document(kelasRef)
+                                .collection("jadwal")
+                                .whereEqualTo("hari",hari).whereLessThan("waktu_mulai",waktusekarang)
+                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                        if (e != null) {
+                                            Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
+                                            return;
+                                        }
+                                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                                            Jadwal jadwal = new Jadwal();
+                                            jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
+                                            contentMatakuliah.setText(jadwal.getMatakuliah());
+                                        }
+                                    }
+                                });
+
+                    } else {
+                        Log.d("TAG", "Documment tidak ada");
+                    }
+                } else {
+                    Log.d("TAG", "gagal", task.getException());
+                }
+            }
+        });
 
         // Set Content Beacon
         ProximityContent content = nearbyContent.get(position);
         kelas.setText(content.getKelas());
-        idbeacon.setText(content.getIdbeacon());
 
         // Button Presensi
         Button Presensi = convertView.findViewById(R.id.button_presensi);
@@ -151,15 +200,15 @@ public class ProximityContentAdapter extends BaseAdapter {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                User user = new User();
-                                user.setNama(document.getString("nama"));
-                                user.setJurusan(document.getString("jurusan"));
-                                user.setKode_kelas(document.getString("kode_kelas"));
+                                UserMahasiswa userMahasiswa = new UserMahasiswa();
+                                userMahasiswa.setNama(document.getString("nama"));
+                                userMahasiswa.setJurusan(document.getString("jurusan"));
+                                userMahasiswa.setKode_kelas(document.getString("kode_kelas"));
 
                                 // Doc Ref Dari user
-                                String jurusanRef = user.getJurusan();
-                                String kelasRef = user.getKode_kelas();
-                                String nama_mhs = user.getNama();
+                                String jurusanRef = userMahasiswa.getJurusan();
+                                String kelasRef = userMahasiswa.getKode_kelas();
+                                String nama_mhs = userMahasiswa.getNama();
 
                                 getNamaHari();
                                 firebaseFirestore
