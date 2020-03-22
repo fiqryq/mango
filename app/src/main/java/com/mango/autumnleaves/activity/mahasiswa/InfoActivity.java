@@ -17,7 +17,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mango.autumnleaves.activity.base.BaseActivity;
-import com.mango.autumnleaves.activity.base.LoginActivity;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.util.Session;

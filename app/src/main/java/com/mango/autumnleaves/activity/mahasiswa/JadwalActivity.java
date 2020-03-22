@@ -24,7 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.Adapter.AdapterMahasiswa.JadwalAdapter;
+import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.util.NotificationHelper;
@@ -256,7 +256,6 @@ public class JadwalActivity extends BaseActivity {
         String formatFix = hari + ", " + tanggal + " " + bulan + " " + year;
         tvSekarang.setText(String.valueOf(formatFix));
     }
-
     private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
         waktusekarang = (String) android.text.format.DateFormat.format("HH:mm", dateNow);

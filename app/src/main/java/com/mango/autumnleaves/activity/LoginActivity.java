@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.activity.base;
+package com.mango.autumnleaves.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,8 +14,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.activity.dosen.DashboardDosenActivity;
-import com.mango.autumnleaves.activity.mahasiswa.DashboardActivity;
+import com.mango.autumnleaves.activity.mahasiswa.DashboardMahasiswaActivity;
 import com.mango.autumnleaves.model.UserDosen;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
@@ -25,11 +26,6 @@ import com.mango.autumnleaves.util.Constant;
 public class LoginActivity extends BaseActivity implements LoginViewCallback {
     private EditText username, password;
     private ProgressDialog progressDialog;
-
-    //checking session
-    public static final String SESSION_MAHASISWA = "mahasiswa";
-    public static final String SESSION_DOSEN = "dosen";
-    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +122,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
         if (cekPengguna != null) {
             if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA)) {
-                Intent j = new Intent(LoginActivity.this, DashboardActivity.class);
+                Intent j = new Intent(LoginActivity.this, DashboardMahasiswaActivity.class);
                 startActivity(j);
                 finish();
             } else if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_DOSEN)) {

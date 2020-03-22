@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.Beacon;
+package com.mango.autumnleaves.beacon;
 
 import android.content.Context;
 import android.util.Log;

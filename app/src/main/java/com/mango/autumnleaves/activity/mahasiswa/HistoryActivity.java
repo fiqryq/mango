@@ -21,7 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.Adapter.AdapterMahasiswa.HistoryAdapter;
+import com.mango.autumnleaves.adapter.adaptermahasiswa.HistoryAdapter;
 import com.mango.autumnleaves.model.History;
 import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.util.Util;

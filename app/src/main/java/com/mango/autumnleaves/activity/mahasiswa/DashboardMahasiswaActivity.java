@@ -25,8 +25,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.Beacon.ProximityContentAdapter;
-import com.mango.autumnleaves.Beacon.ProximityContentManager;
+import com.mango.autumnleaves.beacon.ProximityContentAdapter;
+import com.mango.autumnleaves.beacon.ProximityContentManager;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.squareup.picasso.Picasso;
@@ -39,7 +39,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 
-public class DashboardActivity extends BaseActivity {
+public class DashboardMahasiswaActivity extends BaseActivity {
 
     private ImageView imvPresensi, imvJadwal, imvHistory, imvProfile;
     private TextView dshUsername, dshNim;
@@ -101,7 +101,7 @@ public class DashboardActivity extends BaseActivity {
         imvJadwal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent jadwal = new Intent(DashboardActivity.this, JadwalActivity.class);
+                Intent jadwal = new Intent(DashboardMahasiswaActivity.this, JadwalActivity.class);
                 startActivity(jadwal);
             }
         });
@@ -112,7 +112,7 @@ public class DashboardActivity extends BaseActivity {
         imvHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent history = new Intent(DashboardActivity.this, HistoryActivity.class);
+                Intent history = new Intent(DashboardMahasiswaActivity.this, HistoryActivity.class);
                 startActivity(history);
             }
         });
@@ -124,7 +124,7 @@ public class DashboardActivity extends BaseActivity {
         imvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent informasi = new Intent(DashboardActivity.this, InfoActivity.class);
+                Intent informasi = new Intent(DashboardMahasiswaActivity.this, InfoActivity.class);
                 startActivity(informasi);
             }
         });

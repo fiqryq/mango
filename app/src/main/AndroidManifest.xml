@@ -18,7 +18,6 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.Main2Activity"></activity>
         <activity android:name=".activity.dosen.DashboardDosenActivity" />
         <activity android:name=".SaveUidActivity" />
         <activity android:name=".activity.mahasiswa.PresensiDetailActivity" />
@@ -28,7 +27,7 @@
             android:label="History">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
         </activity> <!-- Profile -->
         <activity
             android:name=".activity.mahasiswa.ProfileActivity"
@@ -36,10 +35,10 @@
             android:theme="@style/ProfileTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
         </activity> <!-- Dashboard -->
         <activity
-            android:name=".activity.mahasiswa.DashboardActivity"
+            android:name=".activity.mahasiswa.DashboardMahasiswaActivity"
             android:theme="@style/AppTheme2" /> <!-- Info -->
         <activity
             android:name=".activity.mahasiswa.InfoActivity"
@@ -47,7 +46,7 @@
             android:theme="@style/InfoTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
         </activity> <!-- Jadwal -->
         <activity
             android:name=".activity.mahasiswa.JadwalActivity"
@@ -55,10 +54,10 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardActivity" />
+                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
         </activity> <!-- Login -->
         <activity
-            android:name=".activity.base.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
