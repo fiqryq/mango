@@ -18,6 +18,11 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.mahasiswa.AboutActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.mahasiswa.InfoActivity" />
+        </activity>
         <activity android:name=".activity.dosen.DashboardDosenActivity" />
         <activity android:name=".SaveUidActivity" />
         <activity android:name=".activity.mahasiswa.PresensiDetailActivity" />
@@ -58,20 +63,13 @@
         </activity> <!-- Login -->
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/AppTheme2">
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Main -->
-        <service
-            android:name=".util.MessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        </activity>
     </application>
 
 </manifest>

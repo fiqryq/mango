@@ -5,12 +5,18 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,13 +28,20 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.activity.base.BaseActivity;
+import com.mango.autumnleaves.util.Constant;
 import com.mango.autumnleaves.util.NotificationHelper;
 
+import org.json.JSONObject;
+
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,9 +52,8 @@ public class JadwalActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String hari, waktusekarang;
-    private TextView tvSekarang, tvDosen, tvMatakuliah, tvWaktuMulai, tvWaktuSelesai, tvRuangan, tvNodata;
+    private TextView tvSekarang, tvDosen, tvMatakuliah, tvWaktuMulai, tvWaktuSelesai, tvRuangan, tvNodata, TestNotif;
     private FirebaseUser firebaseUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +70,14 @@ public class JadwalActivity extends BaseActivity {
         tvMatakuliah = findViewById(R.id.tv_detail_matkul);
         tvNodata = findViewById(R.id.tv_no_data);
         tvNodata.setVisibility(View.GONE);
+        TestNotif = findViewById(R.id.tesNotif);
+        TestNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_LONG).show();
+            }
+        });
 
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.rvJadwalView);
@@ -162,13 +182,15 @@ public class JadwalActivity extends BaseActivity {
                         // Untuk Get matakuliah jam sekarang Querynya "<=" waktu_mulai
                         // Untuk Get matakuliah selanjutnya Querynya ">="
                         getNamaHari();
+
                         firebaseFirestore
                                 .collection("prodi")
                                 .document(jurusanRef)
                                 .collection("kelas")
                                 .document(kelasRef)
                                 .collection("jadwal")
-                                .whereEqualTo("hari", hari).whereLessThan("waktu_mulai", waktusekarang)
+                                .whereEqualTo("hari", hari)
+                                .whereLessThan("waktu_mulai", waktusekarang)
                                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                     @Override
                                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -192,10 +214,10 @@ public class JadwalActivity extends BaseActivity {
                                                 tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
                                                 tvMatakuliah.setText(jadwal.getMatakuliah());
 
-                                                notificationHelper.notify(
-                                                        "Matakuliah : " + jadwal.getMatakuliah()
-                                                                + " Ruangan : " + jadwal.getRuangan(),
-                                                        "Jadwal Selanjutnya");
+//                                                notificationHelper.notify(
+//                                                        "Matakuliah : " + jadwal.getMatakuliah()
+//                                                                + " Ruangan : " + jadwal.getRuangan(),
+//                                                        "Jadwal Selanjutnya");
                                             } else {
                                                 tvNodata.setVisibility(View.VISIBLE);
                                                 tvDosen.setVisibility(View.GONE);
@@ -217,6 +239,7 @@ public class JadwalActivity extends BaseActivity {
             }
         });
     }
+
 
     // Refferensi Waktu
     public void getWaktuSekarang() {

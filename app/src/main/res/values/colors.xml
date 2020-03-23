@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#00AA13</color>
-    <color name="colorPrimaryDark">#00AA13</color>
+    <color name="colorPrimary">#083698</color>
+    <color name="colorPrimaryDark">#083698</color>
     <color name="colorAccent">#FF034B</color>
 
     <color name="colorNavigationIcon">#dae9f6</color>
@@ -9,6 +9,7 @@
 
 <!--    Custom-->
     <color name="white">#FFFFFF</color>
+    <color name="background_white">#F4F4F4</color>
     <color name="orangeprimary">#FB8C00</color>
     <color name="orangesecondary">#FFB300</color>
 
@@ -19,7 +20,7 @@
     <color name="cleandarkblue">#1771C0</color>
 
     <color name="putih">#ffff</color>
-    <color name="hitam">#161616</color>
+    <color name="hitam">#2E2E2E</color>
     <color name="abu">#89F0F0F0</color>
 
 <!--    <color name="colorPrimary">#FE6644</color>-->

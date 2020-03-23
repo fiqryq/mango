@@ -5,10 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
-
     </style>
-
     <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -16,7 +13,13 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
     </style>
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
 
+    </style>
     <style name="ProfileTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -31,8 +34,6 @@
         <item name="material_dialog_positive_button_text_color">#FFFFFF</item>
         <item name="material_dialog_negative_button_text_color">@color/colorPrimary</item>
     </style>
-
-
     <style name="InfoTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -46,6 +47,17 @@
         <item name="material_dialog_positive_button_color">@color/colorAccent</item>
         <item name="material_dialog_positive_button_text_color">#FFFFFF</item>
         <item name="material_dialog_negative_button_text_color">@color/colorPrimary</item>
+    </style>
+
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+
+        <item name="android:background">@android:color/transparent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
     </style>
 
 </resources>

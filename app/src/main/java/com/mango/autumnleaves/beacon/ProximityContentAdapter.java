@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -87,6 +89,21 @@ public class ProximityContentAdapter extends BaseAdapter {
         // Inisialisasi Di sini
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
         TextView contentMatakuliah = convertView.findViewById(R.id.beacon_matakuliah);
+        LinearLayout tapLayout = convertView.findViewById(R.id.linearLayout);
+
+        View finalConvertView = convertView;
+        tapLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context,R.style.BottomSheetDialogTheme);
+                View bottomSheetView = LayoutInflater.from(context)
+                        .inflate(R.layout.layout_bottom_sheet,
+                                (LinearLayout) finalConvertView.findViewById(R.id.bottomSheetContainer));
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.show();
+                Toast.makeText(context, "Tapping " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -270,37 +287,6 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
 
-//        presensiButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ProximityContent data = nearbyContent.get(position);
-//                getid = Util.getData("account", "id", context);
-//                StringRequest stringRequest = new StringRequest(Request.Method.POST, Koneksi.presensi_post, new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.d("Respone", response);
-//                        DynamicToast.makeSuccess(context,"Presensi Berhasil").show();
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        DynamicToast.makeError(context,"Gagal presensi").show();
-//                    }
-//                }){
-//                    @Override
-//                    protected Map<String, String> getParams() throws AuthFailureError {
-//                        Map<String, String> params = new HashMap<>();
-//                        params.put("id_mahasiswa", getid);
-//                        params.put("waktu", getwaktu);
-//                        params.put("tanggal", gettanggal);
-//                        params.put("ruangan", data.getKelas());
-//                        params.put("matakuliah", data.getKelas());
-//                        return params;
-//                    }
-//                };
-//                Volley.getInstance().addToRequestQueue(stringRequest);
-//            }
-//        });
         return convertView;
     }
 

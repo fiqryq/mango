@@ -79,6 +79,13 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
             }
         });
         tvInfoLogout.setOnClickListener(this::onClick);
+        tvInfoMango.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent about = new Intent(InfoActivity.this,AboutActivity.class);
+                startActivity(about);
+            }
+        });
 
     }
 

@@ -93,6 +93,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
         });
     }
 
+    // Save Session
     private void saveSession(String uid, String userTag, DocumentSnapshot documentSnapshot) {
         if (userTag.equals(Constant.TAG_USER_DOSEN)) {
             UserDosen userDosen = new UserDosen();
@@ -119,7 +120,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     }
 
     private void checkUserLogin(String cekPengguna) {
-
         if (cekPengguna != null) {
             if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA)) {
                 Intent j = new Intent(LoginActivity.this, DashboardMahasiswaActivity.class);

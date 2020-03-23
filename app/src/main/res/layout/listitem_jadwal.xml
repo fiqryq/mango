@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:background="@drawable/content_box">
+    android:elevation="2dp"
+    android:background="@drawable/contentbox_white">
 
     <TextView
         android:id="@+id/tvMatakuliah"
@@ -16,7 +17,7 @@
         android:layout_marginTop="13dp"
         android:autoSizeTextType="uniform"
         android:text="Mobile Programming"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/hitam"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +30,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="Ruangan"
-        android:textColor="@color/white"
+        android:textColor="@color/hitam"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/tvHari"
         app:layout_constraintTop_toBottomOf="@+id/tvMatakuliah" />
@@ -42,7 +43,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="10dp"
         android:text="gandheva Bayu"
-        android:textColor="@color/white"
+        android:textColor="@color/hitam"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +56,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="A6"
-        android:textColor="@color/white"
+        android:textColor="@color/hitam"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/tv_ruangan"
         app:layout_constraintTop_toBottomOf="@+id/tvMatakuliah" />
@@ -67,7 +68,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="Jam"
-        android:textColor="@color/white"
+        android:textColor="@color/hitam"
         app:layout_constraintStart_toEndOf="@+id/tvRuangan"
         app:layout_constraintTop_toBottomOf="@+id/tvMatakuliah" />
 
@@ -78,7 +79,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="10:00"
-        android:textColor="@color/white"
+        android:textColor="@color/hitam"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toBottomOf="@+id/tvMatakuliah" />
@@ -89,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/hitam"
         android:text="-"
         app:layout_constraintStart_toEndOf="@+id/tvWaktu"
         app:layout_constraintTop_toBottomOf="@+id/tvMatakuliah" />
@@ -100,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/hitam"
         android:text="11:00"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/textView15"

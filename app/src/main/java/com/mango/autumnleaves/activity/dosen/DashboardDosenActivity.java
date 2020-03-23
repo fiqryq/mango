@@ -10,7 +10,6 @@ import com.mango.autumnleaves.util.Session;
 
 public class DashboardDosenActivity extends BaseActivity {
 
-    private Session session;
     private Button button;
 
     @Override
