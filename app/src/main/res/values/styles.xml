@@ -49,15 +49,13 @@
         <item name="material_dialog_negative_button_text_color">@color/colorPrimary</item>
     </style>
 
-
-    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    <style name="TransparentDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
     </style>
-    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
 
-        <item name="android:background">@android:color/transparent</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+    <style name="TransparentDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/bottom_sheet_background</item>
     </style>
 
 </resources>

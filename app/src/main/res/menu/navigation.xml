@@ -8,12 +8,6 @@
         android:icon="@drawable/ic_archive_black_24dp"/>
 
     <item
-        android:id="@+id/search_menu"
-        android:title="@string/search"
-        android:icon="@drawable/ic_archive_black_24dp"/>
-
-
-    <item
         android:id="@+id/favorite_menu"
         android:title="@string/favorite"
         android:icon="@drawable/ic_archive_black_24dp"/>

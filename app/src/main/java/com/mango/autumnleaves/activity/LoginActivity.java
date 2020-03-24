@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mango.autumnleaves.activity.base.BaseActivity;
-import com.mango.autumnleaves.activity.dosen.DashboardDosenActivity;
+import com.mango.autumnleaves.activity.dosen.MainDosenActivity;
 import com.mango.autumnleaves.activity.mahasiswa.DashboardMahasiswaActivity;
 import com.mango.autumnleaves.model.UserDosen;
 import com.mango.autumnleaves.model.UserMahasiswa;
@@ -126,7 +126,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                 startActivity(j);
                 finish();
             } else if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_DOSEN)) {
-                Intent i = new Intent(LoginActivity.this, DashboardDosenActivity.class);
+                Intent i = new Intent(LoginActivity.this, MainDosenActivity.class);
                 startActivity(i);
                 finish();
             }

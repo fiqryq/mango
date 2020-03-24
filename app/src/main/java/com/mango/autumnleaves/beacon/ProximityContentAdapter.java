@@ -46,7 +46,7 @@ public class ProximityContentAdapter extends BaseAdapter {
     private Context context;
     private String getjam;
     private String hari, waktusekarang;
-    private String dataDosen,dataMatakuliah,dataWaktuMulai,dataWaktuSelesai,dataRuangan,dataNodata;
+    private String dataDosen, dataMatakuliah, dataWaktuMulai, dataWaktuSelesai, dataRuangan, dataNodata;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -86,78 +86,43 @@ public class ProximityContentAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.presensi_content_beacon, parent, false);
 
         }
+
+        final NotificationHelper notificationHelper = new NotificationHelper(context);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
         // Inisialisasi Di sini
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
         TextView contentMatakuliah = convertView.findViewById(R.id.beacon_matakuliah);
+        TextView btsMatakuliah = convertView.findViewById(R.id.btsMatakuliah);
         LinearLayout tapLayout = convertView.findViewById(R.id.linearLayout);
 
         View finalConvertView = convertView;
         tapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context,R.style.BottomSheetDialogTheme);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.TransparentDialog);
                 View bottomSheetView = LayoutInflater.from(context)
                         .inflate(R.layout.layout_bottom_sheet,
                                 (LinearLayout) finalConvertView.findViewById(R.id.bottomSheetContainer));
+
+                bottomSheetView.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Berhasil ditekan " + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Ngodingnya disini
+
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
                 Toast.makeText(context, "Tapping " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-        final NotificationHelper notificationHelper = new NotificationHelper(context);
-        String idUser;
-        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
-        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        UserMahasiswa userMahasiswa = new UserMahasiswa();
-                        userMahasiswa.setJurusan(document.getString("jurusan"));
-                        userMahasiswa.setKode_kelas(document.getString("kode_kelas"));
-
-                        // Doc Ref Dari user
-                        String jurusanRef = userMahasiswa.getJurusan();
-                        String kelasRef = userMahasiswa.getKode_kelas();
-
-                        getNamaHari();
-                        firebaseFirestore
-                                .collection("prodi")
-                                .document(jurusanRef)
-                                .collection("kelas")
-                                .document(kelasRef)
-                                .collection("jadwal")
-                                .whereEqualTo("hari",hari).whereLessThan("waktu_mulai",waktusekarang)
-                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                                        if (e != null) {
-                                            Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
-                                            return;
-                                        }
-                                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
-                                            Jadwal jadwal = new Jadwal();
-                                            jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
-                                            contentMatakuliah.setText(jadwal.getMatakuliah());
-                                        }
-                                    }
-                                });
-
-                    } else {
-                        Log.d("TAG", "Documment tidak ada");
-                    }
-                } else {
-                    Log.d("TAG", "gagal", task.getException());
-                }
-            }
-        });
+        firestoreschedule(contentMatakuliah);
 
         // Set Content Beacon
         ProximityContent content = nearbyContent.get(position);
@@ -170,41 +135,41 @@ public class ProximityContentAdapter extends BaseAdapter {
             public void onClick(View v) {
                 // Get Waktu
                 Date date = Calendar.getInstance().getTime();
-                String tanggal = (String) android.text.format.DateFormat.format("d",   date); // 20
-                String monthNumber  = (String) android.text.format.DateFormat.format("M",   date); // 06
-                String year         = (String) DateFormat.format("yyyy", date); // 2013
+                String tanggal = (String) android.text.format.DateFormat.format("d", date); // 20
+                String monthNumber = (String) android.text.format.DateFormat.format("M", date); // 06
+                String year = (String) DateFormat.format("yyyy", date); // 2013
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat jam = new SimpleDateFormat("kk:mm");
 
                 int month = Integer.parseInt(monthNumber);
                 String bulan = null;
 
-                if (month == 1){
+                if (month == 1) {
                     bulan = "Januari";
-                }else if (month == 2){
+                } else if (month == 2) {
                     bulan = "Februari";
-                }else if (month == 3){
+                } else if (month == 3) {
                     bulan = "Maret";
-                }else if (month == 4){
+                } else if (month == 4) {
                     bulan = "April";
-                }else if (month == 5){
+                } else if (month == 5) {
                     bulan = "Mei";
-                }else if (month == 6){
+                } else if (month == 6) {
                     bulan = "Juni";
-                }else if (month == 7){
+                } else if (month == 7) {
                     bulan = "Juli";
-                }else if (month == 8){
+                } else if (month == 8) {
                     bulan = "Agustus";
-                }else if (month == 9){
+                } else if (month == 9) {
                     bulan = "September";
-                }else if (month == 10){
+                } else if (month == 10) {
                     bulan = "Oktober";
-                }else if (month == 11){
+                } else if (month == 11) {
                     bulan = "November";
-                }else if (month == 12){
+                } else if (month == 12) {
                     bulan = "Desember";
                 }
-                String formatWaktuFix = hari + ", "+tanggal+" "+bulan+" "+year;
+                String formatWaktuFix = hari + ", " + tanggal + " " + bulan + " " + year;
                 getjam = jam.format(calendar.getTime());
 
                 String idUser;
@@ -234,7 +199,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                                         .collection("kelas")
                                         .document(kelasRef)
                                         .collection("jadwal")
-                                        .whereEqualTo("hari",hari).whereLessThan("waktu_mulai",waktusekarang)
+                                        .whereEqualTo("hari", hari).whereLessThan("waktu_mulai", waktusekarang)
                                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                             @Override
                                             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -242,7 +207,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                     Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
                                                     return;
                                                 }
-                                                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                                                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                                     Jadwal jadwal = new Jadwal();
                                                     jadwal.setHari(documentSnapshot.getString("hari"));
                                                     jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
@@ -271,7 +236,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                             @Override
                                                             public void onSuccess(DocumentReference documentReference) {
-                                                                Toast.makeText(context,"Data Masuk",Toast.LENGTH_LONG).show();
+                                                                Toast.makeText(context, "Data Masuk", Toast.LENGTH_LONG).show();
                                                             }
                                                         });
                                             }
@@ -288,6 +253,61 @@ public class ProximityContentAdapter extends BaseAdapter {
         });
 
         return convertView;
+    }
+
+    private void firestoreschedule(TextView contentMatakuliah){
+        String idUser;
+        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
+        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        UserMahasiswa userMahasiswa = new UserMahasiswa();
+                        userMahasiswa.setJurusan(document.getString("jurusan"));
+                        userMahasiswa.setKode_kelas(document.getString("kode_kelas"));
+
+                        // Doc Ref Dari user
+                        String jurusanRef = userMahasiswa.getJurusan();
+                        String kelasRef = userMahasiswa.getKode_kelas();
+
+                        getNamaHari();
+                        scheduleBeacon(jurusanRef,kelasRef,contentMatakuliah);
+
+                    } else {
+                        Log.d("TAG", "Documment tidak ada");
+                    }
+                } else {
+                    Log.d("TAG", "gagal", task.getException());
+                }
+            }
+        });
+    }
+    private void scheduleBeacon(String jurusanRef, String kelasRef , TextView contentMatakuliah){
+        firebaseFirestore
+                .collection("prodi")
+                .document(jurusanRef)
+                .collection("kelas")
+                .document(kelasRef)
+                .collection("jadwal")
+                .whereEqualTo("hari", hari).whereLessThan("waktu_mulai", waktusekarang)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
+                            return;
+                        }
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Jadwal jadwal = new Jadwal();
+                            jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
+                            contentMatakuliah.setText(jadwal.getMatakuliah());
+                        }
+                    }
+                });
     }
 
     private void getNamaHari() {

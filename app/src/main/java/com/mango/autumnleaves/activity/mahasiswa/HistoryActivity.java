@@ -61,46 +61,7 @@ public class HistoryActivity extends BaseActivity {
         progressBar.setVisibility(View.VISIBLE);
 
     }
-//    private void getHistory() {
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Koneksi.presensi, null,
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        progressBar.setVisibility(View.GONE);
-//                        try {
-//                            JSONArray jsonArray = response.getJSONArray("presensi");
-//                            for (int i = 0; i < jsonArray.length(); i++) {
-//                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                                History history = new History();
-//                                history.setId_presensi(jsonObject.getInt("id_presensi"));
-//                                history.setId_mahasiswa(jsonObject.getInt("id_mahasiswa"));
-//                                history.setRuangan(jsonObject.getString("ruangan"));
-//                                history.setTanggal(jsonObject.getString("tanggal"));
-//                                history.setWaktu(jsonObject.getString("waktu"));
-//                                history.setMatakuliah(jsonObject.getString("matakuliah"));
-//
-//                                String id = String.valueOf(history.getId_mahasiswa());
-//
-//                                if (getid.equals(id)){
-//                                    arrayList.add(history);
-//                                }
-//
-//                                setuprecyclerview(arrayList);
-//                            }
-//                        } catch (JSONException e) {
-//                                e.printStackTrace();
-//                        }
-//
-////                        Log.d("jsonhistory", response.toString());
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        Volley.getInstance().addToRequestQueue(jsonObjectRequest);
-//    }
+
     private void showHistory(){
     String idUser;
     idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();

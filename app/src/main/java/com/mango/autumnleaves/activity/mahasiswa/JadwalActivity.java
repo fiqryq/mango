@@ -71,13 +71,6 @@ public class JadwalActivity extends BaseActivity {
         tvNodata = findViewById(R.id.tv_no_data);
         tvNodata.setVisibility(View.GONE);
         TestNotif = findViewById(R.id.tesNotif);
-        TestNotif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(getApplicationContext(), "Berhasil", Toast.LENGTH_LONG).show();
-            }
-        });
 
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.rvJadwalView);
@@ -148,7 +141,6 @@ public class JadwalActivity extends BaseActivity {
             }
         });
     }
-
     private void setuprecyclerView(ArrayList<Jadwal> arrayList) {
         JadwalAdapter jadwalAdapter = new JadwalAdapter(this, arrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -158,10 +150,8 @@ public class JadwalActivity extends BaseActivity {
     // Get Jadwal selanjutnya Realtime
     private void jadwalRealtime() {
         final NotificationHelper notificationHelper = new NotificationHelper(this);
-        String idUser;
-        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
-        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
+        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -176,59 +166,8 @@ public class JadwalActivity extends BaseActivity {
                         // Doc Ref Dari user
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
-
-                        // Querysnapshot untuk mendapatkan data jadwal hari ini
-                        // Query Firestore : Get semua jadwal yang ada di "Hari ini" & waktu_mulainya ">= (whereGratherThan)" "waktu_sekarang".
-                        // Untuk Get matakuliah jam sekarang Querynya "<=" waktu_mulai
-                        // Untuk Get matakuliah selanjutnya Querynya ">="
                         getNamaHari();
-
-                        firebaseFirestore
-                                .collection("prodi")
-                                .document(jurusanRef)
-                                .collection("kelas")
-                                .document(kelasRef)
-                                .collection("jadwal")
-                                .whereEqualTo("hari", hari)
-                                .whereLessThan("waktu_mulai", waktusekarang)
-                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                                        if (e != null) {
-                                            Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
-                                            return;
-                                        }
-                                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                            Jadwal jadwal = new Jadwal();
-                                            jadwal.setHari(documentSnapshot.getString("hari"));
-                                            jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
-                                            jadwal.setDosen(documentSnapshot.getString("dosen"));
-                                            jadwal.setRuangan(documentSnapshot.getString("ruangan"));
-                                            jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
-                                            jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
-
-                                            if (queryDocumentSnapshots != null && documentSnapshot.exists()) {
-                                                tvDosen.setText(jadwal.getDosen());
-                                                tvRuangan.setText(jadwal.getRuangan());
-                                                tvWaktuMulai.setText(jadwal.getWaktu_mulai());
-                                                tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-                                                tvMatakuliah.setText(jadwal.getMatakuliah());
-
-//                                                notificationHelper.notify(
-//                                                        "Matakuliah : " + jadwal.getMatakuliah()
-//                                                                + " Ruangan : " + jadwal.getRuangan(),
-//                                                        "Jadwal Selanjutnya");
-                                            } else {
-                                                tvNodata.setVisibility(View.VISIBLE);
-                                                tvDosen.setVisibility(View.GONE);
-                                                tvRuangan.setVisibility(View.GONE);
-                                                tvWaktuMulai.setVisibility(View.GONE);
-                                                tvWaktuSelesai.setVisibility(View.GONE);
-                                                tvMatakuliah.setVisibility(View.GONE);
-                                            }
-                                        }
-                                    }
-                                });
+                        firestorejadwal(jurusanRef,kelasRef);
 
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -239,10 +178,76 @@ public class JadwalActivity extends BaseActivity {
             }
         });
     }
+    private void firestorejadwal(String jurusanRef, String kelasRef){
 
+        // Querysnapshot untuk mendapatkan data jadwal hari ini
+        // Query Firestore : Get semua jadwal yang ada di "Hari ini" & waktu_mulainya ">= (whereGratherThan)" "waktu_sekarang".
+        // Untuk Get matakuliah jam sekarang Querynya "<=" waktu_mulai
+        // Untuk Get matakuliah selanjutnya Querynya ">="
+        firebaseFirestore
+                .collection("prodi")
+                .document(jurusanRef)
+                .collection("kelas")
+                .document(kelasRef)
+                .collection("jadwal")
+                .whereEqualTo("hari", hari)
+                .whereLessThan("waktu_mulai", waktusekarang)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
+                            return;
+                        }
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Jadwal jadwal = new Jadwal();
+                            jadwal.setHari(documentSnapshot.getString("hari"));
+                            jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
+                            jadwal.setDosen(documentSnapshot.getString("dosen"));
+                            jadwal.setRuangan(documentSnapshot.getString("ruangan"));
+                            jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
+                            jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
 
+                            if (queryDocumentSnapshots.isEmpty()){
+                                tvNodata.setVisibility(View.VISIBLE);
+                                tvDosen.setVisibility(View.GONE);
+                                tvRuangan.setVisibility(View.GONE);
+                                tvWaktuMulai.setVisibility(View.GONE);
+                                tvWaktuSelesai.setVisibility(View.GONE);
+                                tvMatakuliah.setVisibility(View.GONE);
+                            } else {
+                                tvDosen.setText(jadwal.getDosen());
+                                tvRuangan.setText(jadwal.getRuangan());
+                                tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+                                tvMatakuliah.setText(jadwal.getMatakuliah());
+                            }
+
+//                                            if (queryDocumentSnapshots != null && documentSnapshot.exists()) {
+//                                                tvDosen.setText(jadwal.getDosen());
+//                                                tvRuangan.setText(jadwal.getRuangan());
+//                                                tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+//                                                tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+//                                                tvMatakuliah.setText(jadwal.getMatakuliah());
+//
+//                                                notificationHelper.notify(
+//                                                        "Matakuliah : " + jadwal.getMatakuliah()
+//                                                                + " Ruangan : " + jadwal.getRuangan(),
+//                                                        "Jadwal Selanjutnya");
+//                                            } else {
+//                                                tvNodata.setVisibility(View.VISIBLE);
+//                                                tvDosen.setVisibility(View.GONE);
+//                                                tvRuangan.setVisibility(View.GONE);
+//                                                tvWaktuMulai.setVisibility(View.GONE);
+//                                                tvWaktuSelesai.setVisibility(View.GONE);
+//                                                tvMatakuliah.setVisibility(View.GONE);
+//                                            }
+                        }
+                    }
+                });
+    }
     // Refferensi Waktu
-    public void getWaktuSekarang() {
+    private void getWaktuSekarang() {
         Date date = Calendar.getInstance().getTime();
         String tanggal = (String) DateFormat.format("d", date); // 20
         String monthNumber = (String) DateFormat.format("M", date); // 06
