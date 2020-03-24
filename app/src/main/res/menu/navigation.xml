@@ -8,8 +8,8 @@
         android:icon="@drawable/ic_archive_black_24dp"/>
 
     <item
-        android:id="@+id/favorite_menu"
-        android:title="@string/favorite"
+        android:id="@+id/kelas_menu"
+        android:title="Kelas"
         android:icon="@drawable/ic_archive_black_24dp"/>
 
     <item
