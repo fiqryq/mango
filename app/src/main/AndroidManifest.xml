@@ -23,7 +23,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.mahasiswa.InfoActivity" />
         </activity>
-        <activity android:name=".activity.dosen.MainDosenActivity" />
+        <activity android:name=".activity.dosen.MainDosenActivity" android:theme="@style/InfoDosenTheme" />
         <activity android:name=".SaveUidActivity" />
         <activity android:name=".activity.mahasiswa.PresensiDetailActivity" />
         <activity android:name=".activity.mahasiswa.RegisterActivity" /> <!-- History -->

@@ -168,6 +168,7 @@ public class JadwalActivity extends BaseActivity {
                         String kelasRef = userMahasiswa.getKode_kelas();
                         getNamaHari();
                         firestorejadwal(jurusanRef,kelasRef);
+//                        test(kelasRef,jurusanRef);
 
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -208,43 +209,68 @@ public class JadwalActivity extends BaseActivity {
                             jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
                             jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
 
-                            if (queryDocumentSnapshots.isEmpty()){
+                            int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
+                            int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+
+                            if (sekarang <= selesai) {
+                                tvDosen.setText(jadwal.getDosen());
+                                tvRuangan.setText(jadwal.getRuangan());
+                                tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+                                tvMatakuliah.setText(jadwal.getMatakuliah());
+                            } else {
                                 tvNodata.setVisibility(View.VISIBLE);
                                 tvDosen.setVisibility(View.GONE);
                                 tvRuangan.setVisibility(View.GONE);
                                 tvWaktuMulai.setVisibility(View.GONE);
                                 tvWaktuSelesai.setVisibility(View.GONE);
                                 tvMatakuliah.setVisibility(View.GONE);
-                            } else {
-                                tvDosen.setText(jadwal.getDosen());
-                                tvRuangan.setText(jadwal.getRuangan());
-                                tvWaktuMulai.setText(jadwal.getWaktu_mulai());
-                                tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-                                tvMatakuliah.setText(jadwal.getMatakuliah());
                             }
 
-//                                            if (queryDocumentSnapshots != null && documentSnapshot.exists()) {
-//                                                tvDosen.setText(jadwal.getDosen());
-//                                                tvRuangan.setText(jadwal.getRuangan());
-//                                                tvWaktuMulai.setText(jadwal.getWaktu_mulai());
-//                                                tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-//                                                tvMatakuliah.setText(jadwal.getMatakuliah());
-//
-//                                                notificationHelper.notify(
-//                                                        "Matakuliah : " + jadwal.getMatakuliah()
-//                                                                + " Ruangan : " + jadwal.getRuangan(),
-//                                                        "Jadwal Selanjutnya");
-//                                            } else {
-//                                                tvNodata.setVisibility(View.VISIBLE);
-//                                                tvDosen.setVisibility(View.GONE);
-//                                                tvRuangan.setVisibility(View.GONE);
-//                                                tvWaktuMulai.setVisibility(View.GONE);
-//                                                tvWaktuSelesai.setVisibility(View.GONE);
-//                                                tvMatakuliah.setVisibility(View.GONE);
-//                                            }
                         }
                     }
                 });
+    }
+
+    private void test(String jurusanRef,String kelasRef){
+        firebaseFirestore
+                .collection("prodi")
+                .document(jurusanRef)
+                .collection("kelas")
+                .document(kelasRef)
+                .collection("jadwal")
+                .whereEqualTo("hari", hari)
+                .whereLessThan("waktu_mulai", waktusekarang).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot querySnapshot : task.getResult()){
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setHari(querySnapshot.getString("hari"));
+                        jadwal.setMatakuliah(querySnapshot.getString("matakuliah"));
+                        jadwal.setDosen(querySnapshot.getString("dosen"));
+                        jadwal.setRuangan(querySnapshot.getString("ruangan"));
+                        jadwal.setWaktu_mulai(querySnapshot.getString("waktu_mulai"));
+                        jadwal.setWaktu_selesai(querySnapshot.getString("waktu_selesai"));
+
+                        if (querySnapshot.exists()){
+                            tvDosen.setText(jadwal.getDosen());
+                            tvRuangan.setText(jadwal.getRuangan());
+                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+                            tvMatakuliah.setText(jadwal.getMatakuliah());
+                        } else {
+                            tvNodata.setVisibility(View.VISIBLE);
+                            tvDosen.setVisibility(View.GONE);
+                            tvRuangan.setVisibility(View.GONE);
+                            tvWaktuMulai.setVisibility(View.GONE);
+                            tvWaktuSelesai.setVisibility(View.GONE);
+                            tvMatakuliah.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        });
     }
     // Refferensi Waktu
     private void getWaktuSekarang() {

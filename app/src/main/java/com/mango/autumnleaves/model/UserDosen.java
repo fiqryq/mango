@@ -10,6 +10,16 @@ public class UserDosen {
     private String kelamin;
     private String ttl;
     private String alamat;
+
+    public String getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(String gambar) {
+        this.gambar = gambar;
+    }
+
+    private String gambar;
     private String tag;
     private String uId;
 

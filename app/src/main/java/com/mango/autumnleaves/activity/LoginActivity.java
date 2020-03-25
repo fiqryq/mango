@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -36,21 +37,22 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
         password = findViewById(R.id.etpassword);
         Button btLogin = findViewById(R.id.button_login);
 
-        btLogin.setOnClickListener(v -> {
+        btLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mUsername = username.getText().toString();
+                String mPassword = password.getText().toString();
 
-            String mUsername = username.getText().toString();
-            String mPassword = password.getText().toString();
-
-            if (TextUtils.isEmpty(username.getText()) && TextUtils.isEmpty(password.getText())) {
-                showToast("Username / Password Kosong");
-            } else if (TextUtils.isEmpty(username.getText())) {
-                showToast("Username Kosong");
-            } else if (TextUtils.isEmpty(password.getText())) {
-                showToast("Password Kosong");
-            } else {
-                getAuthFirebase(mUsername, mPassword);
+                if (TextUtils.isEmpty(username.getText()) && TextUtils.isEmpty(password.getText())) {
+                    showToast("Username / Password Kosong");
+                } else if (TextUtils.isEmpty(username.getText())) {
+                    showToast("Username Kosong");
+                } else if (TextUtils.isEmpty(password.getText())) {
+                    showToast("Password Kosong");
+                } else {
+                    getAuthFirebase(mUsername, mPassword);
+                }
             }
-
         });
 
         checkUserLogin(mSession.getPreferences().getString(Constant.KEY_IS_LOGIN, ""));
