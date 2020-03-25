@@ -27,6 +27,8 @@ import com.mango.autumnleaves.util.Constant;
 public class LoginActivity extends BaseActivity implements LoginViewCallback {
     private EditText username, password;
     private ProgressDialog progressDialog;
+    private View progres;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +37,14 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
         username = findViewById(R.id.tvUser);
         password = findViewById(R.id.etpassword);
+        progres = findViewById(R.id.progressBarLogin);
+
         Button btLogin = findViewById(R.id.button_login);
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onShowProgress();
                 String mUsername = username.getText().toString();
                 String mPassword = password.getText().toString();
 
@@ -59,7 +64,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     }
 
     private void getAuthFirebase(String mUsername, String mPassword) {
-        onShowProgress();
         firebaseAuth.signInWithEmailAndPassword(mUsername, mPassword).addOnCompleteListener(task -> {
             task.addOnFailureListener(LoginActivity.this, new OnFailureListener() {
                 @Override
@@ -69,7 +73,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             });
 
             if (task.isSuccessful()) {
-                onHideProgress();
+
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 onSuccessAuthFirebase(firebaseUser.getUid());
             } else {
@@ -122,6 +126,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     }
 
     private void checkUserLogin(String cekPengguna) {
+        onHideProgress();
         if (cekPengguna != null) {
             if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA)) {
                 Intent j = new Intent(LoginActivity.this, DashboardMahasiswaActivity.class);
@@ -160,11 +165,13 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
     @Override
     public void onShowProgress() {
-        myProgressDialog().show();
+        progres.setVisibility(View.VISIBLE);
+//        myProgressDialog().show();
     }
 
     @Override
     public void onHideProgress() {
-        myProgressDialog().dismiss();
+        progres.setVisibility(View.GONE);
+//        myProgressDialog().dismiss();
     }
 }
