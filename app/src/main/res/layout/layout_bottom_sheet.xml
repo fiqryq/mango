@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <ImageView
         android:layout_height="40dp"
         android:layout_width="124dp"

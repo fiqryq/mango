@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/boxtexview"
                 android:padding="3dp"
-                android:text="Presensi"
+                android:text="Kamu Berada Di Area"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
@@ -69,65 +69,6 @@
                     android:text="ruangan"
                     android:textColor="@color/hitam"
                     android:textSize="15dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Mata Kuliah"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/beacon_matakuliah"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="matkul"
-                    android:textColor="@color/hitam"
-                    android:textSize="15dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="7dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button_abaikan_rounded"
-                    android:text="Abaikan"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/button_presensi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/button_presensi_rounded"
-                    android:clickable="true"
-                    android:text="Presensi"
-                    android:textColor="@color/white" />
 
             </LinearLayout>
 
