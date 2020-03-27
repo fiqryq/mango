@@ -125,8 +125,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                     }
                 });
 
-                // Ngodingnya disini
-
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
             }
