@@ -8,9 +8,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="130dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:background="@drawable/content_box"
         android:elevation="5dp"
+        android:paddingBottom="2dp"
         android:minHeight="110dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
