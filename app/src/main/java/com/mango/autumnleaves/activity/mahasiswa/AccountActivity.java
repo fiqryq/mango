@@ -59,7 +59,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         logout();
-                        Toast.makeText(getApplicationContext(), "Berhasil Logout", Toast.LENGTH_SHORT).show();
+                        showSuccessToast("Berhasil Logout");
                         dialogInterface.dismiss();
                     }
                 })

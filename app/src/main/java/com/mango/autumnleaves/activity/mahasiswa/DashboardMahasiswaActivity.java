@@ -262,7 +262,6 @@ public class DashboardMahasiswaActivity extends BaseActivity {
             hari = "sabtu";
         }
     }
-
     private boolean isConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

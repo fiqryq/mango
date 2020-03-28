@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.model.UserMahasiswa;
@@ -32,8 +33,7 @@ public class HistoryActivity extends BaseActivity {
 
     private ArrayList<History> arrayList;
     RecyclerView recyclerView;
-
-    private TextView emptyView;
+    
     private String getid;
     private ProgressBar progressBar;
 
@@ -86,7 +86,7 @@ public class HistoryActivity extends BaseActivity {
                     firebaseFirestore
                             .collection("presensi")
                             .document("kelas")
-                            .collection(kelasRef)
+                            .collection(kelasRef).orderBy("created", Query.Direction.ASCENDING)
                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {

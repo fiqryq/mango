@@ -52,7 +52,7 @@ public class JadwalActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private String hari, waktusekarang;
-    private TextView tvSekarang, tvDosen, tvMatakuliah, tvWaktuMulai, tvWaktuSelesai, tvRuangan, tvNodata, TestNotif;
+    private TextView tvSekarang, tvDosen, tvMatakuliah, tvWaktuMulai, tvWaktuSelesai, tvRuangan, tvNodata, TestNotif,strip;
     private FirebaseUser firebaseUser;
 
     @Override
@@ -69,6 +69,7 @@ public class JadwalActivity extends BaseActivity {
         tvSekarang = findViewById(R.id.tvSekarang);
         tvMatakuliah = findViewById(R.id.tv_detail_matkul);
         tvNodata = findViewById(R.id.tv_no_data);
+        strip = findViewById(R.id.strip);
         tvNodata.setVisibility(View.GONE);
         TestNotif = findViewById(R.id.tesNotif);
 
@@ -192,7 +193,7 @@ public class JadwalActivity extends BaseActivity {
                 .document(kelasRef)
                 .collection("jadwal")
                 .whereEqualTo("hari", hari)
-                .whereLessThan("waktu_mulai", waktusekarang)
+                .whereLessThan("waktu_mulai",waktusekarang)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -218,6 +219,7 @@ public class JadwalActivity extends BaseActivity {
                                 tvWaktuMulai.setText(jadwal.getWaktu_mulai());
                                 tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
                                 tvMatakuliah.setText(jadwal.getMatakuliah());
+
                             } else {
                                 tvNodata.setVisibility(View.VISIBLE);
                                 tvDosen.setVisibility(View.GONE);
@@ -225,53 +227,13 @@ public class JadwalActivity extends BaseActivity {
                                 tvWaktuMulai.setVisibility(View.GONE);
                                 tvWaktuSelesai.setVisibility(View.GONE);
                                 tvMatakuliah.setVisibility(View.GONE);
+                                strip.setVisibility(View.GONE);
                             }
-
                         }
                     }
                 });
     }
-
-    private void test(String jurusanRef,String kelasRef){
-        firebaseFirestore
-                .collection("prodi")
-                .document(jurusanRef)
-                .collection("kelas")
-                .document(kelasRef)
-                .collection("jadwal")
-                .whereEqualTo("hari", hari)
-                .whereLessThan("waktu_mulai", waktusekarang).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot querySnapshot : task.getResult()){
-                        Jadwal jadwal = new Jadwal();
-                        jadwal.setHari(querySnapshot.getString("hari"));
-                        jadwal.setMatakuliah(querySnapshot.getString("matakuliah"));
-                        jadwal.setDosen(querySnapshot.getString("dosen"));
-                        jadwal.setRuangan(querySnapshot.getString("ruangan"));
-                        jadwal.setWaktu_mulai(querySnapshot.getString("waktu_mulai"));
-                        jadwal.setWaktu_selesai(querySnapshot.getString("waktu_selesai"));
-
-                        if (querySnapshot.exists()){
-                            tvDosen.setText(jadwal.getDosen());
-                            tvRuangan.setText(jadwal.getRuangan());
-                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
-                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-                            tvMatakuliah.setText(jadwal.getMatakuliah());
-                        } else {
-                            tvNodata.setVisibility(View.VISIBLE);
-                            tvDosen.setVisibility(View.GONE);
-                            tvRuangan.setVisibility(View.GONE);
-                            tvWaktuMulai.setVisibility(View.GONE);
-                            tvWaktuSelesai.setVisibility(View.GONE);
-                            tvMatakuliah.setVisibility(View.GONE);
-                        }
-                    }
-                }
-            }
-        });
-    }
+    
     // Refferensi Waktu
     private void getWaktuSekarang() {
         Date date = Calendar.getInstance().getTime();

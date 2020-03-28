@@ -1,6 +1,7 @@
 package com.mango.autumnleaves.beacon;
 
 import android.content.Context;
+import android.media.MediaSync;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.developer.kalert.KAlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -119,11 +123,11 @@ public class ProximityContentAdapter extends BaseAdapter {
                 TextView btsRuangan = bottomSheetView.findViewById(R.id.btsRuangan);
                 TextView btsWaktu = bottomSheetView.findViewById(R.id.btsWaktu);
 
-                firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan);
+                firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan,bottomSheetDialog);
                 bottomSheetView.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FirebasePushData(content);
+                        FirebasePushData(content,bottomSheetDialog);
                     }
                 });
 
@@ -135,7 +139,7 @@ public class ProximityContentAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void FirebasePushData(ProximityContent content){
+    private void FirebasePushData(ProximityContent content ,BottomSheetDialog bottomSheetViewPresensi){
         Date date = Calendar.getInstance().getTime();
         String tanggal = (String) android.text.format.DateFormat.format("d", date); // 20
         String monthNumber = (String) android.text.format.DateFormat.format("M", date); // 06
@@ -194,7 +198,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         String kelasRef = userMahasiswa.getKode_kelas();
                         String nama_mhs = userMahasiswa.getNama();
                         getNamaHari();
-                        dataRef(jurusanRef,kelasRef,nama_mhs,content,formatWaktuFix);
+                        dataRef(jurusanRef,kelasRef,nama_mhs,content,formatWaktuFix,bottomSheetViewPresensi);
 
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -205,7 +209,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-    private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , String formatWaktuFix){
+    private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , String formatWaktuFix, BottomSheetDialog bottomSheetViewPresensi){
         firebaseFirestore
                 .collection("prodi")
                 .document(jurusanRef)
@@ -235,11 +239,11 @@ public class ProximityContentAdapter extends BaseAdapter {
 
                         Map<String, Object> data = new HashMap<>();
                         data.put("nama", nama_mhs);
-                        data.put("kelas", content.getKelas());
                         data.put("matakuliah", dataMatakuliah);
-                        data.put("ruangan", dataMatakuliah);
+                        data.put("ruangan", content.getKelas());
                         data.put("jam", getjam);
                         data.put("waktu", formatWaktuFix);
+                        data.put("created", new Timestamp(new Date()));
 
                         firebaseFirestore
                                 .collection("presensi")
@@ -249,13 +253,25 @@ public class ProximityContentAdapter extends BaseAdapter {
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
-                                        Toast.makeText(context, "Data Masuk", Toast.LENGTH_LONG).show();
+                                        new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE)
+                                                .setTitleText("Berhasil Presensi")
+                                                .setContentText("klik tombl ok untuk keluar")
+                                                .show();
+                                        bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
                                     }
-                                });
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                new KAlertDialog(context, KAlertDialog.ERROR_TYPE)
+                                        .setTitleText("Oops...")
+                                        .setContentText("Gagal Presensi")
+                                        .show();
+                            }
+                        });
                     }
                 });
     }
-    private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan){
+    private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
@@ -274,7 +290,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
                         getNamaHari();
-                        setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content);
+                        setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content,bottomSheetViewPresensi);
 
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -285,7 +301,8 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-    private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan ,TextView btsWaktu,TextView btsJam, ProximityContent content){
+
+    private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan ,TextView btsWaktu,TextView btsJam, ProximityContent content,BottomSheetDialog bottomSheetViewPresensi){
         Date date = Calendar.getInstance().getTime();
         String tanggal = (String) android.text.format.DateFormat.format("d", date); // 20
         String monthNumber = (String) android.text.format.DateFormat.format("M", date); // 06
@@ -331,7 +348,8 @@ public class ProximityContentAdapter extends BaseAdapter {
                 .collection("kelas")
                 .document(kelasRef)
                 .collection("jadwal")
-                .whereEqualTo("hari", hari).whereLessThan("waktu_mulai", waktusekarang)
+                .whereEqualTo("hari", hari)
+                .whereLessThan("waktu_mulai", waktusekarang)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -339,13 +357,29 @@ public class ProximityContentAdapter extends BaseAdapter {
                             Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
                             return;
                         }
+
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             Jadwal jadwal = new Jadwal();
                             jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
-                            btsMatakuliah.setText(jadwal.getMatakuliah());
-                            btsRuangan.setText(content.getKelas());
-                            btsWaktu.setText(formatWaktuFixBts);
-                            btsJam.setText(getjamBts);
+
+                            int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
+                            int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+
+                            if (sekarang <= selesai){
+                                btsMatakuliah.setText(jadwal.getMatakuliah());
+                                btsRuangan.setText(content.getKelas());
+                                btsWaktu.setText(formatWaktuFixBts);
+                                btsJam.setText(getjamBts);
+//                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
+                            } else if (sekarang >= selesai){
+                                btsMatakuliah.setText(jadwal.getMatakuliah());
+                                btsRuangan.setText(content.getKelas());
+                                btsWaktu.setText(formatWaktuFixBts);
+                                btsJam.setText(getjamBts);
+//                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
+                            }else {
+                                // Handle If No Jadwal
+                            }
                         }
                     }
                 });
@@ -371,5 +405,4 @@ public class ProximityContentAdapter extends BaseAdapter {
             hari = "sabtu";
         }
     }
-
 }

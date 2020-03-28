@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.mango.autumnleaves.activity.LoginActivity;
 import com.mango.autumnleaves.util.Constant;
 import com.mango.autumnleaves.util.Session;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,7 +37,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        DynamicToast.makeSuccess(this, text).show();
+    }
+
+    protected void showSuccessToast(String text) {
+        DynamicToast.makeSuccess(this, text).show();
+    }
+
+    protected void showErrorToast(String text) {
+        DynamicToast.makeError(this, text).show();
     }
 
     protected void logoutApps() {

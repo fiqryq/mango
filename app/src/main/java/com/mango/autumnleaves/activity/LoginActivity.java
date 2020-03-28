@@ -160,7 +160,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
     @Override
     public void onFailedAuthFirebase() {
-        showToast("Gagal Auth Firebase");
+        showErrorToast("Gagal Auth Firebase");
     }
 
     @Override

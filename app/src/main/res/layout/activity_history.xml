@@ -27,17 +27,17 @@
 
         <TextView
             android:layout_width="60dp"
-            android:textColor="@color/white"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ruangan" />
+            android:text="Tanggal"
+            android:textColor="@color/white" />
 
         <TextView
             android:layout_width="60dp"
-            android:textColor="@color/white"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tanggal" />
+            android:text="Ruangan"
+            android:textColor="@color/white" />
 
         <TextView
             android:layout_width="60dp"
