@@ -22,7 +22,7 @@
         <activity android:name=".activity.mahasiswa.AboutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.InfoActivity" />
+                android:value=".activity.mahasiswa.AccountActivity" />
         </activity>
         <activity
             android:name=".activity.dosen.MainDosenActivity"
@@ -49,7 +49,7 @@
             android:name=".activity.mahasiswa.DashboardMahasiswaActivity"
             android:theme="@style/AppTheme2" /> <!-- Info -->
         <activity
-            android:name=".activity.mahasiswa.InfoActivity"
+            android:name=".activity.mahasiswa.AccountActivity"
             android:label="Informasi"
             android:theme="@style/InfoTheme">
             <meta-data

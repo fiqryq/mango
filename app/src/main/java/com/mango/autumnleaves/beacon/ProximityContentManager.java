@@ -54,13 +54,14 @@ public class ProximityContentManager {
                         for (ProximityZoneContext proximityContext : contexts) {
                             // Ngodingnya di sini
                             String kelas = proximityContext.getAttachments().get("kelas");
+                            String lokasi = proximityContext.getAttachments().get("lokasi");
                             if (kelas == null) {
                                 kelas = "unknown";
                             }
                             Log.d("kelas",kelas);
                             String idbeacon = EstimoteUtils.getShortIdentifier(proximityContext.getDeviceId());
 
-                            nearbyContent.add(new ProximityContent(kelas, idbeacon));
+                            nearbyContent.add(new ProximityContent(kelas, idbeacon,lokasi));
                         }
                         proximityContentAdapter.setNearbyContent(nearbyContent);
                         proximityContentAdapter.notifyDataSetChanged();

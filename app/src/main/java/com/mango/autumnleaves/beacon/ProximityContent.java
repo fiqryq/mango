@@ -4,6 +4,11 @@ public class ProximityContent {
     private String kelas;
     private String idbeacon;
 
+    public String getLokasi() {
+        return lokasi;
+    }
+
+    private String lokasi;
     private int id;
     private String hari;
     private String matakuliah;
@@ -91,9 +96,10 @@ public class ProximityContent {
     private String waktu_selesai;
 
 
-    public ProximityContent(String kelas, String idbeacon) {
+    public ProximityContent(String kelas, String idbeacon , String lokasi) {
         this.kelas = kelas;
         this.idbeacon = idbeacon;
+        this.lokasi = lokasi;
     }
 
     public String getKelas() {

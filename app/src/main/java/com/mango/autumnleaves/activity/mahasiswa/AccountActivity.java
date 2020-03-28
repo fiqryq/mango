@@ -27,7 +27,7 @@ import com.shreyaspatil.MaterialDialog.interfaces.OnDismissListener;
 import com.shreyaspatil.MaterialDialog.interfaces.OnShowListener;
 import com.squareup.picasso.Picasso;
 
-public class InfoActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
+public class AccountActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
     private TextView tvInfoUsername, tvInfoLogout, tvInfoMango;
     private ImageView imvInfoUsername;
@@ -38,7 +38,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+        setContentView(R.layout.activity_account);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -74,7 +74,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         tvInfoUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent profile = new Intent(InfoActivity.this, ProfileActivity.class);
+                Intent profile = new Intent(AccountActivity.this, ProfileActivity.class);
                 startActivity(profile);
             }
         });
@@ -82,7 +82,7 @@ public class InfoActivity extends BaseActivity implements View.OnClickListener, 
         tvInfoMango.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent about = new Intent(InfoActivity.this,AboutActivity.class);
+                Intent about = new Intent(AccountActivity.this,AboutActivity.class);
                 startActivity(about);
             }
         });

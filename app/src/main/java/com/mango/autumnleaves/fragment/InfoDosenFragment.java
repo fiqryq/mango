@@ -66,6 +66,7 @@ public class InfoDosenFragment extends BaseFragment {
                     }
                 })
                 .build();
+
         tvLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -106,7 +106,6 @@ public class DashboardMahasiswaActivity extends BaseActivity {
             }
         });
     }
-
     private void intentHistory() {
         //intent Menu History
         imvHistory.setOnClickListener(new View.OnClickListener() {
@@ -118,18 +117,16 @@ public class DashboardMahasiswaActivity extends BaseActivity {
         });
 
     }
-
     private void intentInformasi() {
         //intent Menu profile
         imvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent informasi = new Intent(DashboardMahasiswaActivity.this, InfoActivity.class);
+                Intent informasi = new Intent(DashboardMahasiswaActivity.this, AccountActivity.class);
                 startActivity(informasi);
             }
         });
     }
-
     private void getprofile() {
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

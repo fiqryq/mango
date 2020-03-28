@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -96,11 +97,13 @@ public class ProximityContentAdapter extends BaseAdapter {
 
         // Inisialisasi Di sini
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
+        TextView lokasi = convertView.findViewById(R.id.beacon_lokasi);
         LinearLayout tapLayout = convertView.findViewById(R.id.linearLayout);
 
         // Set Content Beacon
         ProximityContent content = nearbyContent.get(position);
-        kelas.setText(content.getKelas());
+        kelas.setText("Ruangan " + content.getKelas());
+        lokasi.setText(content.getLokasi() + " Telkom University");
 
         View finalConvertView = convertView;
         tapLayout.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +120,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                 TextView btsWaktu = bottomSheetView.findViewById(R.id.btsWaktu);
 
                 firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan);
-
                 bottomSheetView.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

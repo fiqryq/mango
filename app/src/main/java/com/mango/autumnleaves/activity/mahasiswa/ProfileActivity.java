@@ -58,7 +58,7 @@ public class ProfileActivity extends BaseActivity {
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent back = new Intent(ProfileActivity.this, InfoActivity.class);
+                Intent back = new Intent(ProfileActivity.this, AccountActivity.class);
                 startActivity(back);
             }
         });
