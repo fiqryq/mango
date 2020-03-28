@@ -10,6 +10,15 @@ public class UserDosen {
     private String kelamin;
     private String ttl;
     private String alamat;
+    private String jurusan;
+
+    public String getJurusan() {
+        return jurusan;
+    }
+
+    public void setJurusan(String jurusan) {
+        this.jurusan = jurusan;
+    }
 
     public String getGambar() {
         return gambar;
