@@ -5,11 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -26,9 +30,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.mango.autumnleaves.MainActivity;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
@@ -36,6 +42,7 @@ import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.util.Constant;
 import com.mango.autumnleaves.util.NotificationHelper;
+import com.mango.autumnleaves.util.ReminderBroadcast;
 
 import org.json.JSONObject;
 
@@ -70,7 +77,6 @@ public class JadwalActivity extends BaseActivity {
         tvMatakuliah = findViewById(R.id.tv_detail_matkul);
         tvNodata = findViewById(R.id.tv_no_data);
         strip = findViewById(R.id.strip);
-        tvNodata.setVisibility(View.GONE);
         TestNotif = findViewById(R.id.tesNotif);
 
         progressBar = findViewById(R.id.progressBar);
@@ -79,12 +85,26 @@ public class JadwalActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<>();
 
+        tvNodata.setVisibility(View.VISIBLE);
+        tvDosen.setVisibility(View.GONE);
+        tvRuangan.setVisibility(View.GONE);
+        tvWaktuMulai.setVisibility(View.GONE);
+        tvWaktuSelesai.setVisibility(View.GONE);
+        tvMatakuliah.setVisibility(View.GONE);
+        strip.setVisibility(View.GONE);
 
+        createNotificationChannel();
         jadwalRealtime();
         showJadwal();
         getNamaHari();
         getWaktuSekarang();
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        jadwalRealtime();
     }
 
     // Show Jadwal
@@ -194,6 +214,7 @@ public class JadwalActivity extends BaseActivity {
                 .collection("jadwal")
                 .whereEqualTo("hari", hari)
                 .whereLessThan("waktu_mulai",waktusekarang)
+                .orderBy("waktu_mulai", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -214,13 +235,21 @@ public class JadwalActivity extends BaseActivity {
                             int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
 
                             if (sekarang <= selesai) {
+                                tvNodata.setVisibility(View.GONE);
+                                tvDosen.setVisibility(View.VISIBLE);
+                                tvRuangan.setVisibility(View.VISIBLE);
+                                tvWaktuMulai.setVisibility(View.VISIBLE);
+                                tvWaktuSelesai.setVisibility(View.VISIBLE);
+                                tvMatakuliah.setVisibility(View.VISIBLE);
+                                strip.setVisibility(View.VISIBLE);
+
                                 tvDosen.setText(jadwal.getDosen());
                                 tvRuangan.setText(jadwal.getRuangan());
                                 tvWaktuMulai.setText(jadwal.getWaktu_mulai());
                                 tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
                                 tvMatakuliah.setText(jadwal.getMatakuliah());
 
-                            } else {
+                            } else{
                                 tvNodata.setVisibility(View.VISIBLE);
                                 tvDosen.setVisibility(View.GONE);
                                 tvRuangan.setVisibility(View.GONE);
@@ -228,10 +257,32 @@ public class JadwalActivity extends BaseActivity {
                                 tvWaktuSelesai.setVisibility(View.GONE);
                                 tvMatakuliah.setVisibility(View.GONE);
                                 strip.setVisibility(View.GONE);
+
                             }
                         }
                     }
                 });
+    }
+
+    private void alaramNotif(){
+        Intent intent = new Intent(JadwalActivity.this, ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(JadwalActivity.this,0,intent,0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        long secondMillis = 100*10;
+        alarmManager.set(AlarmManager.RTC_WAKEUP,secondMillis,pendingIntent);
+    }
+
+    private void createNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "mangoReminderChanel";
+            String description = "test";
+            int notification = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("mangonotify",name,notification);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
     
     // Refferensi Waktu

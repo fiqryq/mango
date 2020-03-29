@@ -54,8 +54,6 @@ public class HistoryActivity extends BaseActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrayList = new ArrayList<>();
-
-        getid = Util.getData("account", "id", getApplicationContext());
         showHistory();
 
         progressBar.setVisibility(View.VISIBLE);

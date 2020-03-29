@@ -3,8 +3,6 @@ package com.mango.autumnleaves.activity.dosen;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,7 +13,6 @@ import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.fragment.HomeDosenFragment;
 import com.mango.autumnleaves.fragment.InfoDosenFragment;
 import com.mango.autumnleaves.fragment.KelasDosenFragment;
-import com.mango.autumnleaves.fragment.ProfileDosenFragment;
 
 public class MainDosenActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -39,9 +36,7 @@ public class MainDosenActivity extends BaseActivity implements BottomNavigationV
 
     private boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
-
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-
             return true;
         }
         return false;

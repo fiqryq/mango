@@ -47,7 +47,8 @@ public class HomeDosenFragment extends BaseFragment {
     private ArrayList<Jadwal> arrayList;
     private RecyclerView recyclerView;
     private String hari, waktusekarang;
-    private FirebaseUser firebaseUser;
+    private  TextView HariIni;
+
 
     public HomeDosenFragment() {
         // Required empty public constructor
@@ -61,11 +62,11 @@ public class HomeDosenFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        HariIni = view.findViewById(R.id.tvHomeDosenWaktuSekarang);
         recyclerView = view.findViewById(R.id.rv_jadwal_dosen);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         arrayList = new ArrayList<>();
-
 
         showJadwal();
         getNamaHari();
@@ -127,7 +128,6 @@ public class HomeDosenFragment extends BaseFragment {
     private void setuprecyclerView(ArrayList<Jadwal> arrayList) {
         JadwalDosenAdapter dosenAdapter = new JadwalDosenAdapter(getContext(), arrayList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(dosenAdapter);
     }
 
@@ -167,7 +167,9 @@ public class HomeDosenFragment extends BaseFragment {
             bulan = "Desember";
         }
         String formatFix = hari + ", " + tanggal + " " + bulan + " " + year;
+        HariIni.setText(formatFix);
     }
+
     private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
         waktusekarang = (String) android.text.format.DateFormat.format("HH:mm", dateNow);

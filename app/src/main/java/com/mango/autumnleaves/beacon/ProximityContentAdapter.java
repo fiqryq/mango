@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.util.NotificationHelper;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import org.w3c.dom.Text;
 
@@ -94,7 +96,7 @@ public class ProximityContentAdapter extends BaseAdapter {
 
         }
 
-        final NotificationHelper notificationHelper = new NotificationHelper(context);
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -109,21 +111,24 @@ public class ProximityContentAdapter extends BaseAdapter {
         kelas.setText("Ruangan " + content.getKelas());
         lokasi.setText(content.getLokasi() + " Telkom University");
 
-        View finalConvertView = convertView;
+        // BottomSheetDialog
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.TransparentDialog);
+        View bottomSheetView = LayoutInflater.from(context).inflate(R.layout.layout_bottom_sheet,
+                        (LinearLayout) convertView.findViewById(R.id.bottomSheetContainer));
+
         tapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.TransparentDialog);
-                View bottomSheetView = LayoutInflater.from(context)
-                        .inflate(R.layout.layout_bottom_sheet,
-                                (LinearLayout) finalConvertView.findViewById(R.id.bottomSheetContainer));
 
                 TextView btsMatakuliah = bottomSheetView.findViewById(R.id.btsMatakuliah);
                 TextView btsJam = bottomSheetView.findViewById(R.id.btsJam);
                 TextView btsRuangan = bottomSheetView.findViewById(R.id.btsRuangan);
                 TextView btsWaktu = bottomSheetView.findViewById(R.id.btsWaktu);
+                LinearLayout linearLayout = bottomSheetView.findViewById(R.id.linearLayoutBotttomSheetValid);
+                ProgressBar mProgressBarBts = bottomSheetView.findViewById(R.id.progressBts);
 
-                firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan,bottomSheetDialog);
+                firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan,bottomSheetDialog, linearLayout,mProgressBarBts);
+
                 bottomSheetView.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -271,7 +276,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                     }
                 });
     }
-    private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi){
+    private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid,ProgressBar mProgressBarBts){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
@@ -290,7 +295,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
                         getNamaHari();
-                        setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content,bottomSheetViewPresensi);
+                        setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content,bottomSheetViewPresensi, mBottomSheetValid,mProgressBarBts);
 
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -301,8 +306,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-
-    private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan ,TextView btsWaktu,TextView btsJam, ProximityContent content,BottomSheetDialog bottomSheetViewPresensi){
+    private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan , TextView btsWaktu, TextView btsJam, ProximityContent content, BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid, ProgressBar mProgressBarBts){
         Date date = Calendar.getInstance().getTime();
         String tanggal = (String) android.text.format.DateFormat.format("d", date); // 20
         String monthNumber = (String) android.text.format.DateFormat.format("M", date); // 06
@@ -366,19 +370,15 @@ public class ProximityContentAdapter extends BaseAdapter {
                             int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
 
                             if (sekarang <= selesai){
+                                mBottomSheetValid.setVisibility(View.VISIBLE);
+                                mProgressBarBts.setVisibility(View.GONE);
                                 btsMatakuliah.setText(jadwal.getMatakuliah());
                                 btsRuangan.setText(content.getKelas());
                                 btsWaktu.setText(formatWaktuFixBts);
                                 btsJam.setText(getjamBts);
-//                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
-                            } else if (sekarang >= selesai){
-                                btsMatakuliah.setText(jadwal.getMatakuliah());
-                                btsRuangan.setText(content.getKelas());
-                                btsWaktu.setText(formatWaktuFixBts);
-                                btsJam.setText(getjamBts);
-//                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
-                            }else {
-                                // Handle If No Jadwal
+                            } else{
+                                DynamicToast.make(context, "Tidak Ada Kelas").show();
+                                bottomSheetViewPresensi.cancel();
                             }
                         }
                     }

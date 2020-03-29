@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bottomSheetContainer"
     android:background="@drawable/bottom_sheet_background"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,111 +13,123 @@
         android:layout_gravity="center"
         android:src="@drawable/linebottomsheet"/>
 
-    <LinearLayout
+    <ProgressBar
+        android:id="@+id/progressBts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_book_black_24dp"/>
-
-        <TextView
-            android:id="@+id/btsMatakuliah"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:text="Matakuliah"/>
-
-    </LinearLayout>
+        android:layout_height="100dp"/>
 
     <LinearLayout
+        android:id="@+id/linearLayoutBotttomSheetValid"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_place_black_24dp"/>
-
-        <TextView
-            android:id="@+id/btsRuangan"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:text="Ruangan"/>
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_book_black_24dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/btsMatakuliah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Matakuliah"/>
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/ic_date_range_black_24dp"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/btsWaktu"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:text="Waktu"/>
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_place_black_24dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/btsRuangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Ruangan"/>
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="15dp"
-            android:src="@drawable/ic_timer_black_24dp"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/btsJam"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textStyle="bold"
-            android:text="Jam"/>
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_date_range_black_24dp"/>
+
+            <TextView
+                android:id="@+id/btsWaktu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Waktu"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/ic_timer_black_24dp"/>
+
+            <TextView
+                android:id="@+id/btsJam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:text="Jam"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btsPresensi"
+            android:layout_marginHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="Presensi"
+            android:layout_marginBottom="15dp">
+
+        </Button>
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btsPresensi"
-        android:layout_marginHorizontal="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:text="Presensi"
-        android:layout_marginBottom="15dp">
-
-    </Button>
-
-
 
 </LinearLayout>

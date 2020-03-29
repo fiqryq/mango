@@ -21,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/tvJadwalRuanganDosen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -33,19 +33,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/tvJadwalWaktuMulaiDosen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="17:00"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView20"
-            app:layout_constraintStart_toEndOf="@+id/textView20"
-            app:layout_constraintTop_toTopOf="@+id/textView20" />
+            app:layout_constraintBottom_toBottomOf="@+id/tvJadwalRuanganDosen"
+            app:layout_constraintStart_toEndOf="@+id/tvJadwalRuanganDosen"
+            app:layout_constraintTop_toTopOf="@+id/tvJadwalRuanganDosen" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/tvMatakuliahDosen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -55,25 +55,25 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+            app:layout_constraintTop_toBottomOf="@+id/tvJadwalRuanganDosen" />
 
         <TextView
             android:id="@+id/textView23"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:text="-"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView21"
-            app:layout_constraintStart_toEndOf="@+id/textView21"
-            app:layout_constraintTop_toTopOf="@+id/textView21" />
+            app:layout_constraintBottom_toBottomOf="@+id/tvJadwalWaktuMulaiDosen"
+            app:layout_constraintStart_toEndOf="@+id/tvJadwalWaktuMulaiDosen"
+            app:layout_constraintTop_toTopOf="@+id/tvJadwalWaktuMulaiDosen" />
 
         <TextView
-            android:id="@+id/textView24"
+            android:id="@+id/tvJadwalWaktuSelesaiDosen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:text="18:00"
             android:textColor="@color/white"
             android:textSize="12sp"
@@ -82,7 +82,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView23" />
 
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/tvJadwalNamaDosen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -90,7 +90,7 @@
             android:text="Ghandeva Bayu"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            app:layout_constraintTop_toBottomOf="@+id/tvMatakuliahDosen" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

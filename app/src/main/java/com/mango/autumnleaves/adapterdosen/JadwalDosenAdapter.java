@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JadwalDosenAdapter extends RecyclerView.Adapter <JadwalDosenAdapter.ViewHolder> {
@@ -42,8 +41,8 @@ public class JadwalDosenAdapter extends RecyclerView.Adapter <JadwalDosenAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvRuangan.setText(mData.get(position).getRuangan());
-        holder.tvAwalKuliah.setText(mData.get(position).getWaktu_mulai());
+        holder.tvRuangan.setText("Ruangan  " + mData.get(position).getRuangan());
+        holder.tvAwalKuliah.setText("Jam  " + mData.get(position).getWaktu_mulai());
         holder.tvAakhirKuliah.setText(mData.get(position).getWaktu_selesai());
         holder.tvMatakuliah.setText(mData.get(position).getMatakuliah());
         holder.tvNamaDosen.setText(mData.get(position).getDosen());
@@ -59,11 +58,11 @@ public class JadwalDosenAdapter extends RecyclerView.Adapter <JadwalDosenAdapter
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-             tvRuangan = itemView.findViewById(R.id.textView20);
-             tvAwalKuliah = itemView.findViewById(R.id.textView21);
-             tvAakhirKuliah = itemView.findViewById(R.id.textView24);
-             tvMatakuliah = itemView.findViewById(R.id.textView22);
-             tvNamaDosen = itemView.findViewById(R.id.textView25);
+             tvRuangan = itemView.findViewById(R.id.tvJadwalRuanganDosen);
+             tvAwalKuliah = itemView.findViewById(R.id.tvJadwalWaktuMulaiDosen);
+             tvAakhirKuliah = itemView.findViewById(R.id.tvJadwalWaktuSelesaiDosen);
+             tvMatakuliah = itemView.findViewById(R.id.tvMatakuliahDosen);
+             tvNamaDosen = itemView.findViewById(R.id.tvJadwalNamaDosen);
         }
     }
 }
