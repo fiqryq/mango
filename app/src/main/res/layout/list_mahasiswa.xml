@@ -1,0 +1,39 @@
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TableRow
+        android:layout_width="0dp"
+        android:background="#DAE8FC"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/tvHistoryMatakuliah"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1" />
+
+        <TextView
+            android:id="@+id/tvHistoryTanggal"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fiqry" />
+
+        <TextView
+            android:id="@+id/tvHistoryRuangan"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="10" />
+
+        <TextView
+            android:id="@+id/tvHistoryWaktu"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Hadir" />
+    </TableRow>
+
+</TableLayout>

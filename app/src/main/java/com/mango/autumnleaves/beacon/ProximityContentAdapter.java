@@ -32,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.model.UserMahasiswa;
@@ -296,7 +297,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                         String kelasRef = userMahasiswa.getKode_kelas();
                         getNamaHari();
                         setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content,bottomSheetViewPresensi, mBottomSheetValid,mProgressBarBts);
-
                     } else {
                         Log.d("TAG", "Documment tidak ada");
                     }
@@ -354,30 +354,28 @@ public class ProximityContentAdapter extends BaseAdapter {
                 .collection("jadwal")
                 .whereEqualTo("hari", hari)
                 .whereLessThan("waktu_mulai", waktusekarang)
+                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
-                            return;
-                        }
-
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             Jadwal jadwal = new Jadwal();
                             jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
+                            jadwal.setRuangan(documentSnapshot.getString("ruangan"));
 
-                            int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
-                            int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+                            Log.d("TESQUERY", "jadwal ruangan " + jadwal.getMatakuliah());
+                            Log.d("TESQUERY", "jadwal contex " + content.getKelas());
 
-                            if (sekarang <= selesai){
+                            if (jadwal.getRuangan().equals(content.getKelas())){
                                 mBottomSheetValid.setVisibility(View.VISIBLE);
                                 mProgressBarBts.setVisibility(View.GONE);
                                 btsMatakuliah.setText(jadwal.getMatakuliah());
                                 btsRuangan.setText(content.getKelas());
                                 btsWaktu.setText(formatWaktuFixBts);
                                 btsJam.setText(getjamBts);
-                            } else{
-                                DynamicToast.make(context, "Tidak Ada Kelas").show();
+                            }else {
+                                Toast.makeText(context, "Gada Kelas", Toast.LENGTH_SHORT).show();
                                 bottomSheetViewPresensi.cancel();
                             }
                         }

@@ -18,17 +18,23 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".activity.dosen.ProfileDosenActivity" android:theme="@style/AppTheme2">
-
+        <activity android:name=".activity.KelasEmpatActivity"></activity>
+        <activity android:name=".activity.KelasTigaActivity" />
+        <activity android:name=".activity.KelasDuaActivity" />
+        <activity android:name=".activity.KelasSatuActivity" />
+        <activity android:name=".activity.dosen.DetailOpenClassActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.mahasiswa.AccountActivity" />
         </activity>
-
+        <activity
+            android:name=".activity.dosen.ProfileDosenActivity"
+            android:theme="@style/AppTheme2" />
         <activity android:name=".activity.mahasiswa.AboutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.mahasiswa.AccountActivity" />
         </activity>
-
         <activity
             android:name=".activity.dosen.MainDosenActivity"
             android:theme="@style/InfoDosenTheme" />
@@ -74,10 +80,12 @@
             android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".util.ReminderBroadcast"/>
+
+        <receiver android:name=".util.ReminderBroadcast" />
     </application>
 
 </manifest>

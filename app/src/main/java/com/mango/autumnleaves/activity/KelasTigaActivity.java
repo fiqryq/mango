@@ -1,20 +1,14 @@
-package com.mango.autumnleaves.fragment;
-
-import android.os.Bundle;
+package com.mango.autumnleaves.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,55 +20,37 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.activity.base.BaseFragment;
-import com.mango.autumnleaves.adapter.adapterdosen.SesiDosenAdapter;
+import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.SesiKelas;
 import com.mango.autumnleaves.model.UserDosen;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.util.NotificationHelper;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+public class KelasTigaActivity extends BaseActivity {
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class HomeDosenFragment extends BaseFragment {
-
-    private ArrayList<SesiKelas> arrayList;
-    private RecyclerView recyclerView;
+    private TextView tvMatakuliah , tvDosen , tvKelas;
+    private Button btnSesi,btnSubmit;
     private String hari, waktusekarang;
     private  TextView HariIni;
 
-
-    public HomeDosenFragment() {
-        // Required empty public constructor
-    }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_dosen, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_kelas_tiga);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        HariIni = view.findViewById(R.id.tvHomeDosenWaktuSekarang);
-        recyclerView = view.findViewById(R.id.rv_jadwal_dosen);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        arrayList = new ArrayList<>();
-
+        tvMatakuliah = findViewById(R.id.tvSesiMatakuliah);
+        tvDosen = findViewById(R.id.tvSesiDosen);
+        tvKelas = findViewById(R.id.tvSesiRuangan);
         showJadwal();
-        getNamaHari();
-        getWaktuSekarang();
     }
 
-    // Show Jadwal
     private void showJadwal() {
+        getWaktuSekarang();
+        getNamaHari();
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -85,6 +61,7 @@ public class HomeDosenFragment extends BaseFragment {
                     if (document.exists()) {
 
                         UserDosen userDosen = new UserDosen();
+                        userDosen.setNama(document.getString("nama"));
                         userDosen.setJurusan(document.getString("jurusan"));
                         userDosen.setNip(document.getString("nip"));
 
@@ -115,13 +92,14 @@ public class HomeDosenFragment extends BaseFragment {
                                         int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
 
                                         if (sekarang <= selesai) {
-                                            arrayList.add(sesiKelas);
+                                           tvDosen.setText(sesiKelas.getDosen());
+                                           tvMatakuliah.setText(sesiKelas.getMatakuliah());
+                                           tvKelas.setText(sesiKelas.getRuangan());
                                         }
                                     }
                                 } else {
                                     Log.d("tes", "Error getting documents: ", task.getException());
                                 }
-                                setuprecyclerView(arrayList);
                             }
                         });
                     } else {
@@ -133,11 +111,7 @@ public class HomeDosenFragment extends BaseFragment {
             }
         });
     }
-    private void setuprecyclerView(ArrayList<SesiKelas> arrayList) {
-        SesiDosenAdapter dosenAdapter = new SesiDosenAdapter(getContext(), arrayList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(dosenAdapter);
-    }
+
 
     private void getWaktuSekarang() {
         Date date = Calendar.getInstance().getTime();
@@ -174,7 +148,6 @@ public class HomeDosenFragment extends BaseFragment {
             bulan = "Desember";
         }
         String formatFix = hari + ", " + tanggal + " " + bulan + " " + year;
-        HariIni.setText(formatFix);
     }
     private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
@@ -197,5 +170,3 @@ public class HomeDosenFragment extends BaseFragment {
         }
     }
 }
-
-

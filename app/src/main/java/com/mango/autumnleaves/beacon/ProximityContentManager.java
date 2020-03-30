@@ -45,7 +45,7 @@ public class ProximityContentManager {
 
         ProximityZone zone = new ProximityZoneBuilder()
                 .forTag("kelas")
-                .inCustomRange(5.0)
+                .inCustomRange(10)
                 .onContextChange(new Function1<Set<? extends ProximityZoneContext>, Unit>() {
                     @Override
                     public Unit invoke(Set<? extends ProximityZoneContext> contexts) {
