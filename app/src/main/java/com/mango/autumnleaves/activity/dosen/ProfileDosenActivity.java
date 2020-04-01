@@ -25,7 +25,6 @@ public class ProfileDosenActivity extends BaseActivity {
     private TextView tvUsername, tvNamaLengkap, tvNip, tvAlamat, tvKelas, tvJurusan, tvTTL, tvKontak, tvEmailUser;
     private ImageView mBack, mProfile;
     private View progressDialog;
-    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +66,17 @@ public class ProfileDosenActivity extends BaseActivity {
                         UserDosen userDosen = new UserDosen();
                         userDosen.setUsername(document.getString("nama"));
                         userDosen.setNama(document.getString("namalengkap"));
+                        userDosen.setAlamat(document.getString("alamat"));
+                        userDosen.setTelp(document.getString("telp"));
                         userDosen.setNip(document.getString("nip"));
+                        userDosen.setTtl(document.getString("ttl"));
                         userDosen.setGambar(document.getString("gambar"));
 
                         tvUsername.setText(userDosen.getUsername());
                         tvNamaLengkap.setText(userDosen.getNama());
+                        tvAlamat.setText(userDosen.getAlamat());
+                        tvKontak.setText(userDosen.getTelp());
+                        tvTTL.setText(userDosen.getTtl());
                         tvNip.setText(userDosen.getNip());
                         Picasso.get().load(userDosen.getGambar()).into(mProfile);
                     }

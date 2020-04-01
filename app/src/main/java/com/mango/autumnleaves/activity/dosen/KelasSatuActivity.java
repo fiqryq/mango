@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.activity;
+package com.mango.autumnleaves.activity.dosen;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.mango.autumnleaves.R;
 
-public class KelasEmpatActivity extends AppCompatActivity {
+public class KelasSatuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kelas_empat);
+        setContentView(R.layout.activity_kelas_satu);
     }
 }

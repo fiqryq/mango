@@ -6,93 +6,93 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/content_box"
-        android:elevation="5dp"
-        android:minHeight="110dp"
-        android:paddingBottom="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="130dp"-->
+<!--        android:layout_marginTop="3dp"-->
+<!--        android:layout_marginBottom="8dp"-->
+<!--        android:background="@drawable/content_box"-->
+<!--        android:elevation="5dp"-->
+<!--        android:minHeight="110dp"-->
+<!--        android:paddingBottom="2dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView5">-->
 
-        <TextView
-            android:id="@+id/tvJadwalRuanganDosen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:text="Ku7.07"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvJadwalRuanganDosen"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            android:text="Ku7.07"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TextView
-            android:id="@+id/tvJadwalWaktuMulaiDosen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="17:00"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvJadwalRuanganDosen"
-            app:layout_constraintStart_toEndOf="@+id/tvJadwalRuanganDosen"
-            app:layout_constraintTop_toTopOf="@+id/tvJadwalRuanganDosen" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvJadwalWaktuMulaiDosen"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:text="17:00"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/tvJadwalRuanganDosen"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/tvJadwalRuanganDosen"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/tvJadwalRuanganDosen" />-->
 
-        <TextView
-            android:id="@+id/tvMatakuliahDosen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="Multimedia Terapan"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvJadwalRuanganDosen" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvMatakuliahDosen"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="24dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:text="Multimedia Terapan"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="24sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvJadwalRuanganDosen" />-->
 
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="-"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvJadwalWaktuMulaiDosen"
-            app:layout_constraintStart_toEndOf="@+id/tvJadwalWaktuMulaiDosen"
-            app:layout_constraintTop_toTopOf="@+id/tvJadwalWaktuMulaiDosen" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView23"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:text="-"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/tvJadwalWaktuMulaiDosen"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/tvJadwalWaktuMulaiDosen"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/tvJadwalWaktuMulaiDosen" />-->
 
-        <TextView
-            android:id="@+id/tvJadwalWaktuSelesaiDosen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="18:00"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView23"
-            app:layout_constraintStart_toEndOf="@+id/textView23"
-            app:layout_constraintTop_toTopOf="@+id/textView23" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvJadwalWaktuSelesaiDosen"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:text="18:00"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="12sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/textView23"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/textView23"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/textView23" />-->
 
-        <Button
-            android:id="@+id/btnOpenSesi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Buka Sesi"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMatakuliahDosen" />
+<!--        <Button-->
+<!--            android:id="@+id/btnOpenSesi"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:text="Buka Sesi"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvMatakuliahDosen" />-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

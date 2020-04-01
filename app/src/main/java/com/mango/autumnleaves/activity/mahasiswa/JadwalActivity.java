@@ -271,7 +271,6 @@ public class JadwalActivity extends BaseActivity {
         long secondMillis = 100*10;
         alarmManager.set(AlarmManager.RTC_WAKEUP,secondMillis,pendingIntent);
     }
-
     private void createNotificationChannel(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             CharSequence name = "mangoReminderChanel";
@@ -284,7 +283,6 @@ public class JadwalActivity extends BaseActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-    
     // Refferensi Waktu
     private void getWaktuSekarang() {
         Date date = Calendar.getInstance().getTime();

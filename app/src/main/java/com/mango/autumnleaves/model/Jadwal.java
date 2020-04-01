@@ -2,11 +2,22 @@ package com.mango.autumnleaves.model;
 
 public class Jadwal {
 
-   private int id;
-   private String hari;
-   private String matakuliah;
-   private String dosen;
-   private String ruangan;
+    private int id;
+    private String hari;
+    private String matakuliah;
+    private String dosen;
+    private String ruangan;
+    private int sesi;
+
+    public String getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
+
+    private String kelas;
 
     public int getId() {
         return id;
@@ -65,6 +76,6 @@ public class Jadwal {
     }
 
     private String waktu_mulai;
-   private String waktu_selesai;
+    private String waktu_selesai;
 
 }

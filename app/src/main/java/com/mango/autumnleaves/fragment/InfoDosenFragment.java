@@ -89,14 +89,6 @@ public class InfoDosenFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void intentProfile(){
-//        ProfileDosenFragment profileDosenFragment = new ProfileDosenFragment();
-//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        transaction.replace(R.id.ProfileFragment,profileDosenFragment);
-//        transaction.commit();
-
-    }
-
     private void getDataDosen(){
         firebaseFirestore
                 .collection("user")

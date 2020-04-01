@@ -29,9 +29,5 @@ public class Constant {
     public static final String TAG_USER_MAHASISWA = "2";
     public static final String TAG_USER_DOSEN = "1";
 
-    // Constant Fire
-    public static final String CHANNEL_ID = "mychannelid";
-    public static final String CHANNEL_NAME = "mychannelname";
-    public static final String CHANNEL_DESCRIPTION = "my description";
 
 }

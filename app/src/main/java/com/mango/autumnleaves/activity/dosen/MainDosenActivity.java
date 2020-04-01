@@ -12,7 +12,7 @@ import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.fragment.HomeDosenFragment;
 import com.mango.autumnleaves.fragment.InfoDosenFragment;
-import com.mango.autumnleaves.fragment.KelasDosenFragment;
+import com.mango.autumnleaves.fragment.HostoryBapDosenFragment;
 
 public class MainDosenActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -52,8 +52,8 @@ public class MainDosenActivity extends BaseActivity implements BottomNavigationV
                 fragment = new HomeDosenFragment();
                 break;
 
-            case R.id.kelas_menu:
-                fragment = new KelasDosenFragment();
+            case R.id.bap_menu:
+                fragment = new HostoryBapDosenFragment();
                 break;
 
             case R.id.account_menu:

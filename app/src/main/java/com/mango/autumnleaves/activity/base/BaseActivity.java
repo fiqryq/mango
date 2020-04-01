@@ -58,5 +58,4 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mSession.getPreferences().getString(Constant.KEY_UID, "");
     }
 
-
 }

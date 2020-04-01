@@ -32,8 +32,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     private TextView tvInfoUsername, tvInfoLogout, tvInfoMango;
     private ImageView imvInfoUsername;
     private MaterialDialog logoutDialog;
-    private Session session;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

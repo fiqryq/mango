@@ -8,32 +8,33 @@
         android:background="#DAE8FC"
         android:padding="5dp">
         <TextView
-            android:id="@+id/tvHistoryMatakuliah"
+            android:id="@+id/tvNomor"
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="1" />
 
         <TextView
-            android:id="@+id/tvHistoryTanggal"
+            android:id="@+id/tvNamaMahasiswa"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Fiqry" />
 
         <TextView
-            android:id="@+id/tvHistoryRuangan"
+            android:id="@+id/tvPertemuanMahasiswa"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="10" />
 
         <TextView
-            android:id="@+id/tvHistoryWaktu"
+            android:id="@+id/tvStatus"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Hadir" />
+            android:text="Hadir"/>
+
     </TableRow>
 
 </TableLayout>

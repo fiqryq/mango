@@ -1,40 +1,37 @@
 package com.mango.autumnleaves.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.activity.dosen.KelasDuaActivity;
+import com.mango.autumnleaves.activity.dosen.KelasEmpatActivity;
+import com.mango.autumnleaves.activity.dosen.KelasSatuActivity;
+import com.mango.autumnleaves.activity.dosen.KelasTigaActivity;
 import com.mango.autumnleaves.activity.base.BaseFragment;
-import com.mango.autumnleaves.adapter.adapterdosen.SesiDosenAdapter;
 import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.model.SesiKelas;
 import com.mango.autumnleaves.model.UserDosen;
-import com.mango.autumnleaves.model.UserMahasiswa;
-import com.mango.autumnleaves.util.NotificationHelper;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -44,15 +41,11 @@ import java.util.Date;
  */
 public class HomeDosenFragment extends BaseFragment {
 
-    private ArrayList<SesiKelas> arrayList;
-    private RecyclerView recyclerView;
     private String hari, waktusekarang;
-    private  TextView HariIni;
+    private TextView HariIni , tvNodata , tvRuangan , tvWaktuMulai , tvWaktuSelesai , tvMatakuliah ,tvStrip;
+    private ConstraintLayout KelasSatu,KelasDua,KelasTiga,KelasEmpat;
+    private ProgressBar progressBar;
 
-
-    public HomeDosenFragment() {
-        // Required empty public constructor
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -63,10 +56,54 @@ public class HomeDosenFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         HariIni = view.findViewById(R.id.tvHomeDosenWaktuSekarang);
-        recyclerView = view.findViewById(R.id.rv_jadwal_dosen);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        arrayList = new ArrayList<>();
+        tvNodata = view.findViewById(R.id.tvDosenNodata);
+        tvMatakuliah = view.findViewById(R.id.tvMatakuliahDosen);
+        tvRuangan = view.findViewById(R.id.tvJadwalRuanganDosen);
+        tvWaktuMulai = view.findViewById(R.id.tvJadwalWaktuMulaiDosen);
+        tvWaktuSelesai = view.findViewById(R.id.tvJadwalWaktuSelesaiDosen);
+        tvStrip = view.findViewById(R.id.strip);
+        progressBar = view.findViewById(R.id.homeDosenProgressBar);
+
+        KelasSatu = view.findViewById(R.id.constraintKelasSatu);
+        KelasDua = view.findViewById(R.id.constraintKelasDua);
+        KelasTiga = view.findViewById(R.id.constraintKelasTiga);
+        KelasEmpat = view.findViewById(R.id.constraintKelasEmpat);
+        KelasSatu.setVisibility(View.GONE);
+        KelasDua.setVisibility(View.GONE);
+        KelasTiga.setVisibility(View.GONE);
+        KelasEmpat.setVisibility(View.GONE);
+
+        progressBar.setVisibility(View.VISIBLE);
+        tvNodata.setVisibility(View.VISIBLE);
+        tvMatakuliah.setVisibility(View.GONE);
+        tvRuangan.setVisibility(View.GONE);
+        tvWaktuMulai.setVisibility(View.GONE);
+        tvWaktuSelesai.setVisibility(View.GONE);
+
+        KelasSatu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentKelasSatu();
+            }
+        });
+        KelasDua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentKelasDua();
+            }
+        });
+        KelasTiga.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentKelasTiga();
+            }
+        });
+        KelasEmpat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentKelasEmpat();
+            }
+        });
 
         showJadwal();
         getNamaHari();
@@ -98,30 +135,107 @@ public class HomeDosenFragment extends BaseFragment {
                                 .collection("jadwal")
                                 .whereEqualTo("hari",hari)
                                 .whereLessThan("waktu_mulai",waktusekarang)
+                                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                                .limit(1)
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        SesiKelas sesiKelas = new SesiKelas();
-                                        sesiKelas.setHari(document.getString("hari"));
-                                        sesiKelas.setMatakuliah(document.getString("matakuliah"));
-                                        sesiKelas.setDosen(document.getString("dosen"));
-                                        sesiKelas.setRuangan(document.getString("ruangan"));
-                                        sesiKelas.setWaktu_mulai(document.getString("waktu_mulai"));
-                                        sesiKelas.setWaktu_selesai(document.getString("waktu_selesai"));
+                                        Jadwal jadwal = new Jadwal();
+                                        jadwal.setHari(document.getString("hari"));
+                                        jadwal.setMatakuliah(document.getString("matakuliah"));
+                                        jadwal.setDosen(document.getString("dosen"));
+                                        jadwal.setKelas(document.getString("kelas"));
+                                        jadwal.setRuangan(document.getString("ruangan"));
+                                        jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
+                                        jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
 
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
                                         int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
 
-                                        if (sekarang <= selesai) {
-                                            arrayList.add(sesiKelas);
+                                        if (jadwal.getKelas().equals("41-01")){
+                                            progressBar.setVisibility(View.GONE);
+                                            tvNodata.setVisibility(View.GONE);
+                                            tvMatakuliah.setVisibility(View.VISIBLE);
+                                            tvRuangan.setVisibility(View.VISIBLE);
+                                            tvWaktuMulai.setVisibility(View.VISIBLE);
+                                            tvWaktuSelesai.setVisibility(View.VISIBLE);
+
+                                            KelasSatu.setVisibility(View.VISIBLE);
+                                            KelasDua.setVisibility(View.GONE);
+                                            KelasTiga.setVisibility(View.GONE);
+                                            KelasEmpat.setVisibility(View.GONE);
+
+                                            tvMatakuliah.setText(jadwal.getMatakuliah());
+                                            tvRuangan.setText(jadwal.getRuangan());
+                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+
+                                        } else if (jadwal.getKelas().equals("41-02")){
+
+                                            progressBar.setVisibility(View.GONE);
+                                            tvNodata.setVisibility(View.GONE);
+                                            tvMatakuliah.setVisibility(View.VISIBLE);
+                                            tvRuangan.setVisibility(View.VISIBLE);
+                                            tvWaktuMulai.setVisibility(View.VISIBLE);
+                                            tvWaktuSelesai.setVisibility(View.VISIBLE);
+
+                                            KelasSatu.setVisibility(View.GONE);
+                                            KelasDua.setVisibility(View.VISIBLE);
+                                            KelasTiga.setVisibility(View.GONE);
+                                            KelasEmpat.setVisibility(View.GONE);
+
+                                            tvMatakuliah.setText(jadwal.getMatakuliah());
+                                            tvRuangan.setText(jadwal.getRuangan());
+                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+
+                                        } else if (jadwal.getKelas().equals("41-03")){
+
+                                            progressBar.setVisibility(View.GONE);
+                                            tvNodata.setVisibility(View.GONE);
+                                            tvMatakuliah.setVisibility(View.VISIBLE);
+                                            tvRuangan.setVisibility(View.VISIBLE);
+                                            tvWaktuMulai.setVisibility(View.VISIBLE);
+                                            tvWaktuSelesai.setVisibility(View.VISIBLE);
+
+                                            KelasSatu.setVisibility(View.GONE);
+                                            KelasDua.setVisibility(View.GONE);
+                                            KelasTiga.setVisibility(View.VISIBLE);
+                                            KelasEmpat.setVisibility(View.GONE);
+
+                                            tvMatakuliah.setText(jadwal.getMatakuliah());
+                                            tvRuangan.setText(jadwal.getRuangan());
+                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+
+                                        } else if (jadwal.getKelas().equals("41-04")){
+
+                                            progressBar.setVisibility(View.GONE);
+                                            tvNodata.setVisibility(View.GONE);
+                                            tvMatakuliah.setVisibility(View.VISIBLE);
+                                            tvRuangan.setVisibility(View.VISIBLE);
+                                            tvWaktuMulai.setVisibility(View.VISIBLE);
+                                            tvWaktuSelesai.setVisibility(View.VISIBLE);
+
+                                            KelasSatu.setVisibility(View.GONE);
+                                            KelasDua.setVisibility(View.GONE);
+                                            KelasTiga.setVisibility(View.GONE);
+                                            KelasEmpat.setVisibility(View.VISIBLE);
+
+                                            tvMatakuliah.setText(jadwal.getMatakuliah());
+                                            tvRuangan.setText(jadwal.getRuangan());
+                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+
+                                        } else {
+                                            progressBar.setVisibility(View.GONE);
                                         }
                                     }
                                 } else {
                                     Log.d("tes", "Error getting documents: ", task.getException());
                                 }
-                                setuprecyclerView(arrayList);
                             }
                         });
                     } else {
@@ -132,11 +246,6 @@ public class HomeDosenFragment extends BaseFragment {
                 }
             }
         });
-    }
-    private void setuprecyclerView(ArrayList<SesiKelas> arrayList) {
-        SesiDosenAdapter dosenAdapter = new SesiDosenAdapter(getContext(), arrayList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(dosenAdapter);
     }
 
     private void getWaktuSekarang() {
@@ -195,6 +304,22 @@ public class HomeDosenFragment extends BaseFragment {
         } else if (hari.equalsIgnoreCase("saturday")) {
             hari = "sabtu";
         }
+    }
+    private void IntentKelasSatu(){
+        Intent intent = new Intent(getActivity(), KelasSatuActivity.class);
+        startActivity(intent);
+    }
+    private void IntentKelasDua(){
+        Intent intent = new Intent(getActivity(), KelasDuaActivity.class);
+        startActivity(intent);
+    }
+    private void IntentKelasTiga(){
+        Intent intent = new Intent(getActivity(), KelasTigaActivity.class);
+        startActivity(intent);
+    }
+    private void IntentKelasEmpat(){
+        Intent intent = new Intent(getActivity(), KelasEmpatActivity.class);
+        startActivity(intent);
     }
 }
 
