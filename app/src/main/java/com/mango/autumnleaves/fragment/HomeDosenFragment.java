@@ -73,7 +73,7 @@ public class HomeDosenFragment extends BaseFragment {
         KelasTiga.setVisibility(View.GONE);
         KelasEmpat.setVisibility(View.GONE);
 
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
         tvNodata.setVisibility(View.VISIBLE);
         tvMatakuliah.setVisibility(View.GONE);
         tvRuangan.setVisibility(View.GONE);
@@ -247,7 +247,6 @@ public class HomeDosenFragment extends BaseFragment {
             }
         });
     }
-
     private void getWaktuSekarang() {
         Date date = Calendar.getInstance().getTime();
         String tanggal = (String) DateFormat.format("d", date); // 20

@@ -35,7 +35,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        username = findViewById(R.id.tvUser);
+        username = findViewById(R.id.etusername);
         password = findViewById(R.id.etpassword);
         progres = findViewById(R.id.progressBarLogin);
 

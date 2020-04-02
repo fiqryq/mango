@@ -36,7 +36,7 @@ public class ProfileActivity extends BaseActivity {
 
         session = new Session(getApplicationContext());
 
-        tvUsername = findViewById(R.id.tvUser);
+        tvUsername = findViewById(R.id.etusername);
         tvNamaLengkap = findViewById(R.id.tvNamaLengkap);
         tvNim = findViewById(R.id.tvNim);
         tvKelas = findViewById(R.id.tvKelas);

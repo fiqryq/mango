@@ -58,7 +58,7 @@ public class InfoDosenFragment extends BaseFragment {
         });
 
         logoutDialog = new MaterialDialog.Builder(mActivity)
-                .setTitle("Logout")
+                .setTitle("Logout Dialog")
                 .setMessage("Apakah Kamu Yakin Akan Logout Dari Mango?")
                 .setCancelable(false)
                 .setPositiveButton("Logout", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {

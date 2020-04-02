@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/tvUser"
+            android:id="@+id/etusername"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginStart="24dp"
@@ -90,7 +90,7 @@
             android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvUser" />
+            app:layout_constraintTop_toBottomOf="@+id/etusername" />
 
         <ProgressBar
             android:id="@+id/progressBarLogin"

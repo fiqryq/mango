@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.mango.autumnleaves.activity.base.BaseActivity;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.util.Session;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import com.shreyaspatil.MaterialDialog.interfaces.OnCancelListener;
@@ -45,12 +44,12 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
         imvInfoUsername = findViewById(R.id.imvInfoUser);
         tvInfoUsername = findViewById(R.id.tvInfoUsername);
-        tvInfoLogout = findViewById(R.id.tvInfoLogout);
+        tvInfoLogout = findViewById(R.id.tvLogoutMhs);
         tvInfoMango = findViewById(R.id.tvInfoMango);
 
         getprofile();
         logoutDialog = new MaterialDialog.Builder(this)
-                .setTitle("Logout")
+                .setTitle("Logout Dialog")
                 .setMessage("Apakah Kamu Yakin Akan Logout Dari Mango?")
                 .setCancelable(false)
                 .setPositiveButton("Logout", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {
@@ -118,7 +117,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tvInfoLogout:
+            case R.id.tvLogoutMhs:
                 logoutDialog.show();
         }
     }
