@@ -150,11 +150,11 @@ public class HomeDosenFragment extends BaseFragment {
                                         jadwal.setRuangan(document.getString("ruangan"));
                                         jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
-
+                                        Log.d("Berhasil",document.getData().toString());
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
                                         int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
 
-                                        if (jadwal.getKelas().equals("41-01")){
+                                        if (sekarang <= selesai && jadwal.getKelas().equals("41-01")){
                                             progressBar.setVisibility(View.GONE);
                                             tvNodata.setVisibility(View.GONE);
                                             tvMatakuliah.setVisibility(View.VISIBLE);
@@ -172,7 +172,7 @@ public class HomeDosenFragment extends BaseFragment {
                                             tvWaktuMulai.setText(jadwal.getWaktu_mulai());
                                             tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
 
-                                        } else if (jadwal.getKelas().equals("41-02")){
+                                        } else if (sekarang <= selesai && jadwal.getKelas().equals("41-02")){
 
                                             progressBar.setVisibility(View.GONE);
                                             tvNodata.setVisibility(View.GONE);
@@ -191,7 +191,7 @@ public class HomeDosenFragment extends BaseFragment {
                                             tvWaktuMulai.setText(jadwal.getWaktu_mulai());
                                             tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
 
-                                        } else if (jadwal.getKelas().equals("41-03")){
+                                        } else if (sekarang <= selesai && jadwal.getKelas().equals("41-03")){
 
                                             progressBar.setVisibility(View.GONE);
                                             tvNodata.setVisibility(View.GONE);
@@ -210,7 +210,7 @@ public class HomeDosenFragment extends BaseFragment {
                                             tvWaktuMulai.setText(jadwal.getWaktu_mulai());
                                             tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
 
-                                        } else if (jadwal.getKelas().equals("41-04")){
+                                        } else if (sekarang <= selesai && jadwal.getKelas().equals("41-04")){
 
                                             progressBar.setVisibility(View.GONE);
                                             tvNodata.setVisibility(View.GONE);

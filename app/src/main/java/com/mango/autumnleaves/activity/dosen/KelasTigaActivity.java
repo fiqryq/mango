@@ -2,7 +2,6 @@ package com.mango.autumnleaves.activity.dosen;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +19,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -29,19 +35,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.activity.base.BaseActivity;
-import com.mango.autumnleaves.adapter.adapterdosen.MahasiswaAdapter;
-import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
-import com.mango.autumnleaves.model.Jadwal;
+import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
+import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.SesiKelas;
 import com.mango.autumnleaves.model.UserDosen;
-import com.mango.autumnleaves.model.UserMahasiswa;
-import com.mango.autumnleaves.util.NotificationHelper;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import com.shreyaspatil.MaterialDialog.interfaces.OnCancelListener;
 import com.shreyaspatil.MaterialDialog.interfaces.OnDismissListener;
 import com.shreyaspatil.MaterialDialog.interfaces.OnShowListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,23 +55,64 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
 
     private TextView tvMatakuliah, tvDosen, tvKelas;
     private Button btnSubmit;
-    private MaterialDialog logoutDialog;
+    private MaterialDialog bapdialog;
     private Switch switchSesi;
     private String hari, waktusekarang;
     public String idDoccument;
-    private ArrayList<UserMahasiswa> arrayList;
-    private RecyclerView recyclerView;
+    public String mataKuliahNow;
+    public String RuanganNow;
+
+    private RecyclerView mPresensiRecycleview;
+    private View emptyview;
+    private KelasAdapter mAdapter;
+    private ArrayList<Presensi> mData;
+    private ArrayList<String> mDataId;
+    private DatabaseReference mDatabase;
+
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("41-03");
+
+    private ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            mData.add(dataSnapshot.getValue(Presensi.class));
+            mDataId.add(dataSnapshot.getKey());
+            mAdapter.updateEmptyView();
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            int pos = mDataId.indexOf(dataSnapshot.getKey());
+            mData.set(pos, dataSnapshot.getValue(Presensi.class));
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            int pos = mDataId.indexOf(dataSnapshot.getKey());
+            mDataId.remove(pos);
+            mData.remove(pos);
+            mAdapter.updateEmptyView();
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kelas_tiga);
-
         idDoccument = "";
-        recyclerView = findViewById(R.id.rvListMahasiswaTiga);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        arrayList = new ArrayList<>();
+        mataKuliahNow = "";
 
         tvMatakuliah = findViewById(R.id.tvSesiMatakuliah);
         tvDosen = findViewById(R.id.tvSesiDosen);
@@ -77,9 +120,12 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
+
         dataRef();
+        jadwalRef();
         showJadwal();
-        getDataMahasiswa();
+        getDataPresensiMahasiswa();
+
         switchSesi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -92,21 +138,23 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         });
+
         if (switchSesi.isChecked()) {
             switchSesi.setText("Sesi Aktif");
         } else {
             switchSesi.setText("Sesi Tidak Aktif");
         }
 
-        logoutDialog = new MaterialDialog.Builder(this)
+        bapdialog = new MaterialDialog.Builder(this)
                 .setTitle("Submit Bap")
                 .setMessage("Apakah Kamu Yakin Akan Submit Bap?")
                 .setCancelable(false)
                 .setPositiveButton("Submit", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        showSuccessToast("Berhasil Ditekan");
-                        updateFalse();
+                        showSuccessToast("Berhasil Submit");
+                        resetAndPushData();
+                        switchSesi.setChecked(false);
                         dialogInterface.dismiss();
                     }
                 })
@@ -204,6 +252,11 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                            idDoccument = documentSnapshot.getId();
+                           if(documentSnapshot.getString("sesi").equals("1")){
+                               switchSesi.setChecked(true);
+                           }else {
+                               switchSesi.setChecked(false);
+                           }
                         }
                     }
                 });
@@ -218,7 +271,7 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                 .document(idDoccument);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("sesi", 1);
+        map.put("sesi", "1");
         documentReference.update(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -242,7 +295,7 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                 .document(idDoccument);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("sesi", 0);
+        map.put("sesi", "0");
         documentReference.update(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -255,6 +308,158 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                 showErrorToast("Gagal Tutup Sesi");
             }
         });
+    }
+    private void getDataPresensiMahasiswa() {
+        emptyview = findViewById(R.id.textView_empty_viiew);
+        mPresensiRecycleview = findViewById(R.id.rvMahasiswaTiga);
+
+        mData = new ArrayList<>();
+        mDataId = new ArrayList<>();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("41-03");
+        mDatabase.addChildEventListener(childEventListener);
+
+        mPresensiRecycleview.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager.setReverseLayout(false);
+        linearLayoutManager.setStackFromEnd(true);
+        mPresensiRecycleview.setLayoutManager(linearLayoutManager);
+
+        mAdapter = new KelasAdapter(this, mData, mDataId, emptyview, new KelasAdapter.ClickHandler() {
+            @Override
+            public void onItemClick(int position) {
+                //ketika rec di click
+            }
+
+            @Override
+            public boolean onItemLongClick(int position) {
+                return false;
+            }
+        });
+        mPresensiRecycleview.setAdapter(mAdapter);
+    }
+    private void jadwalRef() {
+        getWaktuSekarang();
+        getNamaHari();
+        // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
+        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        UserDosen userDosen = new UserDosen();
+                        userDosen.setNama(document.getString("nama"));
+                        userDosen.setJurusan(document.getString("jurusan"));
+                        userDosen.setNip(document.getString("nip"));
+
+                        // Doc Ref Dari user
+                        String nipRef = userDosen.getNip();
+
+                        // Querysnapshot untuk mendapatkan semua data dari doccument
+                        firebaseFirestore
+                                .collection("jadwalDosen")
+                                .document(nipRef)
+                                .collection("jadwal")
+                                .whereEqualTo("hari", hari)
+                                .whereLessThan("waktu_mulai", waktusekarang)
+                                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                                .limit(1)
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        SesiKelas sesiKelas = new SesiKelas();
+                                        sesiKelas.setHari(document.getString("hari"));
+                                        sesiKelas.setMatakuliah(document.getString("matakuliah"));
+                                        sesiKelas.setDosen(document.getString("dosen"));
+                                        sesiKelas.setRuangan(document.getString("ruangan"));
+                                        sesiKelas.setWaktu_mulai(document.getString("waktu_mulai"));
+                                        sesiKelas.setWaktu_selesai(document.getString("waktu_selesai"));
+
+                                        int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
+                                        int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+
+                                        if (sekarang <= selesai) {
+                                            mataKuliahNow = sesiKelas.getMatakuliah();
+                                            RuanganNow = sesiKelas.getRuangan();
+                                        }
+                                    }
+                                } else {
+                                    Log.d("tes", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                    } else {
+                        Log.d("gagal", "Documment tidak ada");
+                    }
+                } else {
+                    Log.d("gagal", "gagal", task.getException());
+                }
+            }
+        });
+    }
+    private void resetAndPushData(){
+
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+//                    dataCount = ds.child("41-03").getChildrenCount();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+        Map<String, Object> dataBap = new HashMap<>();
+        dataBap.put("matakuliah", mataKuliahNow);
+        dataBap.put("jam",waktusekarang);
+        dataBap.put("waktu",hari);
+        dataBap.put("ruangan",RuanganNow);
+        dataBap.put("created", new Timestamp(new Date()));
+
+        firebaseFirestore
+                .collection("bap")
+                .document(getFirebaseUserId())
+                .collection("data")
+                .add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                databaseReference.removeValue();
+            }
+        });
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnSubmit :
+                bapdialog.show();
+        }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialogInterface) {
+
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+
+    }
+
+    @Override
+
+    public void onShow(DialogInterface dialogInterface) {
+
     }
     private void getWaktuSekarang() {
         Date date = Calendar.getInstance().getTime();
@@ -312,59 +517,5 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
             hari = "sabtu";
         }
     }
-    private void getDataMahasiswa() {
-        firebaseFirestore.collection("user")
-                .whereEqualTo("kode_kelas", "41-03")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
-                        UserMahasiswa userMahasiswa = new UserMahasiswa();
-                        userMahasiswa.setNama(documentSnapshot.getString("nama"));
-                        userMahasiswa.setNim_mhs(documentSnapshot.getString("nim_mhs"));
-                        userMahasiswa.setAlamat(documentSnapshot.getString("alamat"));
-                        userMahasiswa.setTelp(documentSnapshot.getString("telp"));
-                        userMahasiswa.setTtl(documentSnapshot.getString("ttl"));
-                        userMahasiswa.setKelamin(documentSnapshot.getString("jenis_kelamin"));
-                        userMahasiswa.setKode_kelas(documentSnapshot.getString("kode_kelas"));
-                        userMahasiswa.setGambar(documentSnapshot.getString("gambar"));
-                        userMahasiswa.setJurusan(documentSnapshot.getString("jurusan"));
-                        arrayList.add(userMahasiswa);
-                    }
-                } else {
-                    showToast("gagal");
-                }
-                setuprecyclerView(arrayList);
-            }
-        });
-    }
-    private void setuprecyclerView(ArrayList<UserMahasiswa> arrayList) {
-        MahasiswaAdapter mahasiswaAdapter = new MahasiswaAdapter(this, arrayList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mahasiswaAdapter);
-    }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btnSubmit :
-            logoutDialog.show();
-        }
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialogInterface) {
-
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialogInterface) {
-
-    }
-
-    @Override
-    public void onShow(DialogInterface dialogInterface) {
-
-    }
 }

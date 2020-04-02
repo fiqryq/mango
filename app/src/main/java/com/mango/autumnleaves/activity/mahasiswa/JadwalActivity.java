@@ -214,7 +214,8 @@ public class JadwalActivity extends BaseActivity {
                 .collection("jadwal")
                 .whereEqualTo("hari", hari)
                 .whereLessThan("waktu_mulai",waktusekarang)
-                .orderBy("waktu_mulai", Query.Direction.ASCENDING)
+                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -257,7 +258,6 @@ public class JadwalActivity extends BaseActivity {
                                 tvWaktuSelesai.setVisibility(View.GONE);
                                 tvMatakuliah.setVisibility(View.GONE);
                                 strip.setVisibility(View.GONE);
-
                             }
                         }
                     }

@@ -25,6 +25,7 @@ public class Session {
         editor.putString(Constant.KEY_SESSION_MAHASISWA_TTL, userMahasiswa.getTtl());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_USERNAME, userMahasiswa.getUsername());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_TAG, userMahasiswa.getTag());
+        editor.putString(Constant.KEY_SESSION_MAHASISWA_STATUS, userMahasiswa.getStatus());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_KELAMIN, userMahasiswa.getKelamin());
         editor.putString(Constant.KEY_IS_LOGIN, userMahasiswa.getTag());
         editor.putString(Constant.KEY_UID, userMahasiswa.getuId());

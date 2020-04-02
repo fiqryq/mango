@@ -27,6 +27,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
@@ -60,6 +63,7 @@ public class ProximityContentAdapter extends BaseAdapter {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+    private DatabaseReference databaseReference;
     private FirebaseFirestore firebaseFirestore;
 
     public ProximityContentAdapter(Context context) {
@@ -97,10 +101,10 @@ public class ProximityContentAdapter extends BaseAdapter {
 
         }
 
-
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+
 
         // Inisialisasi Di sini
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
@@ -129,7 +133,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                 ProgressBar mProgressBarBts = bottomSheetView.findViewById(R.id.progressBts);
 
                 firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan,bottomSheetDialog, linearLayout,mProgressBarBts);
-
+                bottomSheetView.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
                 bottomSheetView.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -223,18 +227,23 @@ public class ProximityContentAdapter extends BaseAdapter {
                 .document(kelasRef)
                 .collection("jadwal")
                 .whereEqualTo("hari", hari).whereLessThan("waktu_mulai", waktusekarang)
+                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
                         if (e != null) {
                             Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
                             return;
                         }
+
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             Jadwal jadwal = new Jadwal();
                             jadwal.setHari(documentSnapshot.getString("hari"));
                             jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
                             jadwal.setDosen(documentSnapshot.getString("dosen"));
+                            jadwal.setSesi(documentSnapshot.getString("sesi"));
                             jadwal.setRuangan(documentSnapshot.getString("ruangan"));
                             jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
                             jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
@@ -252,7 +261,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         data.put("created", new Timestamp(new Date()));
 
                         firebaseFirestore
-                                .collection("presensi")
+                                .collection("presensiMahasiswa")
                                 .document("kelas")
                                 .collection(kelasRef)
                                 .add(data)
@@ -274,6 +283,14 @@ public class ProximityContentAdapter extends BaseAdapter {
                                         .show();
                             }
                         });
+
+                        databaseReference = FirebaseDatabase.getInstance().getReference().child(kelasRef);
+                        String key = databaseReference.push().getKey();
+                        Presensi presensi = new Presensi();
+                        presensi.setNama(nama_mhs);
+                        presensi.setJam(getjam);
+                        presensi.setStatus("hadir");
+                        databaseReference.child(key).setValue(presensi);
                     }
                 });
     }
@@ -363,11 +380,21 @@ public class ProximityContentAdapter extends BaseAdapter {
                             Jadwal jadwal = new Jadwal();
                             jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
                             jadwal.setRuangan(documentSnapshot.getString("ruangan"));
+                            jadwal.setSesi(documentSnapshot.getString("sesi"));
+
+                            if (jadwal.getSesi().equals("1")){
+                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
+                            } else {
+                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
+                            }
 
                             Log.d("TESQUERY", "jadwal ruangan " + jadwal.getMatakuliah());
                             Log.d("TESQUERY", "jadwal contex " + content.getKelas());
 
-                            if (jadwal.getRuangan().equals(content.getKelas())){
+                            int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
+                            int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+
+                            if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
                                 mBottomSheetValid.setVisibility(View.VISIBLE);
                                 mProgressBarBts.setVisibility(View.GONE);
                                 btsMatakuliah.setText(jadwal.getMatakuliah());

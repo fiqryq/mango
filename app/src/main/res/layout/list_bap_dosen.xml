@@ -1,7 +1,7 @@
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tablePresensi"
-    android:layout_marginBottom="1dp"
+    android:layout_marginBottom="3dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,29 +10,28 @@
         android:background="#DAE8FC"
         android:padding="5dp">
         <TextView
-            android:id="@+id/tvHistoryMatakuliah"
+            android:id="@+id/tvBapMatakuliah"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Matakuliah" />
 
         <TextView
-            android:id="@+id/tvHistoryTanggal"
+            android:id="@+id/tvBapTanggal"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Tanggal" />
 
-
         <TextView
-            android:id="@+id/tvHistoryRuangan"
+            android:id="@+id/tvBapRuangan"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Ruangan" />
 
         <TextView
-            android:id="@+id/tvHistoryWaktu"
+            android:id="@+id/tvBapWaktu"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

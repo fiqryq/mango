@@ -33,10 +33,8 @@ public class HistoryActivity extends BaseActivity {
 
     private ArrayList<History> arrayList;
     RecyclerView recyclerView;
-    
     private String getid;
     private ProgressBar progressBar;
-
     private FirebaseUser firebaseUser;
 
     @Override
@@ -82,7 +80,7 @@ public class HistoryActivity extends BaseActivity {
 
                     // Querysnapshot untuk mendapatkan semua data dari doccument
                     firebaseFirestore
-                            .collection("presensi")
+                            .collection("presensiMahasiswa")
                             .document("kelas")
                             .collection(kelasRef).orderBy("created", Query.Direction.ASCENDING)
                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

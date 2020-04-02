@@ -58,9 +58,7 @@ public class ProximityContentManager {
                             if (kelas == null) {
                                 kelas = "unknown";
                             }
-                            Log.d("kelas",kelas);
                             String idbeacon = EstimoteUtils.getShortIdentifier(proximityContext.getDeviceId());
-
                             nearbyContent.add(new ProximityContent(kelas, idbeacon,lokasi));
                         }
                         proximityContentAdapter.setNearbyContent(nearbyContent);

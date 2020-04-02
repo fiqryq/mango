@@ -23,6 +23,7 @@ public class Constant {
     public static final String KEY_SESSION_MAHASISWA_TTL = "KEY_SESSION_MAHASISWA_TTL";
     public static final String KEY_SESSION_MAHASISWA_ALAMAT = "KEY_SESSION_MAHASISWA_ALAMAT";
     public static final String KEY_SESSION_MAHASISWA_TAG = "KEY_SESSION_MAHASISWA_TAG";
+    public static final String KEY_SESSION_MAHASISWA_STATUS = "KEY_SESSION_MAHASISWA_STATUS";
 
     public static final String KEY_IS_LOGIN = "KEY_IS_LOGIN";
     public static final String KEY_UID = "KEY_UID";

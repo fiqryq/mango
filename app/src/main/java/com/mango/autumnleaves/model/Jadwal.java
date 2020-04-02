@@ -7,7 +7,16 @@ public class Jadwal {
     private String matakuliah;
     private String dosen;
     private String ruangan;
-    private int sesi;
+
+    public String getSesi() {
+        return sesi;
+    }
+
+    public void setSesi(String sesi) {
+        this.sesi = sesi;
+    }
+
+    private String sesi;
 
     public String getKelas() {
         return kelas;
