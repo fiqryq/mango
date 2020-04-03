@@ -14,15 +14,13 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
+public class ButtonSubmitTest {
 
-public class ButtonSesiTest {
     private ViewAssertion myIsDisplayed() {
         return (view, noViewFoundException) -> isDisplayed();
     }
@@ -31,11 +29,11 @@ public class ButtonSesiTest {
     public ActivityTestRule<MainDosenActivity> activityTestRule = new ActivityTestRule<>(MainDosenActivity.class);
 
     @Test
-    public void ButtonSesi() throws InterruptedException {
+    public void TestSubmitBap() throws InterruptedException {
         Thread.sleep(5000);
         Espresso.onView(withId(R.id.constraintKelasTiga)).perform(click());
-        Espresso.onView(withId(R.id.ButtonSwitch)).perform(swipeRight());
-        Thread.sleep(3000);
-        Espresso.onView(withId(R.id.ButtonSwitch)).perform(swipeLeft());
+        Espresso.onView(withId(R.id.btnSubmit)).perform(click());
+        Thread.sleep(1000);
+        onView(withText("Submit")).perform(click()).check(myIsDisplayed());
     }
 }
