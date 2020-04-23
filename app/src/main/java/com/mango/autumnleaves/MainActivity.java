@@ -2,7 +2,7 @@ package com.mango.autumnleaves;
 
 import android.os.Bundle;
 
-import com.mango.autumnleaves.activity.base.BaseActivity;
+import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

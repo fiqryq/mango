@@ -1,7 +1,5 @@
 package com.mango.autumnleaves.mahasiswatest.uitest;
 
-import android.app.Activity;
-
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -9,8 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.activity.LoginActivity;
-import com.mango.autumnleaves.activity.mahasiswa.DashboardMahasiswaActivity;
+import com.mango.autumnleaves.ui.activity.LoginActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

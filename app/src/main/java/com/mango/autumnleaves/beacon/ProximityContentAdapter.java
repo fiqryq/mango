@@ -1,14 +1,12 @@
 package com.mango.autumnleaves.beacon;
 
 import android.content.Context;
-import android.media.MediaSync;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.developer.kalert.KAlertDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,13 +35,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.model.Presensi;
-import com.mango.autumnleaves.model.UserMahasiswa;
+import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.util.NotificationHelper;
-import com.pranavpandey.android.dynamic.toasts.DynamicToast;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -402,7 +395,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                                 btsWaktu.setText(formatWaktuFixBts);
                                 btsJam.setText(getjamBts);
                             }else {
-                                Toast.makeText(context, "Gada Kelas", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Tidak ada Kelas", Toast.LENGTH_SHORT).show();
                                 bottomSheetViewPresensi.cancel();
                             }
                         }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.dosen.DetailOpenClassActivity">
+    tools:context=".ui.activity.dosen.DetailOpenClassActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -29,21 +29,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="3dp"
-                android:text="Nama Dosen" />
+                android:text="null" />
 
             <TextView
                 android:id="@+id/tvSesiMatakuliah"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="3dp"
-                android:text="Matakuliah Mobile Programming" />
+                android:text="null" />
 
             <TextView
                 android:id="@+id/tvSesiRuangan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="3dp"
-                android:text="Ruangan A6" />
+                android:text="null" />
 
             <Button
                 android:id="@+id/btnSubmit"

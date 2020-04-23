@@ -7,8 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.activity.LoginActivity;
-import com.mango.autumnleaves.activity.mahasiswa.DashboardMahasiswaActivity;
+import com.mango.autumnleaves.ui.activity.LoginActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,9 +48,10 @@ public class ShowHistoryTest {
         // Test Show Activity Hostory
         Thread.sleep(5000);
         Espresso.onView(ViewMatchers.withId(R.id.history)).perform(click());
+        Thread.sleep(5000);
         onData(anything()).inAdapterView(withId(R.id.rvHistory)).atPosition(0).
                 onChildView(withId(R.id.linearLayout)).perform(click());
-        onView(withText("ok")).perform(click()).check(myIsDisplayed());
+        onView(withText("OK")).perform(click()).check(myIsDisplayed());
         pressBack();
 
         // Logout

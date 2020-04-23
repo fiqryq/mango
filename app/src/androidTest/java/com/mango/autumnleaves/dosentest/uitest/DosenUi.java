@@ -1,19 +1,13 @@
 package com.mango.autumnleaves.dosentest.uitest;
 
-import android.util.Log;
-import android.view.View;
-
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.activity.LoginActivity;
-import com.mango.autumnleaves.activity.dosen.MainDosenActivity;
-import com.mango.autumnleaves.activity.mahasiswa.DashboardMahasiswaActivity;
+import com.mango.autumnleaves.ui.activity.LoginActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,7 +19,6 @@ import static androidx.test.espresso.action.ViewActions.click;
 
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
-import static java.util.regex.Pattern.matches;
 
 @RunWith(AndroidJUnit4.class)
 public class DosenUi {

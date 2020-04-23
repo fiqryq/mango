@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.HomeDosenFragment">
+    tools:context=".ui.fragment.HomeDosenFragment">
 
     <ProgressBar
         android:id="@+id/homeDosenProgressBar"
@@ -139,6 +139,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Kelas"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />

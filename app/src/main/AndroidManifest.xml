@@ -15,87 +15,49 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.dosen.KelasEmpatActivity" android:theme="@style/KelasTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.dosen.MainDosenActivity"/>
+        <activity android:name=".ui.activity.dosen.kelas.KelasEmpatActivity" android:theme="@style/KelasTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".activity.dosen.KelasTigaActivity" android:theme="@style/KelasTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.dosen.MainDosenActivity"/>
+        <activity android:name=".ui.activity.dosen.kelas.KelasTigaActivity" android:theme="@style/KelasTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".activity.dosen.KelasDuaActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.dosen.MainDosenActivity"/>
+        <activity android:name=".ui.activity.dosen.kelas.KelasDuaActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".activity.dosen.KelasSatuActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.dosen.MainDosenActivity"/>
+        <activity android:name=".ui.activity.dosen.kelas.KelasSatuActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".activity.dosen.DetailOpenClassActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.dosen.MainDosenActivity" />
+        <activity android:name=".ui.activity.dosen.DetailOpenClassActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity
-            android:name=".activity.dosen.ProfileDosenActivity"
-            android:theme="@style/AppTheme2" />
-        <activity android:name=".activity.mahasiswa.AboutActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.AccountActivity" />
+        <activity android:name=".ui.activity.dosen.ProfileDosenActivity" android:theme="@style/AppTheme2" />
+        <activity android:name=".ui.activity.AboutActivity" android:label="Tentang Mango">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.mahasiswa.AccountActivity" />
         </activity>
-        <activity
-            android:name=".activity.dosen.MainDosenActivity"
-            android:theme="@style/InfoDosenTheme" />
+        <activity android:name=".ui.activity.dosen.MainDosenActivity" android:theme="@style/InfoDosenTheme" />
         <activity android:name=".SaveUidActivity" />
-        <activity android:name=".activity.mahasiswa.PresensiDetailActivity" />
-        <activity android:name=".activity.mahasiswa.RegisterActivity" /> <!-- History -->
-        <activity
-            android:name=".activity.mahasiswa.HistoryActivity"
-            android:label="History">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
-        </activity> <!-- Profile -->
-        <activity
-            android:name=".activity.mahasiswa.ProfileActivity"
-            android:label="Profile"
-            android:theme="@style/ProfileTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
-        </activity> <!-- Dashboard -->
-        <activity
-            android:name=".activity.mahasiswa.DashboardMahasiswaActivity"
-            android:theme="@style/AppTheme2" /> <!-- Info -->
-        <activity
-            android:name=".activity.mahasiswa.AccountActivity"
-            android:label="Informasi"
-            android:theme="@style/InfoTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
-        </activity> <!-- Jadwal -->
-        <activity
-            android:name=".activity.mahasiswa.JadwalActivity"
-            android:label="Jadwal"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.mahasiswa.DashboardMahasiswaActivity" />
-        </activity> <!-- Login -->
-        <activity
-            android:name=".activity.LoginActivity"
-            android:theme="@style/LoginTheme">
+        <activity android:name=".ui.activity.mahasiswa.PresensiDetailActivity" />
+        <activity android:name=".ui.activity.mahasiswa.RegisterActivity" />
+        <activity android:name=".ui.activity.mahasiswa.HistoryActivity" android:label="History">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
+        </activity>
+        <activity android:name=".ui.activity.mahasiswa.ProfileActivity" android:label="Profile" android:theme="@style/ProfileTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
+        </activity>
+        <activity android:name=".ui.activity.mahasiswa.DashboardMahasiswaActivity" android:theme="@style/AppTheme2" />
+        <activity android:name=".ui.activity.mahasiswa.AccountActivity" android:label="Akun" android:theme="@style/InfoTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
+        </activity>
+        <activity android:name=".ui.activity.mahasiswa.JadwalActivity" android:label="Jadwal" android:theme="@style/AppTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
+        </activity>
+        <activity android:name=".ui.activity.SplashScreen" android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.LoginActivity" android:theme="@style/LoginTheme">
         </activity>
 
         <receiver android:name=".util.ReminderBroadcast" />

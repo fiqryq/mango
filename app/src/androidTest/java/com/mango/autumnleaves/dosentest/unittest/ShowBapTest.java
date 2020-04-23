@@ -5,7 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.activity.dosen.MainDosenActivity;
+import com.mango.autumnleaves.ui.activity.dosen.MainDosenActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
