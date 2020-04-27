@@ -34,7 +34,7 @@
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/fiqrychoerudin" />
+            app:srcCompat="@drawable/icon" />
 
         <TextView
             android:id="@+id/textView24"
@@ -85,7 +85,7 @@
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/fiqrychoerudin" />
+            app:srcCompat="@drawable/icon" />
 
         <TextView
             android:id="@+id/textView24"

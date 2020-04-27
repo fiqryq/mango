@@ -7,7 +7,7 @@
 
     <TableRow
         android:layout_width="0dp"
-        android:background="#DAE8FC"
+        android:background="@drawable/custom_ripple"
         android:padding="5dp">
 
         <TextView
