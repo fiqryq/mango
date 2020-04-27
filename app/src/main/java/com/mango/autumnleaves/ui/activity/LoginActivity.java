@@ -29,7 +29,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     private ProgressDialog progressDialog;
     private View progres;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +61,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
         checkUserLogin(mSession.getPreferences().getString(Constant.KEY_IS_LOGIN, ""));
     }
-
+    
     private void getAuthFirebase(String mUsername, String mPassword) {
         firebaseAuth.signInWithEmailAndPassword(mUsername, mPassword).addOnCompleteListener(task -> {
             task.addOnFailureListener(LoginActivity.this, new OnFailureListener() {
@@ -73,7 +72,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             });
 
             if (task.isSuccessful()) {
-
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 onSuccessAuthFirebase(firebaseUser.getUid());
             } else {

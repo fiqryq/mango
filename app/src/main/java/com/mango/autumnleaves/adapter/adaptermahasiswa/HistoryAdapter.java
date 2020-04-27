@@ -1,6 +1,7 @@
 package com.mango.autumnleaves.adapter.adaptermahasiswa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.developer.kalert.KAlertDialog;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.History;
+import com.mango.autumnleaves.ui.activity.mahasiswa.DataHistoryActivity;
 
 import java.util.List;
 
@@ -39,10 +41,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.tvHistoryRuangan.setText(mData.get(position).getRuangan());
-        holder.tvHistoryMatakuliah.setText(mData.get(position).getMatakuliah());
         holder.tvHistoryTanggal.setText(mData.get(position).getTanggal());
-        holder.tvHistoryWaktu.setText(mData.get(position).getWaktu());
 
         String matakuliah = mData.get(position).getMatakuliah();
         String ruangan = mData.get(position).getRuangan();
@@ -52,10 +51,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.tableLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    new KAlertDialog(mContext)
-                            .setTitleText("Data Presensi")
-                            .setContentText("Presensi " + tanggal + " matakuliah " + matakuliah + " Ruangan " + ruangan + " Jam " + waktu)
-                            .show();
+                Intent intent = new Intent(mContext, DataHistoryActivity.class);
+                intent.putExtra("MATAKULIAH",matakuliah);
+                intent.putExtra("RUANGAN",ruangan);
+                intent.putExtra("TANGGAL",tanggal);
+                intent.putExtra("WAKTU",waktu);
+                mContext.startActivity(intent);
             }
         });
     }
@@ -67,18 +68,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvHistoryMatakuliah;
-        TextView tvHistoryRuangan;
         TextView tvHistoryTanggal;
-        TextView tvHistoryWaktu;
         TableLayout tableLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvHistoryMatakuliah = itemView.findViewById(R.id.tvHistoryMatakuliah);
-            tvHistoryRuangan = itemView.findViewById(R.id.tvHistoryRuangan);
             tvHistoryTanggal = itemView.findViewById(R.id.tvHistoryTanggal);
-            tvHistoryWaktu = itemView.findViewById(R.id.tvHistoryWaktu);
             tableLayout = itemView.findViewById(R.id.tablePresensi);
         }
     }

@@ -7,7 +7,6 @@ BLE Beacon (Sistem kami menggunakan Estimote Proximity Beacon) ditempatkan di 2 
 Smartphone yang terinstall aplikasi Mango akan membaca signal beacon dan akan menampilkan informasi
 yang berisi informasi ruangan dan matakuliah yang sedang berlangsung.
 
-
 # Who Supported This Project (All lecturers of D3IF Telkom University)
 - Rahmadi Wijaya, S.Si., M.T. (Head of Study Program)
 - Gandeva Bayu Satrya, ST., MT., Ph.D. (Advisor 1)

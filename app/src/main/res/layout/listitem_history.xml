@@ -9,12 +9,6 @@
         android:layout_width="0dp"
         android:background="#DAE8FC"
         android:padding="5dp">
-        <TextView
-            android:id="@+id/tvHistoryMatakuliah"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Matakuliah" />
 
         <TextView
             android:id="@+id/tvHistoryTanggal"
@@ -23,20 +17,6 @@
             android:layout_weight="1"
             android:text="Tanggal" />
 
-
-        <TextView
-            android:id="@+id/tvHistoryRuangan"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Ruangan" />
-
-        <TextView
-            android:id="@+id/tvHistoryWaktu"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Waktu" />
     </TableRow>
 
 </TableLayout>
