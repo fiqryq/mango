@@ -8,13 +8,13 @@ import android.widget.TextView;
 
 import com.mango.autumnleaves.R;
 
-public class DataHistoryActivity extends AppCompatActivity {
+public class DetailHistoryActivity extends AppCompatActivity {
 
     private TextView mDataMatakuliah , mDataRuangan , mDataTanggal , mDataWaktu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_history);
+        setContentView(R.layout.activity_detail_history);
         mDataMatakuliah = findViewById(R.id.dataHistoryMatakuliah);
         mDataRuangan = findViewById(R.id.dataHistoryRuangan);
         mDataTanggal = findViewById(R.id.dataHistoryTanggal);
@@ -26,9 +26,9 @@ public class DataHistoryActivity extends AppCompatActivity {
         String tanggal = intent.getStringExtra("TANGGAL");
         String waktuPresensi = intent.getStringExtra("WAKTU");
 
-        mDataMatakuliah.setText(matakuliah);
-        mDataRuangan.setText(ruangan);
-        mDataTanggal.setText(tanggal);
-        mDataWaktu.setText(waktuPresensi);
+        mDataMatakuliah.setText(": " + matakuliah);
+        mDataRuangan.setText(": " + ruangan);
+        mDataTanggal.setText(": " + tanggal);
+        mDataWaktu.setText(": " + waktuPresensi);
     }
 }

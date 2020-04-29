@@ -7,15 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.developer.kalert.KAlertDialog;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.History;
-import com.mango.autumnleaves.ui.activity.mahasiswa.DataHistoryActivity;
+import com.mango.autumnleaves.ui.activity.mahasiswa.DetailHistoryActivity;
 
 import java.util.List;
 
@@ -51,7 +49,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.tableLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, DataHistoryActivity.class);
+                Intent intent = new Intent(mContext, DetailHistoryActivity.class);
                 intent.putExtra("MATAKULIAH",matakuliah);
                 intent.putExtra("RUANGAN",ruangan);
                 intent.putExtra("TANGGAL",tanggal);

@@ -15,7 +15,7 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.mahasiswa.DataHistoryActivity" android:label="Data Presensi">
+        <activity android:name=".ui.activity.mahasiswa.DetailHistoryActivity" android:label="Data Presensi">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.HistoryActivity" />
@@ -44,7 +44,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".ui.activity.dosen.DetailOpenClassActivity">
+        <activity android:name=".ui.activity.dosen.DetailBapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />
