@@ -15,77 +15,64 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.mahasiswa.DetailHistoryActivity" android:label="Data Presensi">
+        <activity android:name=".ui.activity.mahasiswa.DetailHistoryActivity" android:label="Data Presensi" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.HistoryActivity" />
         </activity>
-        <activity
-            android:name=".ui.activity.dosen.kelas.KelasEmpatActivity"
-            android:theme="@style/KelasTheme">
+        <activity android:name=".ui.activity.dosen.kelas.KelasEmpatActivity" android:theme="@style/KelasTheme" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity
-            android:name=".ui.activity.dosen.kelas.KelasTigaActivity"
-            android:theme="@style/KelasTheme">
+        <activity android:name=".ui.activity.dosen.kelas.KelasTigaActivity" android:theme="@style/KelasTheme" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".ui.activity.dosen.kelas.KelasDuaActivity">
+        <activity android:name=".ui.activity.dosen.kelas.KelasDuaActivity" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".ui.activity.dosen.kelas.KelasSatuActivity">
+        <activity android:name=".ui.activity.dosen.kelas.KelasSatuActivity" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
-        <activity android:name=".ui.activity.dosen.DetailBapActivity">
+        <activity android:name=".ui.activity.dosen.DetailBapActivity" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.DetailBapActivity" />
         </activity>
-        <activity
-            android:name=".ui.activity.dosen.ProfileDosenActivity"
-            android:theme="@style/AppTheme2" />
-        <activity
-            android:name=".ui.activity.AboutActivity"
-            android:label="Tentang Mango">
+        <activity android:name=".ui.activity.dosen.ProfileDosenActivity" android:theme="@style/AppTheme2" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.AboutActivity" android:label="Tentang Mango" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.AccountActivity" />
         </activity>
-        <activity
-            android:name=".ui.activity.dosen.MainDosenActivity"
-            android:theme="@style/InfoDosenTheme" />
-        <activity android:name=".ui.activity.mahasiswa.PresensiDetailActivity" />
-        <activity android:name=".ui.activity.mahasiswa.RegisterActivity" />
-        <activity
-            android:name=".ui.activity.mahasiswa.HistoryActivity"
-            android:label="History">
+        <activity android:name=".ui.activity.dosen.MainDosenActivity" android:theme="@style/InfoDosenTheme" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.mahasiswa.PresensiDetailActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.mahasiswa.RegisterActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.mahasiswa.HistoryActivity" android:label="History" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
         </activity>
-        <activity
-            android:name=".ui.activity.mahasiswa.ProfileActivity"
-            android:label="Profile"
-            android:theme="@style/ProfileTheme">
+        <activity android:name=".ui.activity.mahasiswa.ProfileActivity" android:label="Profile" android:theme="@style/ProfileTheme" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
         </activity>
         <activity
             android:name=".ui.activity.mahasiswa.DashboardMahasiswaActivity"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.activity.mahasiswa.AccountActivity"
             android:label="Akun"
-            android:theme="@style/InfoTheme">
+            android:theme="@style/InfoTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
@@ -93,14 +80,16 @@
         <activity
             android:name=".ui.activity.mahasiswa.JadwalActivity"
             android:label="Jadwal"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
         </activity>
         <activity
             android:name=".ui.activity.SplashScreen"
-            android:theme="@style/LoginTheme">
+            android:theme="@style/LoginTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -109,8 +98,8 @@
         </activity>
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:theme="@style/LoginTheme"></activity>
-
+            android:theme="@style/LoginTheme"
+            android:screenOrientation="portrait"/>
         <receiver android:name=".util.ReminderBroadcast" />
     </application>
 
