@@ -65,7 +65,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     // Lottie Animation Library
     implementation 'com.airbnb.android:lottie:3.4.0'
-
     implementation 'com.github.TutorialsAndroid:KAlertDialog:v9.0.19'
 
     // Firebase
