@@ -1,6 +1,7 @@
 package com.mango.autumnleaves.adapter.adapterdosen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.HistoryAdapter;
 import com.mango.autumnleaves.model.Bap;
 import com.mango.autumnleaves.model.History;
+import com.mango.autumnleaves.ui.activity.dosen.DetailBapActivity;
 
 import java.util.List;
 
@@ -38,10 +40,25 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvBapMatakuliah.setText(mData.get(position).getMatakuliah());
-        holder.tvBapRuangan.setText(mData.get(position).getRuangan());
+
         holder.tvBapTanggal.setText(mData.get(position).getWaktu());
-        holder.tvBapWaktu.setText(mData.get(position).getJam());
+
+        String matakuliah = mData.get(position).getMatakuliah();
+        String ruangan = mData.get(position).getRuangan();
+        String tanggal = mData.get(position).getWaktu();
+        String waktu = mData.get(position).getJam();
+
+        holder.BapLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DetailBapActivity.class);
+                intent.putExtra("MATAKULIAH",matakuliah);
+                intent.putExtra("RUANGAN",ruangan);
+                intent.putExtra("TANGGAL",tanggal);
+                intent.putExtra("WAKTU",waktu);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -50,17 +67,14 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvBapMatakuliah;
-        TextView tvBapRuangan;
+
         TextView tvBapTanggal;
-        TextView tvBapWaktu;
+        TableLayout BapLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvBapMatakuliah = itemView.findViewById(R.id.tvBapMatakuliah);
-            tvBapRuangan = itemView.findViewById(R.id.tvBapRuangan);
             tvBapTanggal = itemView.findViewById(R.id.tvBapTanggal);
-            tvBapWaktu = itemView.findViewById(R.id.tvBapWaktu);
+            BapLayout = itemView.findViewById(R.id.tableBap);
         }
     }
 }

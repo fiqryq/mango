@@ -47,7 +47,7 @@
         <activity android:name=".ui.activity.dosen.DetailBapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.dosen.MainDosenActivity" />
+                android:value=".ui.activity.dosen.DetailBapActivity" />
         </activity>
         <activity
             android:name=".ui.activity.dosen.ProfileDosenActivity"
