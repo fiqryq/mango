@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+import com.mango.autumnleaves.util.Constant;
 
 public class SplashScreen extends BaseActivity {
 
@@ -17,6 +18,7 @@ public class SplashScreen extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

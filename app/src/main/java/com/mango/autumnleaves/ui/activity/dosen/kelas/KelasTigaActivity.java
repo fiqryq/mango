@@ -422,7 +422,7 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
         Map<String, Object> dataBap = new HashMap<>();
         dataBap.put("matakuliah", mataKuliahNow);
         dataBap.put("jam",waktusekarang);
-        dataBap.put("waktu",hari);
+        dataBap.put("waktu",waktusekarang);
         dataBap.put("ruangan",RuanganNow);
         dataBap.put("created", new Timestamp(new Date()));
 

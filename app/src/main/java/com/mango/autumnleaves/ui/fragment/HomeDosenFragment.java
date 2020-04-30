@@ -35,6 +35,10 @@ import com.mango.autumnleaves.model.dosen.UserDosen;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,6 +83,8 @@ public class HomeDosenFragment extends BaseFragment {
         tvRuangan.setVisibility(View.GONE);
         tvWaktuMulai.setVisibility(View.GONE);
         tvWaktuSelesai.setVisibility(View.GONE);
+
+        HariIni.setText(getNameDay());
 
         KelasSatu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,7 +288,6 @@ public class HomeDosenFragment extends BaseFragment {
             bulan = "Desember";
         }
         String formatFix = hari + ", " + tanggal + " " + bulan + " " + year;
-        HariIni.setText(formatFix);
     }
     private void getNamaHari() {
         Date dateNow = Calendar.getInstance().getTime();
