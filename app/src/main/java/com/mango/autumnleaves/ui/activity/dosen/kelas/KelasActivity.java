@@ -45,18 +45,20 @@ import com.shreyaspatil.MaterialDialog.interfaces.OnDismissListener;
 import com.shreyaspatil.MaterialDialog.interfaces.OnShowListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KelasTigaActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
+
+public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
     private TextView tvMatakuliah, tvDosen, tvKelas;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
-    private String hari, waktusekarang;
     public String idDoccument;
     public String mataKuliahNow;
     public String RuanganNow;
@@ -109,7 +111,7 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kelas_tiga);
+        setContentView(R.layout.activity_kelas);
         idDoccument = "";
         mataKuliahNow = "";
 
@@ -169,8 +171,6 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void showJadwal() {
-        getWaktuSekarang();
-        getNamaHari();
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -193,8 +193,8 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                                 .collection("jadwalDosen")
                                 .document(nipRef)
                                 .collection("jadwal")
-                                .whereEqualTo("hari", hari)
-                                .whereLessThan("waktu_mulai", waktusekarang)
+                                .whereEqualTo("hari", getNameDay())
+                                .whereLessThan("waktu_mulai", getHour())
                                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                                 .limit(1)
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -211,7 +211,7 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                                         sesiKelas.setWaktu_selesai(document.getString("waktu_selesai"));
 
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
-                                        int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+                                        int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
                                         if (sekarang <= selesai) {
                                             tvDosen.setText("Dosen : " + sesiKelas.getDosen());
@@ -234,16 +234,14 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
         });
     }
     private void dataRef() {
-        getNamaHari();
-        getWaktuSekarang();
         firebaseFirestore
                 .collection("prodi")
                 .document("rpla")
                 .collection("kelas")
                 .document("41-03")
                 .collection("jadwal")
-                .whereEqualTo("hari", hari)
-                .whereLessThan("waktu_mulai", waktusekarang)
+                .whereEqualTo("hari", getNameDay())
+                .whereLessThan("waktu_mulai", getHour())
                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                 .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -341,8 +339,6 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void jadwalRef() {
-        getWaktuSekarang();
-        getNamaHari();
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -365,8 +361,8 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                                 .collection("jadwalDosen")
                                 .document(nipRef)
                                 .collection("jadwal")
-                                .whereEqualTo("hari", hari)
-                                .whereLessThan("waktu_mulai", waktusekarang)
+                                .whereEqualTo("hari", getNameDay())
+                                .whereLessThan("waktu_mulai", getHour())
                                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                                 .limit(1)
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -383,7 +379,7 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
                                         sesiKelas.setWaktu_selesai(document.getString("waktu_selesai"));
 
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
-                                        int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+                                        int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
                                         if (sekarang <= selesai) {
                                             mataKuliahNow = sesiKelas.getMatakuliah();
@@ -421,8 +417,8 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
 //        });
         Map<String, Object> dataBap = new HashMap<>();
         dataBap.put("matakuliah", mataKuliahNow);
-        dataBap.put("jam",waktusekarang);
-        dataBap.put("waktu",waktusekarang);
+        dataBap.put("jam",getHour());
+        dataBap.put("waktu",getTimeNow());
         dataBap.put("ruangan",RuanganNow);
         dataBap.put("created", new Timestamp(new Date()));
 
@@ -462,61 +458,4 @@ public class KelasTigaActivity extends BaseActivity implements View.OnClickListe
     public void onShow(DialogInterface dialogInterface) {
 
     }
-    private void getWaktuSekarang() {
-        Date date = Calendar.getInstance().getTime();
-        String tanggal = (String) DateFormat.format("d", date); // 20
-        String monthNumber = (String) DateFormat.format("M", date); // 06
-        String year = (String) DateFormat.format("yyyy", date); // 2013
-
-        int month = Integer.parseInt(monthNumber);
-        String bulan = null;
-
-        if (month == 1) {
-            bulan = "Januari";
-        } else if (month == 2) {
-            bulan = "Februari";
-        } else if (month == 3) {
-            bulan = "Maret";
-        } else if (month == 4) {
-            bulan = "April";
-        } else if (month == 5) {
-            bulan = "Mei";
-        } else if (month == 6) {
-            bulan = "Juni";
-        } else if (month == 7) {
-            bulan = "Juli";
-        } else if (month == 8) {
-            bulan = "Agustus";
-        } else if (month == 9) {
-            bulan = "September";
-        } else if (month == 10) {
-            bulan = "Oktober";
-        } else if (month == 11) {
-            bulan = "November";
-        } else if (month == 12) {
-            bulan = "Desember";
-        }
-        String formatFix = hari + ", " + tanggal + " " + bulan + " " + year;
-    }
-    private void getNamaHari() {
-        Date dateNow = Calendar.getInstance().getTime();
-        waktusekarang = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
-        hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
-        if (hari.equalsIgnoreCase("sunday")) {
-            hari = "minggu";
-        } else if (hari.equalsIgnoreCase("monday")) {
-            hari = "senin";
-        } else if (hari.equalsIgnoreCase("tuesday")) {
-            hari = "selasa";
-        } else if (hari.equalsIgnoreCase("wednesday")) {
-            hari = "rabu";
-        } else if (hari.equalsIgnoreCase("thursday")) {
-            hari = "kamis";
-        } else if (hari.equalsIgnoreCase("friday")) {
-            hari = "jumat";
-        } else if (hari.equalsIgnoreCase("saturday")) {
-            hari = "sabtu";
-        }
-    }
-
 }

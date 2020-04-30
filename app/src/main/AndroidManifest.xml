@@ -20,22 +20,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.HistoryActivity" />
         </activity>
-        <activity android:name=".ui.activity.dosen.kelas.KelasEmpatActivity" android:theme="@style/KelasTheme" android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.dosen.MainDosenActivity" />
-        </activity>
-        <activity android:name=".ui.activity.dosen.kelas.KelasTigaActivity" android:theme="@style/KelasTheme" android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.dosen.MainDosenActivity" />
-        </activity>
-        <activity android:name=".ui.activity.dosen.kelas.KelasDuaActivity" android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.dosen.MainDosenActivity" />
-        </activity>
-        <activity android:name=".ui.activity.dosen.kelas.KelasSatuActivity" android:screenOrientation="portrait">
+        <activity android:name=".ui.activity.dosen.kelas.KelasActivity" android:theme="@style/KelasTheme" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />

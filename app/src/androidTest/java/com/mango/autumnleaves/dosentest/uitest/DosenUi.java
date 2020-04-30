@@ -42,7 +42,7 @@ public class DosenUi {
         Espresso.onView(withId(R.id.button_login)).perform(click());
         Thread.sleep(5000);
 
-        Espresso.onView(withId(R.id.constraintKelasTiga)).perform(click());
+        Espresso.onView(withId(R.id.constraintKelas)).perform(click());
         pressBack();
 
         Espresso.onView(withId(R.id.bap_menu)).perform(click());

@@ -7,6 +7,7 @@ public class Jadwal {
     private String matakuliah;
     private String dosen;
     private String ruangan;
+    private String jurusan;
 
     public String getSesi() {
         return sesi;
@@ -87,4 +88,11 @@ public class Jadwal {
     private String waktu_mulai;
     private String waktu_selesai;
 
+    public String getJurusan() {
+        return jurusan;
+    }
+
+    public void setJurusan(String jurusan) {
+        this.jurusan = jurusan;
+    }
 }

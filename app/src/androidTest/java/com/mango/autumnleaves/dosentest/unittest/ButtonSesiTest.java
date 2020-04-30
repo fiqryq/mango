@@ -32,7 +32,7 @@ public class ButtonSesiTest {
     @Test
     public void ButtonSesi() throws InterruptedException {
         Thread.sleep(5000);
-        Espresso.onView(withId(R.id.constraintKelasTiga)).perform(click());
+        Espresso.onView(withId(R.id.constraintKelas)).perform(click());
         Espresso.onView(withId(R.id.ButtonSwitch)).perform(swipeRight());
         Thread.sleep(3000);
         Espresso.onView(withId(R.id.ButtonSwitch)).perform(swipeLeft());

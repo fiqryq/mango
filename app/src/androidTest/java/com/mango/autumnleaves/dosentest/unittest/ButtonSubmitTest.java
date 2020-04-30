@@ -31,7 +31,7 @@ public class ButtonSubmitTest {
     @Test
     public void TestSubmitBap() throws InterruptedException {
         Thread.sleep(5000);
-        Espresso.onView(withId(R.id.constraintKelasTiga)).perform(click());
+        Espresso.onView(withId(R.id.constraintKelas)).perform(click());
         Espresso.onView(withId(R.id.btnSubmit)).perform(click());
         Thread.sleep(1000);
         onView(withText("Submit")).perform(click()).check(myIsDisplayed());

@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,16 +23,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasDuaActivity;
-import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasEmpatActivity;
-import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasSatuActivity;
-import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasTigaActivity;
 import com.mango.autumnleaves.ui.activity.base.BaseFragment;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.dosen.UserDosen;
-
-import java.util.Calendar;
-import java.util.Date;
+import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasActivity;
 
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
@@ -44,8 +37,8 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
  */
 public class HomeDosenFragment extends BaseFragment {
 
-    private TextView HariIni , tvNodata , tvRuangan , tvWaktuMulai , tvWaktuSelesai , tvMatakuliah ;
-    private ConstraintLayout KelasSatu,KelasDua,KelasTiga,KelasEmpat;
+    private TextView HariIni , tvNodata , tvRuangan , tvWaktuMulai , tvWaktuSelesai , tvMatakuliah , tvViewKelas ;
+    private ConstraintLayout ConstraintKelas;
     private ProgressBar progressBar;
 
     @Override
@@ -63,18 +56,11 @@ public class HomeDosenFragment extends BaseFragment {
         tvRuangan = view.findViewById(R.id.tvJadwalRuanganDosen);
         tvWaktuMulai = view.findViewById(R.id.tvJadwalWaktuMulaiDosen);
         tvWaktuSelesai = view.findViewById(R.id.tvJadwalWaktuSelesaiDosen);
+        tvViewKelas = view.findViewById(R.id.tvViewKelas);
         progressBar = view.findViewById(R.id.homeDosenProgressBar);
 
-        KelasSatu = view.findViewById(R.id.constraintKelasSatu);
-        KelasDua = view.findViewById(R.id.constraintKelasDua);
-        KelasTiga = view.findViewById(R.id.constraintKelasTiga);
-        KelasEmpat = view.findViewById(R.id.constraintKelasEmpat);
-
-
-        KelasSatu.setVisibility(View.GONE);
-        KelasDua.setVisibility(View.GONE);
-        KelasTiga.setVisibility(View.GONE);
-        KelasEmpat.setVisibility(View.GONE);
+        ConstraintKelas = view.findViewById(R.id.constraintKelas);
+        ConstraintKelas.setVisibility(View.GONE);
 
         progressBar.setVisibility(View.GONE);
         tvNodata.setVisibility(View.VISIBLE);
@@ -85,28 +71,10 @@ public class HomeDosenFragment extends BaseFragment {
 
         HariIni.setText(getTimeNow());
 
-        KelasSatu.setOnClickListener(new View.OnClickListener() {
+        ConstraintKelas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentKelasSatu();
-            }
-        });
-        KelasDua.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IntentKelasDua();
-            }
-        });
-        KelasTiga.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IntentKelasTiga();
-            }
-        });
-        KelasEmpat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IntentKelasEmpat();
+                IntentConstraintKelas();
             }
         });
 
@@ -150,6 +118,7 @@ public class HomeDosenFragment extends BaseFragment {
                                         jadwal.setMatakuliah(document.getString("matakuliah"));
                                         jadwal.setDosen(document.getString("dosen"));
                                         jadwal.setKelas(document.getString("kelas"));
+                                        jadwal.setJurusan(document.getString("jurusan"));
                                         jadwal.setRuangan(document.getString("ruangan"));
                                         jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
@@ -157,7 +126,7 @@ public class HomeDosenFragment extends BaseFragment {
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
                                         int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
-                                        if (sekarang <= selesai && jadwal.getKelas().equals("41-01")){
+                                        if (sekarang <= selesai && jadwal.getKelas().equals(jadwal.getKelas())){
                                             progressBar.setVisibility(View.GONE);
                                             tvNodata.setVisibility(View.GONE);
                                             tvMatakuliah.setVisibility(View.VISIBLE);
@@ -165,72 +134,13 @@ public class HomeDosenFragment extends BaseFragment {
                                             tvWaktuMulai.setVisibility(View.VISIBLE);
                                             tvWaktuSelesai.setVisibility(View.VISIBLE);
 
-                                            KelasSatu.setVisibility(View.VISIBLE);
-                                            KelasDua.setVisibility(View.GONE);
-                                            KelasTiga.setVisibility(View.GONE);
-                                            KelasEmpat.setVisibility(View.GONE);
+                                            ConstraintKelas.setVisibility(View.VISIBLE);
 
                                             tvMatakuliah.setText(jadwal.getMatakuliah());
                                             tvRuangan.setText(jadwal.getRuangan());
                                             tvWaktuMulai.setText(jadwal.getWaktu_mulai());
                                             tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-
-                                        } else if (sekarang <= selesai && jadwal.getKelas().equals("41-02")){
-
-                                            progressBar.setVisibility(View.GONE);
-                                            tvNodata.setVisibility(View.GONE);
-                                            tvMatakuliah.setVisibility(View.VISIBLE);
-                                            tvRuangan.setVisibility(View.VISIBLE);
-                                            tvWaktuMulai.setVisibility(View.VISIBLE);
-                                            tvWaktuSelesai.setVisibility(View.VISIBLE);
-
-                                            KelasSatu.setVisibility(View.GONE);
-                                            KelasDua.setVisibility(View.VISIBLE);
-                                            KelasTiga.setVisibility(View.GONE);
-                                            KelasEmpat.setVisibility(View.GONE);
-
-                                            tvMatakuliah.setText(jadwal.getMatakuliah());
-                                            tvRuangan.setText(jadwal.getRuangan());
-                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
-                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-
-                                        } else if (sekarang <= selesai && jadwal.getKelas().equals("41-03")){
-
-                                            progressBar.setVisibility(View.GONE);
-                                            tvNodata.setVisibility(View.GONE);
-                                            tvMatakuliah.setVisibility(View.VISIBLE);
-                                            tvRuangan.setVisibility(View.VISIBLE);
-                                            tvWaktuMulai.setVisibility(View.VISIBLE);
-                                            tvWaktuSelesai.setVisibility(View.VISIBLE);
-
-                                            KelasSatu.setVisibility(View.GONE);
-                                            KelasDua.setVisibility(View.GONE);
-                                            KelasTiga.setVisibility(View.VISIBLE);
-                                            KelasEmpat.setVisibility(View.GONE);
-
-                                            tvMatakuliah.setText(jadwal.getMatakuliah());
-                                            tvRuangan.setText(jadwal.getRuangan());
-                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
-                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-
-                                        } else if (sekarang <= selesai && jadwal.getKelas().equals("41-04")){
-
-                                            progressBar.setVisibility(View.GONE);
-                                            tvNodata.setVisibility(View.GONE);
-                                            tvMatakuliah.setVisibility(View.VISIBLE);
-                                            tvRuangan.setVisibility(View.VISIBLE);
-                                            tvWaktuMulai.setVisibility(View.VISIBLE);
-                                            tvWaktuSelesai.setVisibility(View.VISIBLE);
-
-                                            KelasSatu.setVisibility(View.GONE);
-                                            KelasDua.setVisibility(View.GONE);
-                                            KelasTiga.setVisibility(View.GONE);
-                                            KelasEmpat.setVisibility(View.VISIBLE);
-
-                                            tvMatakuliah.setText(jadwal.getMatakuliah());
-                                            tvRuangan.setText(jadwal.getRuangan());
-                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
-                                            tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
+                                            tvViewKelas.setText(jadwal.getJurusan() + " " + jadwal.getKelas());
 
                                         } else {
                                             progressBar.setVisibility(View.GONE);
@@ -250,20 +160,8 @@ public class HomeDosenFragment extends BaseFragment {
             }
         });
     }
-    private void IntentKelasSatu(){
-        Intent intent = new Intent(getActivity(), KelasSatuActivity.class);
-        startActivity(intent);
-    }
-    private void IntentKelasDua(){
-        Intent intent = new Intent(getActivity(), KelasDuaActivity.class);
-        startActivity(intent);
-    }
-    private void IntentKelasTiga(){
-        Intent intent = new Intent(getActivity(), KelasTigaActivity.class);
-        startActivity(intent);
-    }
-    private void IntentKelasEmpat(){
-        Intent intent = new Intent(getActivity(), KelasEmpatActivity.class);
+    private void IntentConstraintKelas(){
+        Intent intent = new Intent(getActivity(), KelasActivity.class);
         startActivity(intent);
     }
 }
