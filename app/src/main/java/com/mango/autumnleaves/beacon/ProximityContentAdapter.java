@@ -47,11 +47,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
+
 public class ProximityContentAdapter extends BaseAdapter {
 
     private Context context;
-    private String getjam;
-    private String hari, waktusekarang;
     private String dataDosen, dataMatakuliah, dataWaktuMulai, dataWaktuSelesai, dataRuangan, dataNodata;
 
     private FirebaseAuth firebaseAuth;
@@ -143,45 +145,6 @@ public class ProximityContentAdapter extends BaseAdapter {
     }
 
     private void FirebasePushData(ProximityContent content ,BottomSheetDialog bottomSheetViewPresensi){
-        Date date = Calendar.getInstance().getTime();
-        String tanggal = (String) android.text.format.DateFormat.format("d", date); // 20
-        String monthNumber = (String) android.text.format.DateFormat.format("M", date); // 06
-        String year = (String) DateFormat.format("yyyy", date); // 2013
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat jam = new SimpleDateFormat("kk:mm");
-
-        int month = Integer.parseInt(monthNumber);
-        String bulan = null;
-
-        if (month == 1) {
-            bulan = "Januari";
-        } else if (month == 2) {
-            bulan = "Februari";
-        } else if (month == 3) {
-            bulan = "Maret";
-        } else if (month == 4) {
-            bulan = "April";
-        } else if (month == 5) {
-            bulan = "Mei";
-        } else if (month == 6) {
-            bulan = "Juni";
-        } else if (month == 7) {
-            bulan = "Juli";
-        } else if (month == 8) {
-            bulan = "Agustus";
-        } else if (month == 9) {
-            bulan = "September";
-        } else if (month == 10) {
-            bulan = "Oktober";
-        } else if (month == 11) {
-            bulan = "November";
-        } else if (month == 12) {
-            bulan = "Desember";
-        }
-
-        String formatWaktuFix = hari + ", " + tanggal + " " + bulan + " " + year;
-        getjam = jam.format(calendar.getTime());
-
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
@@ -200,8 +163,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
                         String nama_mhs = userMahasiswa.getNama();
-                        getNamaHari();
-                        dataRef(jurusanRef,kelasRef,nama_mhs,content,formatWaktuFix,bottomSheetViewPresensi);
+                        dataRef(jurusanRef,kelasRef,nama_mhs,content,bottomSheetViewPresensi);
 
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -212,14 +174,14 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-    private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , String formatWaktuFix, BottomSheetDialog bottomSheetViewPresensi){
+    private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , BottomSheetDialog bottomSheetViewPresensi){
         firebaseFirestore
                 .collection("prodi")
                 .document(jurusanRef)
                 .collection("kelas")
                 .document(kelasRef)
                 .collection("jadwal")
-                .whereEqualTo("hari", hari).whereLessThan("waktu_mulai", waktusekarang)
+                .whereEqualTo("hari", getNameDay()).whereLessThan("waktu_mulai", getHour())
                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                 .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -249,8 +211,8 @@ public class ProximityContentAdapter extends BaseAdapter {
                         data.put("nama", nama_mhs);
                         data.put("matakuliah", dataMatakuliah);
                         data.put("ruangan", content.getKelas());
-                        data.put("jam", getjam);
-                        data.put("waktu", formatWaktuFix);
+                        data.put("jam", getHour());
+                        data.put("waktu", getTimeNow());
                         data.put("created", new Timestamp(new Date()));
 
                         firebaseFirestore
@@ -281,7 +243,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         String key = databaseReference.push().getKey();
                         Presensi presensi = new Presensi();
                         presensi.setNama(nama_mhs);
-                        presensi.setJam(getjam);
+                        presensi.setJam(getHour());
                         presensi.setStatus("hadir");
                         databaseReference.child(key).setValue(presensi);
                     }
@@ -305,7 +267,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                         // Doc Ref Dari user
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
-                        getNamaHari();
                         setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content,bottomSheetViewPresensi, mBottomSheetValid,mProgressBarBts);
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -317,53 +278,14 @@ public class ProximityContentAdapter extends BaseAdapter {
         });
     }
     private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan , TextView btsWaktu, TextView btsJam, ProximityContent content, BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid, ProgressBar mProgressBarBts){
-        Date date = Calendar.getInstance().getTime();
-        String tanggal = (String) android.text.format.DateFormat.format("d", date); // 20
-        String monthNumber = (String) android.text.format.DateFormat.format("M", date); // 06
-        String year = (String) DateFormat.format("yyyy", date); // 2013
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat jam = new SimpleDateFormat("kk:mm");
-
-        int month = Integer.parseInt(monthNumber);
-        String bulan = null;
-
-        if (month == 1) {
-            bulan = "Januari";
-        } else if (month == 2) {
-            bulan = "Februari";
-        } else if (month == 3) {
-            bulan = "Maret";
-        } else if (month == 4) {
-            bulan = "April";
-        } else if (month == 5) {
-            bulan = "Mei";
-        } else if (month == 6) {
-            bulan = "Juni";
-        } else if (month == 7) {
-            bulan = "Juli";
-        } else if (month == 8) {
-            bulan = "Agustus";
-        } else if (month == 9) {
-            bulan = "September";
-        } else if (month == 10) {
-            bulan = "Oktober";
-        } else if (month == 11) {
-            bulan = "November";
-        } else if (month == 12) {
-            bulan = "Desember";
-        }
-
-        String formatWaktuFixBts = hari + ", " + tanggal + " " + bulan + " " + year;
-        String getjamBts = jam.format(calendar.getTime());
-
         firebaseFirestore
                 .collection("prodi")
                 .document(jurusanRef)
                 .collection("kelas")
                 .document(kelasRef)
                 .collection("jadwal")
-                .whereEqualTo("hari", hari)
-                .whereLessThan("waktu_mulai", waktusekarang)
+                .whereEqualTo("hari", getNameDay())
+                .whereLessThan("waktu_mulai", getHour())
                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                 .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -385,15 +307,15 @@ public class ProximityContentAdapter extends BaseAdapter {
                             Log.d("TESQUERY", "jadwal contex " + content.getKelas());
 
                             int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
-                            int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+                            int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
                             if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
                                 mBottomSheetValid.setVisibility(View.VISIBLE);
                                 mProgressBarBts.setVisibility(View.GONE);
                                 btsMatakuliah.setText(jadwal.getMatakuliah());
                                 btsRuangan.setText(content.getKelas());
-                                btsWaktu.setText(formatWaktuFixBts);
-                                btsJam.setText(getjamBts);
+                                btsWaktu.setText(getTimeNow());
+                                btsJam.setText(getHour());
                             }else {
                                 Toast.makeText(context, "Tidak ada Kelas", Toast.LENGTH_SHORT).show();
                                 bottomSheetViewPresensi.cancel();
@@ -401,26 +323,5 @@ public class ProximityContentAdapter extends BaseAdapter {
                         }
                     }
                 });
-    }
-    private void getNamaHari() {
-        Date dateNow = Calendar.getInstance().getTime();
-        waktusekarang = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
-        hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
-
-        if (hari.equalsIgnoreCase("sunday")) {
-            hari = "minggu";
-        } else if (hari.equalsIgnoreCase("monday")) {
-            hari = "senin";
-        } else if (hari.equalsIgnoreCase("tuesday")) {
-            hari = "selasa";
-        } else if (hari.equalsIgnoreCase("wednesday")) {
-            hari = "rabu";
-        } else if (hari.equalsIgnoreCase("thursday")) {
-            hari = "kamis";
-        } else if (hari.equalsIgnoreCase("friday")) {
-            hari = "jumat";
-        } else if (hari.equalsIgnoreCase("saturday")) {
-            hari = "sabtu";
-        }
     }
 }
