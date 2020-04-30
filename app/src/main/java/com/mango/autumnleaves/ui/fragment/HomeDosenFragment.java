@@ -37,7 +37,6 @@ import java.util.Date;
 
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
-import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 /**
@@ -45,8 +44,7 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
  */
 public class HomeDosenFragment extends BaseFragment {
 
-    private String hari, waktusekarang;
-    private TextView HariIni , tvNodata , tvRuangan , tvWaktuMulai , tvWaktuSelesai , tvMatakuliah ,tvStrip;
+    private TextView HariIni , tvNodata , tvRuangan , tvWaktuMulai , tvWaktuSelesai , tvMatakuliah ;
     private ConstraintLayout KelasSatu,KelasDua,KelasTiga,KelasEmpat;
     private ProgressBar progressBar;
 
@@ -65,13 +63,14 @@ public class HomeDosenFragment extends BaseFragment {
         tvRuangan = view.findViewById(R.id.tvJadwalRuanganDosen);
         tvWaktuMulai = view.findViewById(R.id.tvJadwalWaktuMulaiDosen);
         tvWaktuSelesai = view.findViewById(R.id.tvJadwalWaktuSelesaiDosen);
-        tvStrip = view.findViewById(R.id.strip);
         progressBar = view.findViewById(R.id.homeDosenProgressBar);
 
         KelasSatu = view.findViewById(R.id.constraintKelasSatu);
         KelasDua = view.findViewById(R.id.constraintKelasDua);
         KelasTiga = view.findViewById(R.id.constraintKelasTiga);
         KelasEmpat = view.findViewById(R.id.constraintKelasEmpat);
+
+
         KelasSatu.setVisibility(View.GONE);
         KelasDua.setVisibility(View.GONE);
         KelasTiga.setVisibility(View.GONE);
@@ -84,7 +83,7 @@ public class HomeDosenFragment extends BaseFragment {
         tvWaktuMulai.setVisibility(View.GONE);
         tvWaktuSelesai.setVisibility(View.GONE);
 
-        HariIni.setText(getNameDay());
+        HariIni.setText(getTimeNow());
 
         KelasSatu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,8 +111,6 @@ public class HomeDosenFragment extends BaseFragment {
         });
 
         showJadwal();
-        getNamaHari();
-        getWaktuSekarang();
     }
 
     // Show Jadwal
@@ -139,8 +136,8 @@ public class HomeDosenFragment extends BaseFragment {
                                 .collection("jadwalDosen")
                                 .document(nipRef)
                                 .collection("jadwal")
-                                .whereEqualTo("hari",hari)
-                                .whereLessThan("waktu_mulai",waktusekarang)
+                                .whereEqualTo("hari",getNameDay())
+                                .whereLessThan("waktu_mulai",getHour())
                                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                                 .limit(1)
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -158,7 +155,7 @@ public class HomeDosenFragment extends BaseFragment {
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
                                         Log.d("Berhasil",document.getData().toString());
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
-                                        int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+                                        int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
                                         if (sekarang <= selesai && jadwal.getKelas().equals("41-01")){
                                             progressBar.setVisibility(View.GONE);
@@ -252,62 +249,6 @@ public class HomeDosenFragment extends BaseFragment {
                 }
             }
         });
-    }
-    private void getWaktuSekarang() {
-        Date date = Calendar.getInstance().getTime();
-        String tanggal = (String) DateFormat.format("d", date); // 20
-        String monthNumber = (String) DateFormat.format("M", date); // 06
-        String year = (String) DateFormat.format("yyyy", date); // 2013
-
-        int month = Integer.parseInt(monthNumber);
-        String bulan = null;
-
-        if (month == 1) {
-            bulan = "Januari";
-        } else if (month == 2) {
-            bulan = "Februari";
-        } else if (month == 3) {
-            bulan = "Maret";
-        } else if (month == 4) {
-            bulan = "April";
-        } else if (month == 5) {
-            bulan = "Mei";
-        } else if (month == 6) {
-            bulan = "Juni";
-        } else if (month == 7) {
-            bulan = "Juli";
-        } else if (month == 8) {
-            bulan = "Agustus";
-        } else if (month == 9) {
-            bulan = "September";
-        } else if (month == 10) {
-            bulan = "Oktober";
-        } else if (month == 11) {
-            bulan = "November";
-        } else if (month == 12) {
-            bulan = "Desember";
-        }
-        String formatFix = hari + ", " + tanggal + " " + bulan + " " + year;
-    }
-    private void getNamaHari() {
-        Date dateNow = Calendar.getInstance().getTime();
-        waktusekarang = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
-        hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
-        if (hari.equalsIgnoreCase("sunday")) {
-            hari = "minggu";
-        } else if (hari.equalsIgnoreCase("monday")) {
-            hari = "senin";
-        } else if (hari.equalsIgnoreCase("tuesday")) {
-            hari = "selasa";
-        } else if (hari.equalsIgnoreCase("wednesday")) {
-            hari = "rabu";
-        } else if (hari.equalsIgnoreCase("thursday")) {
-            hari = "kamis";
-        } else if (hari.equalsIgnoreCase("friday")) {
-            hari = "jumat";
-        } else if (hari.equalsIgnoreCase("saturday")) {
-            hari = "sabtu";
-        }
     }
     private void IntentKelasSatu(){
         Intent intent = new Intent(getActivity(), KelasSatuActivity.class);

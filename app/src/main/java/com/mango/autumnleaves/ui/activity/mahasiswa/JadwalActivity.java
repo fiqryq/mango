@@ -36,6 +36,10 @@ import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 import com.mango.autumnleaves.util.NotificationHelper;
 import com.mango.autumnleaves.util.ReminderBroadcast;
 
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,7 +49,6 @@ public class JadwalActivity extends BaseActivity {
     private ArrayList<Jadwal> arrayList;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private String hari, waktusekarang;
     private TextView tvSekarang, tvDosen, tvMatakuliah, tvWaktuMulai, tvWaktuSelesai, tvRuangan, tvNodata, TestNotif,strip;
     private FirebaseUser firebaseUser;
 
@@ -80,12 +83,10 @@ public class JadwalActivity extends BaseActivity {
         tvMatakuliah.setVisibility(View.GONE);
         strip.setVisibility(View.GONE);
 
-        createNotificationChannel();
         jadwalRealtime();
         showJadwal();
-        getNamaHari();
-        getWaktuSekarang();
         progressBar.setVisibility(View.VISIBLE);
+        tvSekarang.setText(getTimeNow());
     }
 
     @Override
@@ -174,7 +175,6 @@ public class JadwalActivity extends BaseActivity {
                         // Doc Ref Dari user
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
-                        getNamaHari();
                         firestorejadwal(jurusanRef,kelasRef);
 //                        test(kelasRef,jurusanRef);
 
@@ -199,8 +199,8 @@ public class JadwalActivity extends BaseActivity {
                 .collection("kelas")
                 .document(kelasRef)
                 .collection("jadwal")
-                .whereEqualTo("hari", hari)
-                .whereLessThan("waktu_mulai",waktusekarang)
+                .whereEqualTo("hari", getNameDay())
+                .whereLessThan("waktu_mulai",getHour())
                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                 .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -220,7 +220,7 @@ public class JadwalActivity extends BaseActivity {
                             jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
 
                             int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
-                            int sekarang = Integer.parseInt(waktusekarang.replace(":", ""));
+                            int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
                             if (sekarang <= selesai) {
                                 tvNodata.setVisibility(View.GONE);
@@ -249,84 +249,6 @@ public class JadwalActivity extends BaseActivity {
                         }
                     }
                 });
-    }
-
-    private void alaramNotif(){
-        Intent intent = new Intent(JadwalActivity.this, ReminderBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(JadwalActivity.this,0,intent,0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        long secondMillis = 100*10;
-        alarmManager.set(AlarmManager.RTC_WAKEUP,secondMillis,pendingIntent);
-    }
-    private void createNotificationChannel(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            CharSequence name = "mangoReminderChanel";
-            String description = "test";
-            int notification = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("mangonotify",name,notification);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-    // Refferensi Waktu
-    private void getWaktuSekarang() {
-        Date date = Calendar.getInstance().getTime();
-        String tanggal = (String) DateFormat.format("d", date); // 20
-        String monthNumber = (String) DateFormat.format("M", date); // 06
-        String year = (String) DateFormat.format("yyyy", date); // 2013
-
-        int month = Integer.parseInt(monthNumber);
-        String bulan = null;
-
-        if (month == 1) {
-            bulan = "Januari";
-        } else if (month == 2) {
-            bulan = "Februari";
-        } else if (month == 3) {
-            bulan = "Maret";
-        } else if (month == 4) {
-            bulan = "April";
-        } else if (month == 5) {
-            bulan = "Mei";
-        } else if (month == 6) {
-            bulan = "Juni";
-        } else if (month == 7) {
-            bulan = "Juli";
-        } else if (month == 8) {
-            bulan = "Agustus";
-        } else if (month == 9) {
-            bulan = "September";
-        } else if (month == 10) {
-            bulan = "Oktober";
-        } else if (month == 11) {
-            bulan = "November";
-        } else if (month == 12) {
-            bulan = "Desember";
-        }
-        String formatFix = hari + ", " + tanggal + " " + bulan + " " + year;
-        tvSekarang.setText(String.valueOf(formatFix));
-    }
-    private void getNamaHari() {
-        Date dateNow = Calendar.getInstance().getTime();
-        waktusekarang = (String) android.text.format.DateFormat.format("HH:mm", dateNow);
-        hari = (String) android.text.format.DateFormat.format("EEEE", dateNow);
-        if (hari.equalsIgnoreCase("sunday")) {
-            hari = "minggu";
-        } else if (hari.equalsIgnoreCase("monday")) {
-            hari = "senin";
-        } else if (hari.equalsIgnoreCase("tuesday")) {
-            hari = "selasa";
-        } else if (hari.equalsIgnoreCase("wednesday")) {
-            hari = "rabu";
-        } else if (hari.equalsIgnoreCase("thursday")) {
-            hari = "kamis";
-        } else if (hari.equalsIgnoreCase("friday")) {
-            hari = "jumat";
-        } else if (hari.equalsIgnoreCase("saturday")) {
-            hari = "sabtu";
-        }
     }
 }
 
