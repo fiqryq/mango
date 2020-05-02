@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -70,43 +71,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     private ArrayList<String> mDataId;
     private DatabaseReference mDatabase;
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("41-03");
-
-    private ChildEventListener childEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            mData.add(dataSnapshot.getValue(Presensi.class));
-            mDataId.add(dataSnapshot.getKey());
-            mAdapter.updateEmptyView();
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            int pos = mDataId.indexOf(dataSnapshot.getKey());
-            mData.set(pos, dataSnapshot.getValue(Presensi.class));
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            int pos = mDataId.indexOf(dataSnapshot.getKey());
-            mDataId.remove(pos);
-            mData.remove(pos);
-            mAdapter.updateEmptyView();
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
+    private String datKelas , datMatakuliah , datDosen , datRuangan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +86,18 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
+        Intent intent = getIntent();
+        datMatakuliah = intent.getStringExtra("MATAKULIAH");
+        datDosen = intent.getStringExtra("DOSEN");
+        datKelas = intent.getStringExtra("KELAS");
+        datRuangan = intent.getStringExtra("RUANGAN");
+
+        tvDosen.setText(": " + datDosen);
+        tvMatakuliah.setText(": " + datMatakuliah);
+        tvKelas.setText(": " + datRuangan);
 
         dataRef();
         jadwalRef();
-        showJadwal();
         getDataPresensiMahasiswa();
 
         switchSesi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -169,6 +142,45 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .build();
         btnSubmit.setOnClickListener(this::onClick);
     }
+
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("41-03");
+
+    private ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            mData.add(dataSnapshot.getValue(Presensi.class));
+            mDataId.add(dataSnapshot.getKey());
+            mAdapter.updateEmptyView();
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            int pos = mDataId.indexOf(dataSnapshot.getKey());
+            mData.set(pos, dataSnapshot.getValue(Presensi.class));
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            int pos = mDataId.indexOf(dataSnapshot.getKey());
+            mDataId.remove(pos);
+            mData.remove(pos);
+            mAdapter.updateEmptyView();
+            mAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
+
 
     private void showJadwal() {
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
@@ -233,6 +245,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
+
     private void dataRef() {
         firebaseFirestore
                 .collection("prodi")
@@ -263,7 +276,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .collection("prodi")
                 .document("rpla")
                 .collection("kelas")
-                .document("41-03")
+                .document(datKelas)
                 .collection("jadwal")
                 .document(idDoccument);
 
@@ -287,7 +300,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .collection("prodi")
                 .document("rpla")
                 .collection("kelas")
-                .document("41-03")
+                .document(datKelas)
                 .collection("jadwal")
                 .document(idDoccument);
 
@@ -306,7 +319,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
-
     private void getDataPresensiMahasiswa() {
         emptyview = findViewById(R.id.textView_empty_viiew);
         mPresensiRecycleview = findViewById(R.id.rvMahasiswaTiga);
@@ -337,7 +349,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         });
         mPresensiRecycleview.setAdapter(mAdapter);
     }
-
     private void jadwalRef() {
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
@@ -415,6 +426,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 //
 //            }
 //        });
+
         Map<String, Object> dataBap = new HashMap<>();
         dataBap.put("matakuliah", mataKuliahNow);
         dataBap.put("jam",getHour());
@@ -433,7 +445,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
-
 
     @Override
     public void onClick(View v) {

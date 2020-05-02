@@ -40,6 +40,7 @@ public class HomeDosenFragment extends BaseFragment {
     private TextView HariIni , tvNodata , tvRuangan , tvWaktuMulai , tvWaktuSelesai , tvMatakuliah , tvViewKelas ;
     private ConstraintLayout ConstraintKelas;
     private ProgressBar progressBar;
+    private String datMatakuliah , datDosen , datRuangan , datKelas;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +59,11 @@ public class HomeDosenFragment extends BaseFragment {
         tvWaktuSelesai = view.findViewById(R.id.tvJadwalWaktuSelesaiDosen);
         tvViewKelas = view.findViewById(R.id.tvViewKelas);
         progressBar = view.findViewById(R.id.homeDosenProgressBar);
+
+        datMatakuliah ="";
+        datDosen ="";
+        datKelas ="";
+        datRuangan ="";
 
         ConstraintKelas = view.findViewById(R.id.constraintKelas);
         ConstraintKelas.setVisibility(View.GONE);
@@ -122,6 +128,12 @@ public class HomeDosenFragment extends BaseFragment {
                                         jadwal.setRuangan(document.getString("ruangan"));
                                         jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
+
+                                        datDosen = jadwal.getDosen();
+                                        datMatakuliah = jadwal.getMatakuliah();
+                                        datRuangan = jadwal.getRuangan();
+                                        datKelas = jadwal.getKelas();
+
                                         Log.d("Berhasil",document.getData().toString());
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
                                         int sekarang = Integer.parseInt(getHour().replace(":", ""));
@@ -160,8 +172,13 @@ public class HomeDosenFragment extends BaseFragment {
             }
         });
     }
+
     private void IntentConstraintKelas(){
         Intent intent = new Intent(getActivity(), KelasActivity.class);
+        intent.putExtra("MATAKULIAH",datMatakuliah);
+        intent.putExtra("DOSEN",datDosen);
+        intent.putExtra("RUANGAN",datRuangan);
+        intent.putExtra("KELAS",datKelas);
         startActivity(intent);
     }
 }

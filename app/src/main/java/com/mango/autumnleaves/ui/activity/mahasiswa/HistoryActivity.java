@@ -80,7 +80,8 @@ public class HistoryActivity extends BaseActivity {
                     firebaseFirestore
                             .collection("presensiMahasiswa")
                             .document("kelas")
-                            .collection(kelasRef).orderBy("created", Query.Direction.ASCENDING)
+                            .collection(kelasRef)
+                            .orderBy("created", Query.Direction.ASCENDING)
                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
