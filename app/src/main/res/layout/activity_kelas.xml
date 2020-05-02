@@ -102,7 +102,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -110,13 +109,16 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/spinerPertemuan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/itemPertemuan"/>
 
             <EditText
+                android:id="@+id/etMateriSesiKelas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Materi"/>
+                android:hint="Materi" />
 
         </LinearLayout>
 

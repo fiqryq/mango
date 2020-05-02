@@ -249,7 +249,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                     }
                 });
     }
-
+    
     private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid,ProgressBar mProgressBarBts){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();

@@ -7,11 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,10 +58,12 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
-public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
+public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener , AdapterView.OnItemSelectedListener {
 
     private TextView tvMatakuliah, tvDosen, tvKelas;
+    private TextView mEtMateri;
     private Button btnSubmit;
+    private Spinner mSpinPertemuan;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
     public String idDoccument;
@@ -83,6 +89,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         tvMatakuliah = findViewById(R.id.tvSesiMatakuliah);
         tvDosen = findViewById(R.id.tvSesiDosen);
         tvKelas = findViewById(R.id.tvSesiRuangan);
+        mEtMateri = findViewById(R.id.etMateriSesiKelas);
+        mSpinPertemuan = findViewById(R.id.spinerPertemuan);
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
@@ -113,11 +121,10 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
 
-        if (switchSesi.isChecked()) {
-            switchSesi.setText("Sesi Aktif");
-        } else {
-            switchSesi.setText("Sesi Tidak Aktif");
-        }
+        ArrayAdapter<CharSequence> spinAdapter = ArrayAdapter.createFromResource(this, R.array.itemPertemuan, android.R.layout.simple_spinner_item);
+        spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinPertemuan.setAdapter(spinAdapter);
+        mSpinPertemuan.setOnItemSelectedListener(this);
 
         bapdialog = new MaterialDialog.Builder(this)
                 .setTitle("Submit Bap")
@@ -413,20 +420,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     }
     private void resetAndPushData(){
 
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-//                    dataCount = ds.child("41-03").getChildrenCount();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
         Map<String, Object> dataBap = new HashMap<>();
         dataBap.put("matakuliah", mataKuliahNow);
         dataBap.put("jam",getHour());
@@ -450,7 +443,11 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnSubmit :
-                bapdialog.show();
+                if (TextUtils.isEmpty(mEtMateri.getText().toString())){
+                    Toast.makeText(mActivity, "Harap Isi Materi Perkuliahan", Toast.LENGTH_SHORT).show();
+                } else {
+                    bapdialog.show();
+                }
         }
     }
 
@@ -467,6 +464,20 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     @Override
 
     public void onShow(DialogInterface dialogInterface) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getItemAtPosition(position).equals("Pilih Pertemuan")){
+
+        } else {
+            showToast(parent.getSelectedItem().toString());
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
