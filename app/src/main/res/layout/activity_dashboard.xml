@@ -133,7 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/mm"
-                    android:text="History"
+                    android:text="@string/history"
                     android:textColor="#172646"
                     android:textSize="16sp" />
 

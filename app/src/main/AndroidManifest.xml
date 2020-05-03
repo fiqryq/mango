@@ -39,7 +39,7 @@
         <activity android:name=".ui.activity.dosen.MainDosenActivity" android:theme="@style/InfoDosenTheme" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.mahasiswa.PresensiDetailActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.mahasiswa.RegisterActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.mahasiswa.HistoryActivity" android:label="History" android:screenOrientation="portrait">
+        <activity android:name=".ui.activity.mahasiswa.HistoryActivity" android:label="@string/history" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />

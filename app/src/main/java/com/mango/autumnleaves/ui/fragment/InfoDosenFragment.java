@@ -65,17 +65,17 @@ public class InfoDosenFragment extends BaseFragment {
 
         logoutDialog = new MaterialDialog.Builder(mActivity)
                 .setTitle("Logout Dialog")
-                .setMessage("Apakah Kamu Yakin Akan Logout Dari Mango?")
+                .setMessage("Apakah Kamu Yakin Akan Keluar Dari Mango?")
                 .setCancelable(false)
-                .setPositiveButton("Logout", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {
+                .setPositiveButton("Keluar", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         logout();
-                        Toast.makeText(mActivity, "Berhasil Logout", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "Berhasil Keluar", Toast.LENGTH_SHORT).show();
                         dialogInterface.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new MaterialDialog.OnClickListener() {
+                .setNegativeButton("Batalkan", new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         Toast.makeText(mActivity, "Dibatalkan", Toast.LENGTH_SHORT).show();

@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:text="Logout"
+            android:text="@string/logout"
             android:textColor="@color/hitam"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="8dp"
-        android:text="about"
+        android:text="@string/About"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 

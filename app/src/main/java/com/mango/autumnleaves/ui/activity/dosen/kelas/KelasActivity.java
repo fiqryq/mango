@@ -150,7 +150,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         btnSubmit.setOnClickListener(this::onClick);
     }
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("41-03");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(datKelas);
 
     private ChildEventListener childEventListener = new ChildEventListener() {
         @Override

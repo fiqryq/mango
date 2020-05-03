@@ -5,7 +5,7 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="favorite">Favorite</string>
-    <string name="account">Account</string>
+    <string name="account">Akun</string>
 
     <color name="red_100">#F44336</color>
     <color name="red_300">#3F51B5</color>
@@ -37,5 +37,12 @@
         <item>9</item>
         <item>10</item>
     </string-array>
+
+    <string name="login">Masuk</string>
+    <string name="logout">Keluar</string>
+    <string name="history">Riwayat</string>
+    <string name="Profile">Profile</string>
+    <string name="Cancel">Batal</string>
+    <string name="About">Tentang</string>
 
 </resources>

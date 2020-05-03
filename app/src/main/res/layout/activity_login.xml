@@ -68,7 +68,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:background="@drawable/rounded_button"
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"

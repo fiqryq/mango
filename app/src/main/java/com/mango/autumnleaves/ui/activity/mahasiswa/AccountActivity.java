@@ -51,17 +51,17 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         getprofile();
         logoutDialog = new MaterialDialog.Builder(this)
                 .setTitle("Logout Dialog")
-                .setMessage("Apakah Kamu Yakin Akan Logout Dari Mango?")
+                .setMessage("Apakah Kamu Yakin Akan Keluar Dari Mango?")
                 .setCancelable(false)
-                .setPositiveButton("Logout", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {
+                .setPositiveButton("Keluar", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         logout();
-                        showSuccessToast("Berhasil Logout");
+                        showSuccessToast("Berhasil Keluar");
                         dialogInterface.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new MaterialDialog.OnClickListener() {
+                .setNegativeButton("Batalkan", new MaterialDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         Toast.makeText(getApplicationContext(), "Dibatalkan", Toast.LENGTH_SHORT).show();
