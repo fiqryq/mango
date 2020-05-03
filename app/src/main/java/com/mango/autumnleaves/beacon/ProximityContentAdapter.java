@@ -246,10 +246,20 @@ public class ProximityContentAdapter extends BaseAdapter {
                         presensi.setJam(getHour());
                         presensi.setStatus("hadir");
                         databaseReference.child(key).setValue(presensi);
+
+                        Map<String, Object> test = new HashMap<>();
+                        data.put("nama",nama_mhs);
+
+                        firebaseFirestore
+                                .collection("prodi")
+                                .document(jurusanRef)
+                                .collection("kelas")
+                                .document(kelasRef)
+                                .collection("presensi")
+                                .document(getTimeNow()).set(test);
                     }
                 });
     }
-    
     private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid,ProgressBar mProgressBarBts){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -278,7 +288,6 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-
     private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan , TextView btsWaktu, TextView btsJam, ProximityContent content, BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid, ProgressBar mProgressBarBts) {
         firebaseFirestore
                 .collection("prodi")

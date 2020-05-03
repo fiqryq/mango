@@ -61,21 +61,12 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
-    private TextView tvMatakuliah, tvDosen, tvKelas;
+    private TextView tvMatakuliah, tvDosen, tvKelas , mViewLogMahasiswa;
     private EditText mEtMateri , mEtPertemuan;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
-    public String idDoccument;
-    public String mataKuliahNow;
-    public String RuanganNow;
-
-    private RecyclerView mPresensiRecycleview;
-    private View emptyview;
-    private KelasAdapter mAdapter;
-    private ArrayList<Presensi> mData;
-    private ArrayList<String> mDataId;
-    private DatabaseReference mDatabase;
+    public String idDoccument , mataKuliahNow , RuanganNow;
 
     private String datKelas , datMatakuliah , datDosen , datRuangan;
 
@@ -89,6 +80,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         tvMatakuliah = findViewById(R.id.tvSesiMatakuliah);
         tvDosen = findViewById(R.id.tvSesiDosen);
         tvKelas = findViewById(R.id.tvSesiRuangan);
+        mViewLogMahasiswa = findViewById(R.id.ViewLogMahasiswa);
         mEtMateri = findViewById(R.id.etMateriSesiKelas);
         mEtPertemuan = findViewById(R.id.etPertemuanKelas);
         btnSubmit = findViewById(R.id.btnSubmit);
@@ -106,83 +98,39 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
         dataRef();
         jadwalRef();
-        getDataPresensiMahasiswa();
+        mViewLogMahasiswa.setOnClickListener(v -> viewLog());
 
-        switchSesi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    switchSesi.setText("Sesi Aktif");
-                    updateTrue();
-                } else {
-                    switchSesi.setText("Sesi Tidak Aktif");
-                    updateFalse();
-                }
+        switchSesi.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                switchSesi.setText("Sesi Aktif");
+                updateTrue();
+            } else {
+                switchSesi.setText("Sesi Tidak Aktif");
+                updateFalse();
             }
         });
-
         bapdialog = new MaterialDialog.Builder(this)
                 .setTitle("Submit Bap")
                 .setMessage("Apakah Kamu Yakin Akan Submit Bap?")
                 .setCancelable(false)
-                .setPositiveButton("Submit", R.drawable.ic_power_settings_new_black_24dp, new MaterialDialog.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        showSuccessToast("Berhasil Submit");
-                        resetAndPushData();
-                        switchSesi.setChecked(false);
-                        dialogInterface.dismiss();
-                    }
+                .setPositiveButton("Submit", R.drawable.ic_power_settings_new_black_24dp, (dialogInterface, i) -> {
+                    showSuccessToast("Berhasil Submit");
+                    resetAndPushData();
+                    switchSesi.setChecked(false);
+                    dialogInterface.dismiss();
                 })
-                .setNegativeButton("Cancel", new MaterialDialog.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        Toast.makeText(getApplicationContext(), "Dibatalkan", Toast.LENGTH_SHORT).show();
-                        dialogInterface.dismiss();
-                    }
+                .setNegativeButton("Cancel", (dialogInterface, which) -> {
+                    Toast.makeText(getApplicationContext(), "Dibatalkan", Toast.LENGTH_SHORT).show();
+                    dialogInterface.dismiss();
                 })
                 .build();
         btnSubmit.setOnClickListener(this::onClick);
     }
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("41-03");
-
-    private ChildEventListener childEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            mData.add(dataSnapshot.getValue(Presensi.class));
-            mDataId.add(dataSnapshot.getKey());
-            mAdapter.updateEmptyView();
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            int pos = mDataId.indexOf(dataSnapshot.getKey());
-            mData.set(pos, dataSnapshot.getValue(Presensi.class));
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            int pos = mDataId.indexOf(dataSnapshot.getKey());
-            mDataId.remove(pos);
-            mData.remove(pos);
-            mAdapter.updateEmptyView();
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };
-
+    private void viewLog() {
+        Intent intent = new Intent(KelasActivity.this,LogMahasiswaActivity.class);
+        startActivity(intent);
+    }
 
     private void showJadwal() {
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
@@ -321,36 +269,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
-    private void getDataPresensiMahasiswa() {
-        emptyview = findViewById(R.id.textView_empty_viiew);
-        mPresensiRecycleview = findViewById(R.id.rvMahasiswaTiga);
 
-        mData = new ArrayList<>();
-        mDataId = new ArrayList<>();
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("41-03");
-        mDatabase.addChildEventListener(childEventListener);
-
-        mPresensiRecycleview.setHasFixedSize(true);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        linearLayoutManager.setReverseLayout(false);
-        linearLayoutManager.setStackFromEnd(true);
-        mPresensiRecycleview.setLayoutManager(linearLayoutManager);
-
-        mAdapter = new KelasAdapter(this, mData, mDataId, emptyview, new KelasAdapter.ClickHandler() {
-            @Override
-            public void onItemClick(int position) {
-                //ketika rec di click
-            }
-
-            @Override
-            public boolean onItemLongClick(int position) {
-                return false;
-            }
-        });
-        mPresensiRecycleview.setAdapter(mAdapter);
-    }
     private void jadwalRef() {
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
@@ -413,7 +332,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
-
     private void resetAndPushData(){
 
         Map<String, Object> dataBap = new HashMap<>();
@@ -432,11 +350,10 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                databaseReference.removeValue();
+
             }
         });
     }
-
 
     @Override
     public void onClick(View v) {
