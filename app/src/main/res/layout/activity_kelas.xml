@@ -155,8 +155,10 @@
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
+                android:background="@drawable/button_ripple"
                 android:layout_height="60dp"
                 android:layout_marginTop="5dp"
+                android:textColor="@color/putih"
                 android:text="Submit" />
 
             <Switch
@@ -167,7 +169,6 @@
                 android:text="Sesi Kelas" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 

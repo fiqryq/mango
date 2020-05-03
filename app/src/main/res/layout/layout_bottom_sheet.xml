@@ -122,7 +122,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_ripple"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:text="Presensi"

@@ -49,10 +49,13 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
                 if (TextUtils.isEmpty(username.getText()) && TextUtils.isEmpty(password.getText())) {
                     showToast("Username / Password Kosong");
+                    onHideProgress();
                 } else if (TextUtils.isEmpty(username.getText())) {
                     showToast("Username Kosong");
+                    onHideProgress();
                 } else if (TextUtils.isEmpty(password.getText())) {
                     showToast("Password Kosong");
+                    onHideProgress();
                 } else {
                     getAuthFirebase(mUsername, mPassword);
                 }
@@ -138,13 +141,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             }
         }
 
-    }
-
-    public ProgressDialog myProgressDialog() {
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        return progressDialog;
     }
 
     @Override
