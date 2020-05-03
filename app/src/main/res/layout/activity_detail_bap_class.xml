@@ -57,6 +57,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
+                android:text="Materi" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Pertemuan" />
 
         </LinearLayout>
@@ -92,11 +98,19 @@
                 android:text="data" />
 
             <TextView
+                android:id="@+id/bapHadir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="data" />
 
             <TextView
+                android:id="@+id/bapMateri"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="data" />
+
+            <TextView
+                android:id="@+id/bapPertemuan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="data" />

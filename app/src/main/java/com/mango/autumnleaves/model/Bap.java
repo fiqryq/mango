@@ -5,6 +5,33 @@ public class Bap {
     private String jam;
     private String waktu;
     private String ruangan;
+    private String materi;
+    private String pertemuan;
+    private String hadir;
+
+    public String getPertemuan() {
+        return pertemuan;
+    }
+
+    public void setPertemuan(String pertemuan) {
+        this.pertemuan = pertemuan;
+    }
+
+    public String getHadir() {
+        return hadir;
+    }
+
+    public void setHadir(String hadir) {
+        this.hadir = hadir;
+    }
+
+    public String getMateri() {
+        return materi;
+    }
+
+    public void setMateri(String materi) {
+        this.materi = materi;
+    }
 
     public String getMatakuliah() {
         return matakuliah;

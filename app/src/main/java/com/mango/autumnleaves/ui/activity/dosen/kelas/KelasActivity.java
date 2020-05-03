@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -58,12 +59,11 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
-public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener , AdapterView.OnItemSelectedListener {
+public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
     private TextView tvMatakuliah, tvDosen, tvKelas;
-    private TextView mEtMateri;
+    private EditText mEtMateri , mEtPertemuan;
     private Button btnSubmit;
-    private Spinner mSpinPertemuan;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
     public String idDoccument;
@@ -90,7 +90,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         tvDosen = findViewById(R.id.tvSesiDosen);
         tvKelas = findViewById(R.id.tvSesiRuangan);
         mEtMateri = findViewById(R.id.etMateriSesiKelas);
-        mSpinPertemuan = findViewById(R.id.spinerPertemuan);
+        mEtPertemuan = findViewById(R.id.etPertemuanKelas);
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
@@ -121,11 +121,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
 
-        ArrayAdapter<CharSequence> spinAdapter = ArrayAdapter.createFromResource(this, R.array.itemPertemuan, android.R.layout.simple_spinner_item);
-        spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinPertemuan.setAdapter(spinAdapter);
-        mSpinPertemuan.setOnItemSelectedListener(this);
-
         bapdialog = new MaterialDialog.Builder(this)
                 .setTitle("Submit Bap")
                 .setMessage("Apakah Kamu Yakin Akan Submit Bap?")
@@ -150,7 +145,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         btnSubmit.setOnClickListener(this::onClick);
     }
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(datKelas);
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("41-03");
 
     private ChildEventListener childEventListener = new ChildEventListener() {
         @Override
@@ -418,6 +413,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
+
     private void resetAndPushData(){
 
         Map<String, Object> dataBap = new HashMap<>();
@@ -425,6 +421,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         dataBap.put("jam",getHour());
         dataBap.put("waktu",getTimeNow());
         dataBap.put("ruangan",RuanganNow);
+        dataBap.put("materi",mEtMateri.getText().toString());
+        dataBap.put("pertemuan",mEtPertemuan.getText().toString());
         dataBap.put("created", new Timestamp(new Date()));
 
         firebaseFirestore
@@ -439,12 +437,15 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnSubmit :
                 if (TextUtils.isEmpty(mEtMateri.getText().toString())){
-                    Toast.makeText(mActivity, "Harap Isi Materi Perkuliahan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Harap Isi Form Materi", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(mEtPertemuan.getText().toString())){
+                    Toast.makeText(mActivity, "Harap Isi Form Pertemuan", Toast.LENGTH_SHORT).show();
                 } else {
                     bapdialog.show();
                 }
@@ -467,17 +468,4 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.getItemAtPosition(position).equals("Pilih Pertemuan")){
-
-        } else {
-            showToast(parent.getSelectedItem().toString());
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }
