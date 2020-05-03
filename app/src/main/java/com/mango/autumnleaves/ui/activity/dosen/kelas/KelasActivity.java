@@ -44,6 +44,7 @@ import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
 import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.SesiKelas;
 import com.mango.autumnleaves.model.dosen.UserDosen;
+import com.mango.autumnleaves.util.Constant;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import com.shreyaspatil.MaterialDialog.interfaces.OnCancelListener;
@@ -212,7 +213,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                            idDoccument = documentSnapshot.getId();
-                           if(documentSnapshot.getString("sesi").equals("1")){
+                           if(documentSnapshot.getString("sesi").equals(Constant.SESI_AKTIF)){
                                switchSesi.setChecked(true);
                            }else {
                                switchSesi.setChecked(false);
@@ -231,7 +232,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .document(idDoccument);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("sesi", "1");
+        map.put("sesi", Constant.SESI_AKTIF);
         documentReference.update(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -255,7 +256,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .document(idDoccument);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("sesi", "0");
+        map.put("sesi", Constant.SESI_TIDAK_AKTIF);
         documentReference.update(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

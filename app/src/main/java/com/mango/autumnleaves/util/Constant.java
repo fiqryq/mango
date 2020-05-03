@@ -30,5 +30,6 @@ public class Constant {
     public static final String TAG_USER_MAHASISWA = "2";
     public static final String TAG_USER_DOSEN = "1";
 
-    public static final String TES = "1";
+    public static final String SESI_AKTIF = "1";
+    public static final String SESI_TIDAK_AKTIF = "0";
 }
