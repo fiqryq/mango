@@ -247,16 +247,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                         presensi.setJam(getHour());
                         databaseReference.child(key).setValue(presensi);
 
-                        Map<String, Object> test = new HashMap<>();
-                        data.put("nama",nama_mhs);
-
-                        firebaseFirestore
-                                .collection("prodi")
-                                .document(jurusanRef)
-                                .collection("kelas")
-                                .document(kelasRef)
-                                .collection("presensi")
-                                .document(getTimeNow()).set(test);
                     }
                 });
     }
