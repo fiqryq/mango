@@ -35,6 +35,7 @@
         </activity>
         <activity
             android:name=".ui.activity.dosen.DetailBapActivity"
+            android:label="Data Bap"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
