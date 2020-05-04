@@ -30,6 +30,7 @@ public class DetailBapActivity extends AppCompatActivity {
         String waktuPresensi = intent.getStringExtra("WAKTU");
         String materi = intent.getStringExtra("MATERI");
         String pertemuan = intent.getStringExtra("PERTEMUAN");
+        String hadir = intent.getStringExtra("HADIR");
 
         mBapMatakuliah.setText(": " + matakuliah);
         mBapRuangan.setText(": " + ruangan);
@@ -37,5 +38,6 @@ public class DetailBapActivity extends AppCompatActivity {
         mBapJam.setText(": " + waktuPresensi);
         mBapMateri.setText(": " + materi);
         mBapPertemuan.setText(": " + pertemuan);
+        mBaphadir.setText(": " + hadir);
     }
 }

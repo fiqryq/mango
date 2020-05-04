@@ -174,6 +174,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
+
     private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , BottomSheetDialog bottomSheetViewPresensi){
         firebaseFirestore
                 .collection("prodi")
@@ -239,12 +240,11 @@ public class ProximityContentAdapter extends BaseAdapter {
                             }
                         });
 
-                        databaseReference = FirebaseDatabase.getInstance().getReference().child(kelasRef);
+                        databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(kelasRef);
                         String key = databaseReference.push().getKey();
                         Presensi presensi = new Presensi();
                         presensi.setNama(nama_mhs);
                         presensi.setJam(getHour());
-                        presensi.setStatus("hadir");
                         databaseReference.child(key).setValue(presensi);
 
                         Map<String, Object> test = new HashMap<>();

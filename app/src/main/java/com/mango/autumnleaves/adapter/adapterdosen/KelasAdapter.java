@@ -52,7 +52,6 @@ public class KelasAdapter extends RecyclerView.Adapter<KelasAdapter.ViewHolder> 
 
         holder.tvNamaMahasiswa.setText(presensi.getNama());
         holder.tvJamPresensi.setText(presensi.getJam());
-        holder.tvStatusPresensi.setText(presensi.getStatus());
         int ai = position + 1;
         holder.tvNo.setText(String.valueOf(ai));
 
@@ -69,7 +68,6 @@ public class KelasAdapter extends RecyclerView.Adapter<KelasAdapter.ViewHolder> 
         final TextView tvNo;
         final TextView tvNamaMahasiswa;
         final TextView tvJamPresensi;
-        final TextView tvStatusPresensi;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,7 +75,6 @@ public class KelasAdapter extends RecyclerView.Adapter<KelasAdapter.ViewHolder> 
             tvNo = itemView.findViewById(R.id.tvNomor);
             tvNamaMahasiswa = itemView.findViewById(R.id.tvNamaMahasiswa);
             tvJamPresensi = itemView.findViewById(R.id.tvJamPresensi);
-            tvStatusPresensi = itemView.findViewById(R.id.tvStatus);
 
             // focusable sengaja di false biar ngga bisa di klik
             itemView.setFocusable(false);

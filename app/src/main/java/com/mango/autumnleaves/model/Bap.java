@@ -9,20 +9,20 @@ public class Bap {
     private String pertemuan;
     private String hadir;
 
-    public String getPertemuan() {
-        return pertemuan;
-    }
-
-    public void setPertemuan(String pertemuan) {
-        this.pertemuan = pertemuan;
-    }
-
     public String getHadir() {
         return hadir;
     }
 
     public void setHadir(String hadir) {
         this.hadir = hadir;
+    }
+
+    public String getPertemuan() {
+        return pertemuan;
+    }
+
+    public void setPertemuan(String pertemuan) {
+        this.pertemuan = pertemuan;
     }
 
     public String getMateri() {

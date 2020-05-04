@@ -61,6 +61,7 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
                 intent.putExtra("WAKTU",waktu);
                 intent.putExtra("MATERI",materi);
                 intent.putExtra("PERTEMUAN",pertemuan);
+                intent.putExtra("HADIR",hadir);
                 mContext.startActivity(intent);
             }
         });

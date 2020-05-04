@@ -6,6 +6,15 @@ public class SesiKelas {
     private String matakuliah;
     private String dosen;
     private String ruangan;
+    private String kelas;
+
+    public String getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
 
     public int getId() {
         return id;

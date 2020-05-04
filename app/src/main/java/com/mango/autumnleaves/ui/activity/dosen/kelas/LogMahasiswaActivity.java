@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.ChildEventListener;
@@ -28,11 +30,14 @@ public class LogMahasiswaActivity extends AppCompatActivity {
     private ArrayList<Presensi> mData;
     private ArrayList<String> mDataId;
     private DatabaseReference mDatabase;
+    public String kelas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_mahasiswa);
+        Intent intent = getIntent();
+        kelas = intent.getStringExtra("DATAKELAS");
         LogPresensi();
     }
 
@@ -43,7 +48,7 @@ public class LogMahasiswaActivity extends AppCompatActivity {
         mData = new ArrayList<>();
         mDataId = new ArrayList<>();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("41-03");
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("data").child(kelas);
         mDatabase.addChildEventListener(childEventListener);
 
         mPresensiRecycleview.setHasFixedSize(true);

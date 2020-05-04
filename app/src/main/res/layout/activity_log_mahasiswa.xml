@@ -36,13 +36,6 @@
             android:text="Jam"
             android:textColor="@color/white" />
 
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Status"
-            android:textColor="@color/white" />
-
     </TableRow>
 
     <androidx.recyclerview.widget.RecyclerView
