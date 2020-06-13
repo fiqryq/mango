@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,8 @@ import com.squareup.picasso.Picasso;
 
 public class AccountActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
-    private TextView tvInfoUsername, tvInfoLogout, tvInfoMango;
+    private TextView tvInfoUsername ;
+    private LinearLayout linearProfile , tvInfoLogout , tvInfoMango;
     private ImageView imvInfoUsername;
     private MaterialDialog logoutDialog;
 
@@ -47,6 +49,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         tvInfoUsername = findViewById(R.id.tvInfoUsername);
         tvInfoLogout = findViewById(R.id.tvLogoutMhs);
         tvInfoMango = findViewById(R.id.tvInfoMango);
+        linearProfile = findViewById(R.id.linearProfile);
 
         getprofile();
         logoutDialog = new MaterialDialog.Builder(this)
@@ -69,13 +72,15 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                     }
                 })
                 .build();
-        tvInfoUsername.setOnClickListener(new View.OnClickListener() {
+
+        linearProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent profile = new Intent(AccountActivity.this, ProfileActivity.class);
                 startActivity(profile);
             }
         });
+
         tvInfoLogout.setOnClickListener(this::onClick);
         tvInfoMango.setOnClickListener(new View.OnClickListener() {
             @Override
