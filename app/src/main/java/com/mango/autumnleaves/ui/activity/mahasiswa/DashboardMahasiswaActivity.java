@@ -46,10 +46,6 @@ public class DashboardMahasiswaActivity extends BaseActivity {
     private ImageView dashImg;
     private ProgressBar progressBar;
 
-    // nitip
-    private TextView tvHariIni, tvMatkul, tvDosen, tvJam, tvRuangan;
-    private String hari, timeNow;
-
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;
 
@@ -63,12 +59,7 @@ public class DashboardMahasiswaActivity extends BaseActivity {
                     .setIcon(R.drawable.adt_ic_warning)
                     .setTitle("Mango")
                     .setMessage("Tidak Ada Koneksi Internet , Periksa Koneksi Internet Anda.")
-                    .setPositiveButton("keluar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
+                    .setPositiveButton("keluar", (dialog, which) -> finish())
                     .show();
         }
 
@@ -98,59 +89,48 @@ public class DashboardMahasiswaActivity extends BaseActivity {
 
     private void intentJadwal() {
         //intent menu jadwal
-        imvJadwal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent jadwal = new Intent(DashboardMahasiswaActivity.this, JadwalActivity.class);
-                startActivity(jadwal);
-            }
+        imvJadwal.setOnClickListener(v -> {
+            Intent jadwal = new Intent(DashboardMahasiswaActivity.this, JadwalActivity.class);
+            startActivity(jadwal);
         });
     }
     private void intentHistory() {
         //intent Menu History
-        imvHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent history = new Intent(DashboardMahasiswaActivity.this, HistoryActivity.class);
-                startActivity(history);
-            }
+        imvHistory.setOnClickListener(v -> {
+            Intent history = new Intent(DashboardMahasiswaActivity.this, HistoryActivity.class);
+            startActivity(history);
         });
 
     }
     private void intentInformasi() {
         //intent Menu profile
-        imvProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent informasi = new Intent(DashboardMahasiswaActivity.this, AccountActivity.class);
-                startActivity(informasi);
-            }
+        imvProfile.setOnClickListener(v -> {
+            Intent informasi = new Intent(DashboardMahasiswaActivity.this, AccountActivity.class);
+            startActivity(informasi);
         });
     }
+
     private void getprofile() {
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    progressBar.setVisibility(View.GONE);
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        UserMahasiswa userMahasiswa = new UserMahasiswa();
-                        userMahasiswa.setNama(document.getString("nama"));
-                        userMahasiswa.setNim_mhs(document.getString("nim_mhs"));
-                        userMahasiswa.setAlamat(document.getString("alamat"));
-                        userMahasiswa.setGambar(document.getString("gambar"));
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                progressBar.setVisibility(View.GONE);
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    UserMahasiswa userMahasiswa = new UserMahasiswa();
+                    userMahasiswa.setNama(document.getString("nama"));
+                    userMahasiswa.setNim_mhs(document.getString("nim_mhs"));
+                    userMahasiswa.setAlamat(document.getString("alamat"));
+                    userMahasiswa.setGambar(document.getString("gambar"));
 
-                        dshUsername.setText(userMahasiswa.getNama());
-                        dshNim.setText(userMahasiswa.getNim_mhs());
-                        Picasso.get().load(userMahasiswa.getGambar()).into(dashImg);
-                    } else {
-                        Log.d("gagal", "Documment tidak ada");
-                    }
+                    dshUsername.setText(userMahasiswa.getNama());
+                    dshNim.setText(userMahasiswa.getNim_mhs());
+                    Picasso.get().load(userMahasiswa.getGambar()).into(dashImg);
                 } else {
-                    Log.d("TAG", "gagal", task.getException());
+                    Log.d("gagal", "Documment tidak ada");
                 }
+            } else {
+                Log.d("TAG", "gagal", task.getException());
             }
         });
     }
@@ -160,29 +140,20 @@ public class DashboardMahasiswaActivity extends BaseActivity {
         RequirementsWizardFactory
                 .createEstimoteRequirementsWizard()
                 .fulfillRequirements(this,
-                        new Function0<Unit>() {
-                            @Override
-                            public Unit invoke() {
-                                Log.d("app", "requirements fulfilled");
-                                startProximityContentManager();
-                                return null;
-                            }
+                        () -> {
+                            Log.d("app", "requirements fulfilled");
+                            startProximityContentManager();
+                            return null;
                         },
 
-                        new Function1<List<? extends Requirement>, Unit>() {
-                            @Override
-                            public Unit invoke(List<? extends Requirement> requirements) {
-                                Log.e("app", "requirements missing: " + requirements);
-                                return null;
-                            }
+                        requirements -> {
+                            Log.e("app", "requirements missing: " + requirements);
+                            return null;
                         },
 
-                        new Function1<Throwable, Unit>() {
-                            @Override
-                            public Unit invoke(Throwable throwable) {
-                                Log.e("app", "requirements error: " + throwable);
-                                return null;
-                            }
+                        throwable -> {
+                            Log.e("app", "requirements error: " + throwable);
+                            return null;
                         });
     }
 

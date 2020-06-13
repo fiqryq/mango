@@ -5,5 +5,4 @@ public interface LoginViewCallback {
     void onFailedAuthFirebase();
     void onShowProgress();
     void onHideProgress();
-
 }

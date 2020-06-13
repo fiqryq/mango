@@ -100,7 +100,6 @@ public class ProximityContentAdapter extends BaseAdapter {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
-
         // Inisialisasi Di sini
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
         TextView lokasi = convertView.findViewById(R.id.beacon_lokasi);
@@ -174,7 +173,6 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-
     private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , BottomSheetDialog bottomSheetViewPresensi){
         firebaseFirestore
                 .collection("prodi")
