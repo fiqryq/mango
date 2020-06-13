@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,8 @@ import com.squareup.picasso.Picasso;
  */
 public class InfoDosenFragment extends BaseFragment {
 
-    private TextView tvUserDosen,tvLogout,tvAbout;
+    private TextView tvUserDosen;
+    private LinearLayout linearProfile,tvLogout,tvAbout;
     private ImageView imgDosen;
     private MaterialDialog logoutDialog;
 
@@ -46,6 +48,7 @@ public class InfoDosenFragment extends BaseFragment {
         tvAbout = view.findViewById(R.id.tvInfoMangoDosen);
         imgDosen = view.findViewById(R.id.imvInfoDosen);
         tvLogout = view.findViewById(R.id.tvInfoLogoutDosen);
+        linearProfile = view.findViewById(R.id.ProfileDosen);
 
         tvAbout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +58,7 @@ public class InfoDosenFragment extends BaseFragment {
             }
         });
 
-        tvUserDosen.setOnClickListener(new View.OnClickListener() {
+        linearProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ProfileDosenActivity.class);

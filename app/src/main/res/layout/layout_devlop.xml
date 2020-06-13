@@ -1,7 +1,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,37 +18,43 @@
             android:text="akun"/>
 
         <LinearLayout
-            android:id="@+id/tvInfoUsername"
+            android:id="@+id/ProfileDosen"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="10dp"
             android:background="@drawable/content_informasi"
-            android:elevation="2px"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:elevation="4px"
             android:clickable="true">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imvInfoDosen"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="15dp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tvUsernameDosen"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
+                android:clickable="false"
                 android:text="Username"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tvLogoutMhs"
+            android:id="@+id/tvInfoLogoutDosen"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginHorizontal="10dp"
-            android:elevation="2px"
+            android:elevation="4px"
             android:background="@drawable/content_informasi"
+            android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true">
 
             <ImageView
@@ -58,11 +65,12 @@
                 android:layout_marginHorizontal="15dp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
+                android:clickable="false"
                 android:text="Keluar"/>
 
         </LinearLayout>
@@ -76,12 +84,13 @@
             android:text="Tentang"/>
 
         <LinearLayout
-            android:id="@+id/tvInfoMango"
+            android:id="@+id/tvInfoMangoDosen"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="10dp"
-            android:elevation="2px"
+            android:elevation="4px"
             android:background="@drawable/content_informasi"
+            android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true">
 
             <ImageView
@@ -92,11 +101,12 @@
                 android:layout_marginHorizontal="15dp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
+                android:clickable="false"
                 android:text="Tentang Mango"/>
 
         </LinearLayout>
