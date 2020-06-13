@@ -1,116 +1,192 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="0dp"
+        android:paddingHorizontal="20dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="5dp"
-            android:textSize="14sp"
-            android:text="akun"/>
-
-        <LinearLayout
-            android:id="@+id/ProfileDosen"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/content_informasi"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:focusable="true"
-            android:elevation="4px"
-            android:clickable="true">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imvInfoDosen"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="15dp"/>
-
-            <TextView
-                android:id="@+id/tvUsernameDosen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:clickable="false"
-                android:text="Username"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/tvInfoLogoutDosen"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginHorizontal="10dp"
-            android:elevation="4px"
-            android:background="@drawable/content_informasi"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_exit_to_app_black_24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="15dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:clickable="false"
-                android:text="Keluar"/>
-
-        </LinearLayout>
+            android:text="Informasi Akun"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginVertical="10dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="5dp"
-            android:textSize="14sp"
-            android:text="Tentang"/>
+            android:text="Nama Lengkap"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"/>
 
-        <LinearLayout
-            android:id="@+id/tvInfoMangoDosen"
+        <TextView
+            android:id="@+id/tvNamaLengkapDosen"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_margin="10dp"
-            android:elevation="4px"
-            android:background="@drawable/content_informasi"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true">
+            android:layout_height="wrap_content"
+            android:text="Fiqry Choerudin"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"/>
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_feedback_black_24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nip"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:clickable="false"
-                android:text="Tentang Mango"/>
+        <TextView
+            android:id="@+id/tvNip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="6706174132"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"/>
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kontak"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvKontakDosen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="081222790896"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alamat"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvAlamatDosen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pandeglang"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
 </LinearLayout>
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <TextView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginHorizontal="10dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:textSize="14sp"-->
+    <!--            android:text="akun"/>-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/ProfileDosen"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="70dp"-->
+    <!--            android:layout_margin="10dp"-->
+    <!--            android:background="@drawable/content_informasi"-->
+    <!--            android:foreground="?android:attr/selectableItemBackground"-->
+    <!--            android:focusable="true"-->
+    <!--            android:elevation="4px"-->
+    <!--            android:clickable="true">-->
+
+    <!--            <de.hdodenhof.circleimageview.CircleImageView-->
+    <!--                android:id="@+id/imvInfoDosen"-->
+    <!--                android:layout_width="40dp"-->
+    <!--                android:layout_height="40dp"-->
+    <!--                android:layout_gravity="center_vertical"-->
+    <!--                android:layout_marginHorizontal="15dp"/>-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/tvUsernameDosen"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:textSize="18sp"-->
+    <!--                android:layout_gravity="center_vertical"-->
+    <!--                android:layout_margin="5dp"-->
+    <!--                android:clickable="false"-->
+    <!--                android:text="Username"/>-->
+
+    <!--        </LinearLayout>-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/tvInfoLogoutDosen"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="70dp"-->
+    <!--            android:layout_marginHorizontal="10dp"-->
+    <!--            android:elevation="4px"-->
+    <!--            android:background="@drawable/content_informasi"-->
+    <!--            android:foreground="?android:attr/selectableItemBackground"-->
+    <!--            android:clickable="true">-->
+
+    <!--            <ImageView-->
+    <!--                android:layout_width="40dp"-->
+    <!--                android:layout_height="40dp"-->
+    <!--                android:background="@drawable/ic_exit_to_app_black_24dp"-->
+    <!--                android:layout_gravity="center_vertical"-->
+    <!--                android:layout_marginHorizontal="15dp"/>-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:textSize="18sp"-->
+    <!--                android:layout_gravity="center_vertical"-->
+    <!--                android:layout_margin="5dp"-->
+    <!--                android:clickable="false"-->
+    <!--                android:text="Keluar"/>-->
+
+    <!--        </LinearLayout>-->
+
+    <!--        <TextView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginHorizontal="10dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:textSize="14sp"-->
+    <!--            android:text="Tentang"/>-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/tvInfoMangoDosen"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="70dp"-->
+    <!--            android:layout_margin="10dp"-->
+    <!--            android:elevation="4px"-->
+    <!--            android:background="@drawable/content_informasi"-->
+    <!--            android:foreground="?android:attr/selectableItemBackground"-->
+    <!--            android:clickable="true">-->
+
+    <!--            <ImageView-->
+    <!--                android:layout_width="40dp"-->
+    <!--                android:layout_height="40dp"-->
+    <!--                android:background="@drawable/ic_feedback_black_24dp"-->
+    <!--                android:layout_gravity="center_vertical"-->
+    <!--                android:layout_marginHorizontal="15dp"/>-->
+
+    <!--            <TextView-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:textSize="18sp"-->
+    <!--                android:layout_gravity="center_vertical"-->
+    <!--                android:layout_margin="5dp"-->
+    <!--                android:clickable="false"-->
+    <!--                android:text="Tentang Mango"/>-->
+
+    <!--        </LinearLayout>-->
+
+    <!--    </LinearLayout>-->
