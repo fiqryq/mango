@@ -123,8 +123,8 @@ public class HomeDosenFragment extends BaseFragment {
                                         jadwal.setHari(document.getString("hari"));
                                         jadwal.setMatakuliah(document.getString("matakuliah"));
                                         jadwal.setDosen(document.getString("dosen"));
-                                        jadwal.setKelas(document.getString("kelas"));
                                         jadwal.setJurusan(document.getString("jurusan"));
+                                        jadwal.setKelas(document.getString("kelas"));
                                         jadwal.setRuangan(document.getString("ruangan"));
                                         jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
@@ -135,10 +135,12 @@ public class HomeDosenFragment extends BaseFragment {
                                         datKelas = jadwal.getKelas();
 
                                         Log.d("Berhasil",document.getData().toString());
+
                                         int selesai = Integer.parseInt(document.getString("waktu_selesai").replace(":", ""));
                                         int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
-                                        if (sekarang <= selesai && jadwal.getKelas().equals(jadwal.getKelas())){
+//                                        && jadwal.getKelas().equals(jadwal.getKelas())
+                                        if (sekarang <= selesai){
                                             progressBar.setVisibility(View.GONE);
                                             tvNodata.setVisibility(View.GONE);
                                             tvMatakuliah.setVisibility(View.VISIBLE);
@@ -152,7 +154,7 @@ public class HomeDosenFragment extends BaseFragment {
                                             tvRuangan.setText(jadwal.getRuangan());
                                             tvWaktuMulai.setText(jadwal.getWaktu_mulai());
                                             tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
-                                            tvViewKelas.setText(jadwal.getJurusan() + " " + jadwal.getKelas());
+                                            tvViewKelas.setText(jadwal.getJurusan() + " " +jadwal.getKelas());
 
                                         } else {
                                             progressBar.setVisibility(View.GONE);
