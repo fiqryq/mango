@@ -1,5 +1,5 @@
 # Mango (Final Project)- Attendance App using Estimote proximity beacon
-- Devlopment
+- Finish Devlopment
 
 # About This Project
 Aplikasi Mango merupakan Sistem Presensi Mahasiswa Menggunakan BLE Beacon Berbasis Perangkat Android.
