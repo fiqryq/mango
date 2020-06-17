@@ -69,6 +69,7 @@ public class HostoryBapDosenFragment extends BaseFragment {
                         Bap.setMateri(document.getString("materi"));
                         Bap.setPertemuan(document.getString("pertemuan"));
                         Bap.setHadir(document.getString("hadir"));
+                        Bap.setKelas(document.getString("kelas"));
                         arrayList.add(Bap);
                     }
                 } else {

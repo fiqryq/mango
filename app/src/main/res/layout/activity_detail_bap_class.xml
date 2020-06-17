@@ -39,6 +39,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
+                android:text="Kelas" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Waktu" />
 
             <TextView
@@ -81,6 +87,12 @@
 
             <TextView
                 android:id="@+id/bapRuangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="data" />
+
+            <TextView
+                android:id="@+id/bapKelas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="data" />

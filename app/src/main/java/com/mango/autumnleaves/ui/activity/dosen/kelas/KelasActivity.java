@@ -71,7 +71,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     private Button btnSubmit;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
-    public String idDoccument , mataKuliahNow , RuanganNow , datKelas , intentKelas;
+    public String idDoccument , mataKuliahNow , RuanganNow , datKelas , Kelas;
     public long jumlahMahasiswa;
 
     private String  datMatakuliah , datDosen , datRuangan;
@@ -83,7 +83,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         setContentView(R.layout.activity_kelas);
         idDoccument = "";
         mataKuliahNow = "";
-        intentKelas = "";
+        Kelas = "";
 
         tvMatakuliah = findViewById(R.id.tvSesiMatakuliah);
         tvDosen = findViewById(R.id.tvSesiDosen);
@@ -189,7 +189,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         SesiKelas sesiKelas = new SesiKelas();
                                         sesiKelas.setKelas(document.getString("kelas"));
-                                        intentKelas = sesiKelas.getKelas();
+                                        Kelas = sesiKelas.getKelas();
                                     }
                                 } else {
                                     Log.d("tes", "Error getting documents: ", task.getException());
@@ -207,7 +207,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     }
     private void viewLog() {
         Intent intent = new Intent(KelasActivity.this,LogMahasiswaActivity.class);
-        intent.putExtra("DATAKELAS",intentKelas);
+        intent.putExtra("DATAKELAS",Kelas);
         startActivity(intent);
     }
     private void dataRef() {
@@ -356,6 +356,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         dataBap.put("pertemuan",mEtPertemuan.getText().toString());
         dataBap.put("hadir",String.valueOf(jumlahMahasiswa));
         dataBap.put("created", new Timestamp(new Date()));
+        dataBap.put("kelas",Kelas);
 
         firebaseFirestore
                 .collection("bap")

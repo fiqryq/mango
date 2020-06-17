@@ -9,6 +9,16 @@ public class Bap {
     private String pertemuan;
     private String hadir;
 
+    public String getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
+
+    private String kelas;
+
     public String getHadir() {
         return hadir;
     }
