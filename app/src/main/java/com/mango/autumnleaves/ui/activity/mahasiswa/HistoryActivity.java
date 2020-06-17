@@ -81,6 +81,8 @@ public class HistoryActivity extends BaseActivity {
                             .collection("presensiMahasiswa")
                             .document("kelas")
                             .collection(kelasRef)
+                            .document("presensi")
+                            .collection(getFirebaseUserId())
                             .orderBy("created", Query.Direction.ASCENDING)
                             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

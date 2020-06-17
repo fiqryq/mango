@@ -173,6 +173,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
+
     private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , BottomSheetDialog bottomSheetViewPresensi){
         firebaseFirestore
                 .collection("prodi")
@@ -218,6 +219,8 @@ public class ProximityContentAdapter extends BaseAdapter {
                                 .collection("presensiMahasiswa")
                                 .document("kelas")
                                 .collection(kelasRef)
+                                .document("presensi")
+                                .collection(firebaseAuth.getUid())
                                 .add(data)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
@@ -248,6 +251,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                     }
                 });
     }
+
     private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid,ProgressBar mProgressBarBts){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -276,6 +280,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
+
     private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan , TextView btsWaktu, TextView btsJam, ProximityContent content, BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid, ProgressBar mProgressBarBts) {
         firebaseFirestore
                 .collection("prodi")
