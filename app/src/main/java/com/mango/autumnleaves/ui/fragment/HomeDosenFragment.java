@@ -151,8 +151,8 @@ public class HomeDosenFragment extends BaseFragment {
                                             ConstraintKelas.setVisibility(View.VISIBLE);
 
                                             tvMatakuliah.setText(jadwal.getMatakuliah());
-                                            tvRuangan.setText(jadwal.getRuangan());
-                                            tvWaktuMulai.setText(jadwal.getWaktu_mulai());
+                                            tvRuangan.setText("Ruangan" + " " + jadwal.getRuangan());
+                                            tvWaktuMulai.setText("waktu" + " " + jadwal.getWaktu_mulai());
                                             tvWaktuSelesai.setText(jadwal.getWaktu_selesai());
                                             tvViewKelas.setText(jadwal.getJurusan() + " " +jadwal.getKelas());
 
