@@ -1,4 +1,5 @@
 ## Mango
+![Android CI](https://github.com/fiqryq/Mango-Master/workflows/Android%20CI/badge.svg)
 ![Build Status](https://dev.azure.com/fiqrychoerudin/Mango/_apis/build/status/fiqryq.Mango-Master?branchName=master)
 
 Mango Is Attendance App using [Estimote Proximity Beacon](https://estimote.com/products/).
