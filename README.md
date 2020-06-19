@@ -1,5 +1,5 @@
 ## Mango
-[![Build Status](https://dev.azure.com/fiqrychoerudin/Mango/_apis/build/status/fiqryq.Mango-Master?branchName=master)]
+![Build Status](https://dev.azure.com/fiqrychoerudin/Mango/_apis/build/status/fiqryq.Mango-Master?branchName=master)
 (https://dev.azure.com/fiqrychoerudin/Mango/_build/latest?definitionId=1&branchName=master)
 
 Mango Is Attendance App using [Estimote Proximity Beacon](https://estimote.com/products/).
