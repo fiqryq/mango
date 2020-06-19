@@ -229,7 +229,12 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                 .setTitleText("Berhasil Presensi")
                                                 .setContentText("klik tombl ok untuk keluar")
                                                 .show();
-                                        bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
+                                        bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Toast.makeText(context, "Anda Sudah Melakukan Presensi", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override

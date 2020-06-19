@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileDosenActivity extends BaseActivity {
 
-    private TextView tvUsername, tvNamaLengkap, tvNip, tvAlamat, tvKelas, tvJurusan, tvTTL, tvKontak, tvEmailUser;
+    private TextView tvUsername, tvNamaLengkap, tvNip, tvAlamat, tvKontak, tvEmailUser;
     private ImageView mBack, mProfile;
     private View progressDialog;
 

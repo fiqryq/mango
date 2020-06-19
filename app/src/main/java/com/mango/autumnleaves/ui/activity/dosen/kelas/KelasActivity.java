@@ -75,7 +75,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public long jumlahMahasiswa;
 
     private String  datMatakuliah , datDosen , datRuangan;
-    private static int DELETE_TEMP = 5000;
+    private static int DELETE_TEMP = 6000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         jadwalRef();
         getdatakelas();
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data");
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data").child(datKelas);
         rootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

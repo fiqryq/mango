@@ -25,5 +25,4 @@ public class ShowBapTest {
         Thread.sleep(5000);
         Espresso.onView(withId(R.id.bap_menu)).perform(click());
     }
-
 }

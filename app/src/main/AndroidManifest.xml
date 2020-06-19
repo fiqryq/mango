@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.dosen.kelas.LogMahasiswaActivity" android:label="Kehadiran">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.dosen.MainDosenActivity" />
         </activity>
         <activity
             android:name=".ui.activity.mahasiswa.DetailHistoryActivity"
@@ -118,7 +121,7 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme" />
+            android:theme="@style/LoginTheme"/>
 
         <receiver android:name=".util.ReminderBroadcast" />
     </application>

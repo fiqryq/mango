@@ -92,8 +92,10 @@ public class KelasAdapter extends RecyclerView.Adapter<KelasAdapter.ViewHolder> 
             return false;
         }
     }
+
     public interface ClickHandler {
         void onItemClick(int position);
         boolean onItemLongClick(int position);
     }
+
 }
