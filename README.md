@@ -1,11 +1,12 @@
-# Mango (Final Project)- Attendance App using Estimote proximity beacon
-- Finish Devlopment
+# Mango
+[![Build Status](https://dev.azure.com/fiqrychoerudin/fiqrychoerudin/_apis/build/status/fiqryq.Mango-Master?branchName=master)]
+(https://dev.azure.com/fiqrychoerudin/fiqrychoerudin/_build/latest?definitionId=1&branchName=master)
 
-# About This Project
-Aplikasi Mango merupakan Sistem Presensi Mahasiswa Menggunakan BLE Beacon Berbasis Perangkat Android.
-BLE Beacon (Sistem kami menggunakan Estimote Proximity Beacon) ditempatkan di 2 kelas yang berbeda,
-Smartphone yang terinstall aplikasi Mango akan membaca signal beacon dan akan menampilkan informasi
-yang berisi informasi ruangan dan matakuliah yang sedang berlangsung.
+Mango Is Attendance App using [Estimote Proximity Beacon](https://estimote.com/products/).
+
+## LEGAL
+Copyright 2019-2020 Autumn Leaves Program Studi D3 Rekayasa Perangkat Lunak Aplikasi Universitas Telkom Bandung.
+**Don't upload** any fork ,source on any other paltform.
 
 # Who Supported This Project (All lecturers of D3IF Telkom University)
 - Rahmadi Wijaya, S.Si., M.T. (Head of Study Program)
@@ -18,33 +19,3 @@ yang berisi informasi ruangan dan matakuliah yang sedang berlangsung.
 - Indra Azimi, S.T., M.T.
 - Rizza Indah Mega Mandasari, S.Kom., M.T.
 - Tri Brotoharsono, S.T., M.T.
-
-# Copyright
-- Program Studi D3 Rekayasa Perangkat Lunak Aplikasi
-- Fakultas Ilmu Terapan
-- Universitas Telkom
-- Bandung 2019
-
-# Android Library Version (build.gradle)
-- classpath 'com.android.tools.build:gradle:3.4.1'
-- compileSdkVersion 29
-- buildToolsVersion "29.0.1"
-- minSdkVersion 21
-
-# Keywords
-- Mango Project
-- Attendance
-- Android Based Application
-- Estimote Proximity
-
-# Contributor
-- Fiqry Choerudin
-- Feby Dahlan
-
-# Documents Mango
-- Laporan :
-- Jurnal :
-- Slide :
-- Poster :
-- Video Promosi :
-- Video :
