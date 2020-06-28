@@ -25,7 +25,7 @@
             android:background="@drawable/content_informasi"
             android:foreground="?android:attr/selectableItemBackground"
             android:focusable="true"
-            android:elevation="4dp"
+            android:elevation="2dp"
             android:clickable="true">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginHorizontal="10dp"
-            android:elevation="4dp"
+            android:elevation="2dp"
             android:background="@drawable/content_informasi"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true">
@@ -60,7 +60,7 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/ic_exit_to_app_black_24dp"
+                android:background="@drawable/logout"
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="15dp"/>
 
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="10dp"
-            android:elevation="4dp"
+            android:elevation="2dp"
             android:background="@drawable/content_informasi"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true">

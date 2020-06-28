@@ -12,6 +12,15 @@ public class UserMahasiswa {
     private String alamat;
     private String kode_kelas;
     private String uId;
+    private String deviceId;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getStatus() {
         return status;

@@ -56,64 +56,49 @@ public class HistoryActivity extends BaseActivity {
 
     }
 
-    private void showHistory(){
-    String idUser;
-    idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
-    DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
-    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-        @Override
-        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-            if (task.isSuccessful()) {
-                progressBar.setVisibility(View.GONE);
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    UserMahasiswa userMahasiswa = new UserMahasiswa();
-                    userMahasiswa.setJurusan(document.getString("jurusan"));
-                    userMahasiswa.setKode_kelas(document.getString("kode_kelas"));
+    private void showHistory() {
+        String idUser;
+        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
+        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                    // Doc Ref Dari user
-                    String jurusanRef = userMahasiswa.getJurusan();
-                    String kelasRef = userMahasiswa.getKode_kelas();
-
-                    // Querysnapshot untuk mendapatkan semua data dari doccument
-                    firebaseFirestore
-                            .collection("presensiMahasiswa")
-                            .document("kelas")
-                            .collection(kelasRef)
-                            .document("presensi")
-                            .collection(getFirebaseUserId())
-                            .orderBy("created", Query.Direction.ASCENDING)
-                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    History history = new History();
-                                    history.setMatakuliah(document.getString("matakuliah"));
-                                    history.setRuangan(document.getString("ruangan"));
-                                    history.setTanggal(document.getString("waktu"));
-                                    history.setWaktu(document.getString("jam"));
-                                    arrayList.add(history);
-                                }
-                            } else {
-                                Log.d("tes", "Error getting documents: ", task.getException());
+                // Querysnapshot untuk mendapatkan semua data dari doccument
+                firebaseFirestore
+                        .collection("presensiMahasiswa")
+                        .document("kelas")
+                        .collection(getKelasMhs())
+                        .document("presensi")
+                        .collection(getFirebaseUserId())
+                        .orderBy("created", Query.Direction.DESCENDING)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        progressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                History history = new History();
+                                history.setMatakuliah(document.getString("matakuliah"));
+                                history.setRuangan(document.getString("ruangan"));
+                                history.setTanggal(document.getString("waktu"));
+                                history.setWaktu(document.getString("jam"));
+                                arrayList.add(history);
                             }
-                            setuprecyclerview(arrayList);
+                        } else {
+                            Log.d("tes", "Error getting documents: ", task.getException());
                         }
-                    });
-                } else {
-                    Log.d("gagal", "Documment tidak ada");
-                }
-            } else {
-                Log.d("gagal", "gagal", task.getException());
+                        setuprecyclerview(arrayList);
+                    }
+                });
             }
-        }
-    });
-}
-    private void setuprecyclerview(ArrayList<History> arrayList) {
-        HistoryAdapter historyAdapter = new HistoryAdapter(this,arrayList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(historyAdapter);
+
+            private void setuprecyclerview(ArrayList<History> arrayList) {
+                HistoryAdapter historyAdapter = new HistoryAdapter(getApplicationContext(), arrayList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                recyclerView.setAdapter(historyAdapter);
+            }
+        });
     }
 }

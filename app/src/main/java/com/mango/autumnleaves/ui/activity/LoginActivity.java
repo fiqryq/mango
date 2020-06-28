@@ -3,6 +3,7 @@ package com.mango.autumnleaves.ui.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,11 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
@@ -58,6 +64,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                     onHideProgress();
                 } else {
                     getAuthFirebase(mUsername, mPassword);
+                    Log.d("idDevice",Constant.KEY_MAHASISWA_JURUSAN);
                 }
             }
         });
@@ -121,6 +128,8 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             userMahasiswa.setKode_kelas(documentSnapshot.getString("kode_kelas"));
             userMahasiswa.setJurusan(documentSnapshot.getString("jurusan"));
             userMahasiswa.setTag(documentSnapshot.getString("tag"));
+            userMahasiswa.setGambar(documentSnapshot.getString("gambar"));
+            userMahasiswa.setDeviceId(documentSnapshot.getString("deviceId"));
             userMahasiswa.setuId(uid);
             mSession.setupSessionMahasiswa(userMahasiswa);
         }
@@ -140,7 +149,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                 finish();
             }
         }
-
     }
 
     @Override

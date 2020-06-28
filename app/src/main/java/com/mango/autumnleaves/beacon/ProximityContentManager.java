@@ -2,13 +2,20 @@ package com.mango.autumnleaves.beacon;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
 
+import com.andrognito.flashbar.Flashbar;
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
 import com.estimote.proximity_sdk.api.ProximityObserver;
 import com.estimote.proximity_sdk.api.ProximityObserverBuilder;
 import com.estimote.proximity_sdk.api.ProximityZone;
 import com.estimote.proximity_sdk.api.ProximityZoneBuilder;
 import com.estimote.proximity_sdk.api.ProximityZoneContext;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 import com.mango.autumnleaves.util.EstimoteUtils;
 
 import java.util.ArrayList;
@@ -18,7 +25,7 @@ import java.util.Set;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class ProximityContentManager {
+public class ProximityContentManager extends BaseActivity {
     private Context context;
     private ProximityContentAdapter proximityContentAdapter;
     private EstimoteCloudCredentials cloudCredentials;
@@ -32,13 +39,11 @@ public class ProximityContentManager {
     }
 
     public void start() {
+
         ProximityObserver proximityObserver = new ProximityObserverBuilder(context, cloudCredentials)
-                .onError(new Function1<Throwable, Unit>() {
-                    @Override
-                    public Unit invoke(Throwable throwable) {
-                        Log.e("app", "proximity observer error: " + throwable);
-                        return null;
-                    }
+                .onError(throwable -> {
+                    Log.e("app", "proximity observer error: " + throwable);
+                    return null;
                 })
                 .withBalancedPowerMode()
                 .build();
@@ -70,6 +75,7 @@ public class ProximityContentManager {
 
         proximityObserverHandler = proximityObserver.startObserving(zone);
     }
+
 
     public void stop() {
         proximityObserverHandler.stop();

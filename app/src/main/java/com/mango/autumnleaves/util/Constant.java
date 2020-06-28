@@ -1,5 +1,8 @@
 package com.mango.autumnleaves.util;
 
+import android.content.ContentResolver;
+import android.provider.Settings;
+
 public class Constant {
 
     // Constant Dosen
@@ -24,12 +27,25 @@ public class Constant {
     public static final String KEY_SESSION_MAHASISWA_ALAMAT = "KEY_SESSION_MAHASISWA_ALAMAT";
     public static final String KEY_SESSION_MAHASISWA_TAG = "KEY_SESSION_MAHASISWA_TAG";
     public static final String KEY_SESSION_MAHASISWA_STATUS = "KEY_SESSION_MAHASISWA_STATUS";
+    public static final String KEY_SESSION_MAHASISWA_GAMBAR = "KEY_SESSION_MAHASISWA_GAMBAR";
+    public static final String KEY_SESSION_MAHASISWA_DEVICE = "KEY_SESSION_MAHASISWA_DEVICE";
 
     public static final String KEY_IS_LOGIN = "KEY_IS_LOGIN";
     public static final String KEY_UID = "KEY_UID";
+    public static final String KEY_MAHASISWA_KELAS = "KEY_MAHASISWA_KELAS";
+    public static final String KEY_MAHASISWA_JURUSAN = "KEY_MAHASISWA_JURUSAN";
     public static final String TAG_USER_MAHASISWA = "2";
     public static final String TAG_USER_DOSEN = "1";
 
     public static final String SESI_AKTIF = "1";
     public static final String SESI_TIDAK_AKTIF = "0";
+
+    public static String deviceId = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
+
+    private static ContentResolver getContentResolver() {
+        return getContentResolver();
+    }
+
+    public static final String DEVICE_ID = deviceId;
+
 }

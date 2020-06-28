@@ -57,7 +57,7 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.View
             super(itemView);
             tvNo = itemView.findViewById(R.id.tvNomor);
             tvNamaMahasiswa = itemView.findViewById(R.id.tvNamaMahasiswa);
-            tvJamPresensi = itemView.findViewById(R.id.tvJamPresensi);
+//            tvJamPresensi = itemView.findViewById(R.id.tvJamPresensi);
         }
     }
 }

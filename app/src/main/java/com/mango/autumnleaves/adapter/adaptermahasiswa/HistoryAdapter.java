@@ -39,7 +39,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        holder.tvHistoryTanggal.setText(mData.get(position).getTanggal());
+        holder.tvHistoryTanggal.setText(mData.get(position).getMatakuliah() + " " + mData.get(position).getTanggal());
 
         String matakuliah = mData.get(position).getMatakuliah();
         String ruangan = mData.get(position).getRuangan();
@@ -54,7 +54,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 intent.putExtra("RUANGAN",ruangan);
                 intent.putExtra("TANGGAL",tanggal);
                 intent.putExtra("WAKTU",waktu);
-                mContext.startActivity(intent);
+                mContext.startActivity(intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
     }

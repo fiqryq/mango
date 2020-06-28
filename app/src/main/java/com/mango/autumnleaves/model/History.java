@@ -1,13 +1,30 @@
 package com.mango.autumnleaves.model;
 
 public class History {
-   private int id_presensi;
-   private int id_mahasiswa;
-   private String tanggal;
-   private String waktu;
-   private String ruangan;
-
+    private int id_presensi;
+    private int id_mahasiswa;
+    private String tanggal;
+    private String waktu;
+    private String ruangan;
     private String matakuliah;
+    private int status;
+    private String id;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public int getId_presensi() {
         return id_presensi;

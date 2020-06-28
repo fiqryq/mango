@@ -30,10 +30,6 @@ public class BaseFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    protected void showToast(String text) {
-        mActivity.showToast(text);
-    }
-
     protected void logoutApps() {
         mSession.removeSession();
         mActivity.finish();
@@ -42,6 +38,22 @@ public class BaseFragment extends Fragment {
 
     protected String getFirebaseUserId() {
         return mSession.getPreferences().getString(Constant.KEY_UID, "");
+    }
+
+    protected String getUserKelas(){
+        return mSession.getPreferences().getString(Constant.KEY_MAHASISWA_KELAS,"");
+    }
+
+    protected String getUserJurusan(){
+        return mSession.getPreferences().getString(Constant.KEY_MAHASISWA_JURUSAN,"");
+    }
+
+    protected void showToast(String text) {
+        mActivity.showToast(text);
+    }
+
+    protected String getNamaDosen(){
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_DOSENUSERNAME,"");
     }
 
 }

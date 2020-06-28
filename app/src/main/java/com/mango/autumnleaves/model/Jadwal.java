@@ -2,12 +2,49 @@ package com.mango.autumnleaves.model;
 
 public class Jadwal {
 
-    private int id;
+    private String id;
     private String hari;
     private String matakuliah;
     private String dosen;
     private String ruangan;
     private String jurusan;
+    private String waktu_mulai;
+    private String waktu_selesai;
+    private long posisi;
+    private long pertemuan;
+    private long jumlah_pertemuan;
+
+    public long getPertemuan() {
+        return pertemuan;
+    }
+
+    public void setPertemuan(long pertemuan) {
+        this.pertemuan = pertemuan;
+    }
+
+    public long getJumlah_pertemuan() {
+        return jumlah_pertemuan;
+    }
+
+    public void setJumlah_pertemuan(long jumlah_pertemuan) {
+        this.jumlah_pertemuan = jumlah_pertemuan;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public long getPosisi() {
+        return posisi;
+    }
+
+    public void setPosisi(long posisi) {
+        this.posisi = posisi;
+    }
 
     public String getSesi() {
         return sesi;
@@ -16,8 +53,8 @@ public class Jadwal {
     public void setSesi(String sesi) {
         this.sesi = sesi;
     }
-
     private String sesi;
+
 
     public String getKelas() {
         return kelas;
@@ -26,16 +63,7 @@ public class Jadwal {
     public void setKelas(String kelas) {
         this.kelas = kelas;
     }
-
     private String kelas;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getHari() {
         return hari;
@@ -84,9 +112,6 @@ public class Jadwal {
     public void setWaktu_selesai(String waktu_selesai) {
         this.waktu_selesai = waktu_selesai;
     }
-
-    private String waktu_mulai;
-    private String waktu_selesai;
 
     public String getJurusan() {
         return jurusan;

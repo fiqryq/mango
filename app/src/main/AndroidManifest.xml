@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,14 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.dosen.kelas.LogMahasiswaActivity" android:label="Kehadiran">
+        <activity android:name=".ui.activity.mahasiswa.StatistikActivity" android:label="Statistik">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.mahasiswa.AccountActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activity.dosen.kelas.LogMahasiswaActivity"
+            android:label="Kehadiran">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.MainDosenActivity" />
@@ -65,9 +72,6 @@
             android:theme="@style/InfoDosenTheme" />
         <activity
             android:name=".ui.activity.mahasiswa.PresensiDetailActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mahasiswa.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.mahasiswa.HistoryActivity"
@@ -121,7 +125,7 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme"/>
+            android:theme="@style/LoginTheme" />
 
         <receiver android:name=".util.ReminderBroadcast" />
     </application>

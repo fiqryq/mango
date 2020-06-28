@@ -34,6 +34,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
+import com.mango.autumnleaves.model.History;
 import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
 import com.mango.autumnleaves.R;
@@ -54,8 +56,11 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 public class ProximityContentAdapter extends BaseAdapter {
 
     private Context context;
-    private String dataDosen, dataMatakuliah, dataWaktuMulai, dataWaktuSelesai, dataRuangan, dataNodata;
-
+    private String dataMatakuliah, dataWaktuMulai, dataWaktuSelesai, dataRuangan, dataNodata;
+    private int status;
+    private int pertemuan;
+    private String idMatkul;
+    private String idDokumen;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
@@ -109,6 +114,8 @@ public class ProximityContentAdapter extends BaseAdapter {
         ProximityContent content = nearbyContent.get(position);
         kelas.setText("Ruangan " + content.getKelas());
         lokasi.setText(content.getLokasi() + " Telkom University");
+        status = 0;
+        pertemuan = 0;
 
         // BottomSheetDialog
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.TransparentDialog);
@@ -132,6 +139,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         FirebasePushData(content,bottomSheetDialog);
+                        bottomSheetDialog.dismiss();
                     }
                 });
 
@@ -200,11 +208,16 @@ public class ProximityContentAdapter extends BaseAdapter {
                             jadwal.setDosen(documentSnapshot.getString("dosen"));
                             jadwal.setSesi(documentSnapshot.getString("sesi"));
                             jadwal.setRuangan(documentSnapshot.getString("ruangan"));
+                            jadwal.setId(documentSnapshot.getString("id"));
+                            jadwal.setPertemuan(documentSnapshot.getLong("pertemuan").intValue());
                             jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
                             jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
 
                             dataMatakuliah = jadwal.getMatakuliah();
                             dataRuangan = jadwal.getRuangan();
+                            idMatkul = jadwal.getId();
+                            pertemuan = (int) jadwal.getPertemuan();
+                            idDokumen = documentSnapshot.getId();
                         }
 
                         Map<String, Object> data = new HashMap<>();
@@ -214,6 +227,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         data.put("jam", getHour());
                         data.put("waktu", getTimeNow());
                         data.put("created", new Timestamp(new Date()));
+                        data.put("status", status);
 
                         firebaseFirestore
                                 .collection("presensiMahasiswa")
@@ -229,12 +243,32 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                 .setTitleText("Berhasil Presensi")
                                                 .setContentText("klik tombl ok untuk keluar")
                                                 .show();
-                                        bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Toast.makeText(context, "Anda Sudah Melakukan Presensi", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+
+                                        Map<String,Object> updatePertemuanStat = new HashMap<>();
+                                        updatePertemuanStat.put("pertemuan", pertemuan + 1);
+
+                                        firebaseFirestore
+                                                .collection("statistik")
+                                                .document("kelas")
+                                                .collection(kelasRef)
+                                                .document(firebaseAuth.getUid())
+                                                .collection("jadwal")
+                                                .document(idMatkul)
+                                                .update(updatePertemuanStat);
+
+
+                                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
+                                        updatePertemuanJadwal.put("pertemuan", pertemuan + 1);
+
+                                        firebaseFirestore
+                                                .collection("prodi")
+                                                .document(jurusanRef)
+                                                .collection("kelas")
+                                                .document(kelasRef)
+                                                .collection("jadwal")
+                                                .document(idDokumen)
+                                                .update(updatePertemuanJadwal);
+
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -256,7 +290,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                     }
                 });
     }
-
     private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid,ProgressBar mProgressBarBts){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -285,8 +318,25 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-
     private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan , TextView btsWaktu, TextView btsJam, ProximityContent content, BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid, ProgressBar mProgressBarBts) {
+
+        firebaseFirestore
+                .collection("presensiMahasiswa")
+                .document("kelas")
+                .collection(kelasRef)
+                .document("presensi")
+                .collection(firebaseAuth.getUid())
+                .limit(1).orderBy("created", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots){
+                    History history = new History();
+                    history.setStatus(queryDocumentSnapshot.getLong("status").intValue());
+                    status = history.getStatus();
+                }
+            }
+        });
+
         firebaseFirestore
                 .collection("prodi")
                 .document(jurusanRef)
@@ -297,38 +347,39 @@ public class ProximityContentAdapter extends BaseAdapter {
                 .whereLessThan("waktu_mulai", getHour())
                 .orderBy("waktu_mulai", Query.Direction.DESCENDING)
                 .limit(1)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            Jadwal jadwal = new Jadwal();
-                            jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
-                            jadwal.setRuangan(documentSnapshot.getString("ruangan"));
-                            jadwal.setSesi(documentSnapshot.getString("sesi"));
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
+                        jadwal.setRuangan(documentSnapshot.getString("ruangan"));
+                        jadwal.setSesi(documentSnapshot.getString("sesi"));
 
-                            if (jadwal.getSesi().equals("1")){
+                        if (jadwal.getSesi().equals("1")){
+                            if (status == 0){
                                 bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
-                            } else {
+                            } else if (status == 1){
                                 bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
                             }
+                        } else {
+                            bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
+                        }
 
-                            Log.d("TESQUERY", "jadwal ruangan " + jadwal.getMatakuliah());
-                            Log.d("TESQUERY", "jadwal contex " + content.getKelas());
+                        Log.d("TESQUERY", "jadwal ruangan " + status);
+                        Log.d("TESQUERY", "jadwal contex " + content.getKelas());
 
-                            int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
-                            int sekarang = Integer.parseInt(getHour().replace(":", ""));
+                        int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
+                        int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
-                            if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
-                                mBottomSheetValid.setVisibility(View.VISIBLE);
-                                mProgressBarBts.setVisibility(View.GONE);
-                                btsMatakuliah.setText(jadwal.getMatakuliah());
-                                btsRuangan.setText(content.getKelas());
-                                btsWaktu.setText(getTimeNow());
-                                btsJam.setText(getHour());
-                            }else {
-                                Toast.makeText(context, "Tidak ada Kelas", Toast.LENGTH_SHORT).show();
-                                bottomSheetViewPresensi.cancel();
-                            }
+                        if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
+                            mBottomSheetValid.setVisibility(View.VISIBLE);
+                            mProgressBarBts.setVisibility(View.GONE);
+                            btsMatakuliah.setText(jadwal.getMatakuliah());
+                            btsRuangan.setText(content.getKelas());
+                            btsWaktu.setText(getTimeNow());
+                            btsJam.setText(getHour());
+                        }else {
+                            Toast.makeText(context, "Tidak ada Kelas", Toast.LENGTH_SHORT).show();
+                            bottomSheetViewPresensi.cancel();
                         }
                     }
                 });

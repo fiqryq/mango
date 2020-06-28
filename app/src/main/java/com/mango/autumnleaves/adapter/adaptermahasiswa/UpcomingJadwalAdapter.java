@@ -10,20 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
 import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.model.Presensi;
-import com.mango.autumnleaves.ui.activity.mahasiswa.DashboardMahasiswaActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.ViewHolder> {
+public class UpcomingJadwalAdapter extends RecyclerView.Adapter<UpcomingJadwalAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Jadwal> mData;
 
-    public JadwalAdapter(Context mContext, List<Jadwal> mData) {
+    public UpcomingJadwalAdapter(Context mContext, List<Jadwal> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -33,8 +29,8 @@ public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        view = inflater.inflate(R.layout.listitem_jadwal, parent, false);
-        return new ViewHolder(view);
+        view = inflater.inflate(R.layout.list_next_jadwal, parent, false);
+        return new UpcomingJadwalAdapter.ViewHolder(view);
     }
 
     @Override

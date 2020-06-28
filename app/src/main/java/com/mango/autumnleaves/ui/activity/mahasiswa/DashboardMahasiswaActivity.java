@@ -2,52 +2,61 @@ package com.mango.autumnleaves.ui.activity.mahasiswa;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
+
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.estimote.mustard.rx_goodness.rx_requirements_wizard.Requirement;
+import com.andrognito.flashbar.Flashbar;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
 import com.estimote.proximity_sdk.api.EstimoteCloudCredentials;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
+import com.mango.autumnleaves.adapter.adaptermahasiswa.UpcomingJadwalAdapter;
 import com.mango.autumnleaves.beacon.ProximityContentAdapter;
 import com.mango.autumnleaves.beacon.ProximityContentManager;
-import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
+import com.mango.autumnleaves.model.Jadwal;
+
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 import com.squareup.picasso.Picasso;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function1;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 
 public class DashboardMahasiswaActivity extends BaseActivity {
 
-    private ImageView imvPresensi, imvJadwal, imvHistory, imvProfile;
-    private TextView dshUsername, dshNim;
+    private ImageView imvJadwal, imvHistory, imvProfile;
+    private TextView dshUsername, dshNim , lihat;
     private ImageView dashImg;
-    private ProgressBar progressBar;
+    private Flashbar flashbar = null;
+    private LinearLayout emptyView;
 
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;
+
+    RecyclerView recyclerView;
+    private ArrayList<Jadwal> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,30 +72,46 @@ public class DashboardMahasiswaActivity extends BaseActivity {
                     .show();
         }
 
-        progressBar = findViewById(R.id.progressBarImg);
         imvJadwal = findViewById(R.id.jadwal);
         imvHistory = findViewById(R.id.history);
         imvProfile = findViewById(R.id.informasi);
         dshUsername = findViewById(R.id.dashUsername);
-        dshNim = findViewById(R.id.dashNim);
+//        lihat = findViewById(R.id.lihatsemua);
+//        dshNim = findViewById(R.id.dashNim);
         dashImg = findViewById(R.id.dashIgm);
+        recyclerView = findViewById(R.id.jadwalToday);
+        emptyView = findViewById(R.id.linerEmptyView);
+        arrayList = new ArrayList<>();
         GridView gridView = findViewById(R.id.gridView);
 
-        progressBar.setVisibility(View.VISIBLE);
         //intentPresensi();
         intentJadwal();
         intentHistory();
         intentInformasi();
 
-        // get menthod
-        getprofile();
+        //setdata User
+        dshUsername.setText(getNamaMhs());
+//        dshNim.setText(getNimMhs());
+        Picasso.get().load(getProfileMhs()).into(dashImg);
 
         proximityContentAdapter = new ProximityContentAdapter(this);
         gridView.setAdapter(proximityContentAdapter);
+
+
+//        lihat.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (flashbar == null) {
+//                    flashbar = positiveNegativeAction();
+//                }
+//                flashbar.show();
+//            }
+//        });
+
         getEstimote();
+        jadwal();
 
     }
-
     private void intentJadwal() {
         //intent menu jadwal
         imvJadwal.setOnClickListener(v -> {
@@ -109,31 +134,12 @@ public class DashboardMahasiswaActivity extends BaseActivity {
             startActivity(informasi);
         });
     }
-
-    private void getprofile() {
-        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                progressBar.setVisibility(View.GONE);
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    UserMahasiswa userMahasiswa = new UserMahasiswa();
-                    userMahasiswa.setNama(document.getString("nama"));
-                    userMahasiswa.setNim_mhs(document.getString("nim_mhs"));
-                    userMahasiswa.setAlamat(document.getString("alamat"));
-                    userMahasiswa.setGambar(document.getString("gambar"));
-
-                    dshUsername.setText(userMahasiswa.getNama());
-                    dshNim.setText(userMahasiswa.getNim_mhs());
-                    Picasso.get().load(userMahasiswa.getGambar()).into(dashImg);
-                } else {
-                    Log.d("gagal", "Documment tidak ada");
-                }
-            } else {
-                Log.d("TAG", "gagal", task.getException());
-            }
-        });
+    private boolean isConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
+
 
     // Log Beacon
     private void getEstimote() {
@@ -156,8 +162,8 @@ public class DashboardMahasiswaActivity extends BaseActivity {
                             return null;
                         });
     }
-
     // Credentials App Cloud Estimote Beacon
+
     private void startProximityContentManager() {
         EstimoteCloudCredentials
                 cloudCredentials = new EstimoteCloudCredentials("mango-master-2zw",
@@ -173,10 +179,78 @@ public class DashboardMahasiswaActivity extends BaseActivity {
             proximityContentManager.stop();
     }
 
-    private boolean isConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
+    private Flashbar positiveNegativeAction() {
+        return new Flashbar.Builder(this)
+                .gravity(Flashbar.Gravity.BOTTOM)
+                .title("Hello World!")
+                .message(
+                        "You can show either or both of the positive/negative buttons and "
+                                + "customize them similar to the primary button.")
+                .backgroundColorRes(R.color.colorPrimary)
+                .positiveActionText("YES")
+                .negativeActionText("NO")
+                .positiveActionTapListener(new Flashbar.OnActionTapListener() {
+                    @Override
+                    public void onActionTapped(@NotNull Flashbar bar) {
+                        bar.dismiss();
+                    }
+                })
+                .negativeActionTapListener(new Flashbar.OnActionTapListener() {
+                    @Override
+                    public void onActionTapped(@NotNull Flashbar bar) {
+                        bar.dismiss();
+                    }
+                })
+                .positiveActionTextColorRes(R.color.yellow)
+                .negativeActionTextColorRes(R.color.yellow)
+                .build();
+    }
+
+    private void jadwal(){
+        // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
+        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                // Querysnapshot untuk mendapatkan semua data dari doccument
+                firebaseFirestore
+                        .collection("prodi")
+                        .document(getJurusanMhs())
+                        .collection("kelas")
+                        .document(getKelasMhs())
+                        .collection("jadwal")
+                        .whereEqualTo("hari",getNameDay())
+                        .whereGreaterThan("waktu_mulai",getHour())
+                        .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            emptyView.setVisibility(View.GONE);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Jadwal jadwal = new Jadwal();
+                                jadwal.setHari(document.getString("hari"));
+                                jadwal.setMatakuliah(document.getString("matakuliah"));
+                                jadwal.setDosen(document.getString("dosen"));
+                                jadwal.setRuangan(document.getString("ruangan"));
+                                jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
+                                jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
+                                arrayList.add(jadwal);
+                            }
+                        } else {
+                            Log.d("tes", "Error getting documents: ", task.getException());
+                        }
+                        setuprecyclerView(arrayList);
+                    }
+                });
+            }
+
+            private void setuprecyclerView(ArrayList<Jadwal> arrayList) {
+                UpcomingJadwalAdapter upcomingJadwalAdapter = new UpcomingJadwalAdapter(getApplicationContext(), arrayList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+                recyclerView.setAdapter(upcomingJadwalAdapter);
+            }
+        });
     }
 
 }

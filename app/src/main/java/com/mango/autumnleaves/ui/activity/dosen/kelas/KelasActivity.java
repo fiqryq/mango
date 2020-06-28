@@ -41,6 +41,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.ui.activity.LoginActivity;
 import com.mango.autumnleaves.ui.activity.SplashScreen;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
@@ -66,24 +67,29 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
-    private TextView tvMatakuliah, tvDosen, tvKelas , mViewLogMahasiswa;
-    private EditText mEtMateri , mEtPertemuan;
+    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa;
+    private EditText mEtMateri, mEtPertemuan;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
-    public String idDoccument , mataKuliahNow , RuanganNow , datKelas , Kelas;
+
+    public String idDoccument = "";
+    public String mataKuliahNow = "";
+    public String RuanganNow = "";
+    public String Kelas = "";
+    public String datKelas = "";
+    public String datMatakuliah = "";
+    public String datDosen = "";
+    public String datRuangan = "";
+
     public long jumlahMahasiswa;
 
-    private String  datMatakuliah , datDosen , datRuangan;
     private static int DELETE_TEMP = 6000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kelas);
-        idDoccument = "";
-        mataKuliahNow = "";
-        Kelas = "";
 
         tvMatakuliah = findViewById(R.id.tvSesiMatakuliah);
         tvDosen = findViewById(R.id.tvSesiDosen);
@@ -94,25 +100,80 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
-        Intent intent = getIntent();
-        datMatakuliah = intent.getStringExtra("MATAKULIAH");
-        datDosen = intent.getStringExtra("DOSEN");
-        datKelas = intent.getStringExtra("KELAS");
-        datRuangan = intent.getStringExtra("RUANGAN");
 
-        tvDosen.setText(": " + datDosen);
-        tvMatakuliah.setText(": " + datMatakuliah);
-        tvKelas.setText(": " + datRuangan);
+        // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
+        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
 
-        dataRef();
+                        UserDosen userDosen = new UserDosen();
+                        userDosen.setJurusan(document.getString("jurusan"));
+                        userDosen.setNip(document.getString("nip"));
+
+                        // Doc Ref Dari user
+                        String nipRef = userDosen.getNip();
+
+                        // Querysnapshot untuk mendapatkan semua data dari doccument
+                        firebaseFirestore
+                                .collection("jadwalDosen")
+                                .document(nipRef)
+                                .collection("jadwal")
+                                .whereEqualTo("hari", getNameDay())
+                                .whereLessThan("waktu_mulai", getHour())
+                                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                                .limit(1)
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Jadwal jadwal = new Jadwal();
+                                        jadwal.setHari(document.getString("hari"));
+                                        jadwal.setMatakuliah(document.getString("matakuliah"));
+                                        jadwal.setDosen(document.getString("dosen"));
+                                        jadwal.setJurusan(document.getString("jurusan"));
+                                        jadwal.setKelas(document.getString("kelas"));
+                                        jadwal.setRuangan(document.getString("ruangan"));
+                                        jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
+                                        jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
+
+                                        datDosen = jadwal.getDosen();
+                                        datMatakuliah = jadwal.getMatakuliah();
+                                        datRuangan = jadwal.getRuangan();
+                                        datKelas = jadwal.getKelas();
+
+                                        tvDosen.setText(": " + datDosen);
+                                        tvMatakuliah.setText(": " + datMatakuliah);
+                                        tvKelas.setText(": " + datRuangan);
+
+                                    }
+                                } else {
+                                    Log.d("tes", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                    } else {
+                        Log.d("gagal", "Documment tidak ada");
+                    }
+                } else {
+                    Log.d("gagal", "gagal", task.getException());
+                }
+            }
+        });
+
+        CheckSesi();
         jadwalRef();
         getdatakelas();
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data").child(datKelas);
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data").child(Kelas);
         rootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     jumlahMahasiswa = ds.getChildrenCount();
                 }
             }
@@ -141,7 +202,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .setCancelable(false)
                 .setPositiveButton("Submit", R.drawable.ic_power_settings_new_black_24dp, (dialogInterface, i) -> {
                     showSuccessToast("Berhasil Submit");
-                    pushBap();
+                    PushDataBAP();
                     deleteTemporary();
                     switchSesi.setChecked(false);
                     dialogInterface.dismiss();
@@ -205,12 +266,14 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
+
     private void viewLog() {
-        Intent intent = new Intent(KelasActivity.this,LogMahasiswaActivity.class);
-        intent.putExtra("DATAKELAS",Kelas);
+        Intent intent = new Intent(KelasActivity.this, LogMahasiswaActivity.class);
+        intent.putExtra("DATAKELAS", Kelas);
         startActivity(intent);
     }
-    private void dataRef() {
+
+    private void CheckSesi() {
         firebaseFirestore
                 .collection("prodi")
                 .document("rpla")
@@ -225,64 +288,17 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                           idDoccument = documentSnapshot.getId();
-                           if(documentSnapshot.getString("sesi").equals(Constant.SESI_AKTIF)){
-                               switchSesi.setChecked(true);
-                           }else {
-                               switchSesi.setChecked(false);
-                           }
+                            idDoccument = documentSnapshot.getId();
+                            if (documentSnapshot.getString("sesi").equals(Constant.SESI_AKTIF)) {
+                                switchSesi.setChecked(true);
+                            } else {
+                                switchSesi.setChecked(false);
+                            }
                         }
                     }
                 });
     }
-    private void updateTrue(){
-        DocumentReference documentReference = firebaseFirestore
-                .collection("prodi")
-                .document("rpla")
-                .collection("kelas")
-                .document(datKelas)
-                .collection("jadwal")
-                .document(idDoccument);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("sesi", Constant.SESI_AKTIF);
-        documentReference.update(map)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        showToast("Berhasil Buka Sesi");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showErrorToast("Gagal Buka Sesi");
-            }
-        });
-    }
-    private void updateFalse(){
-        DocumentReference documentReference = firebaseFirestore
-                .collection("prodi")
-                .document("rpla")
-                .collection("kelas")
-                .document(datKelas)
-                .collection("jadwal")
-                .document(idDoccument);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("sesi", Constant.SESI_TIDAK_AKTIF);
-        documentReference.update(map)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        showToast("Berhasil Tutup Sesi");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showErrorToast("Gagal Tutup Sesi");
-            }
-        });
-    }
     private void jadwalRef() {
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
@@ -345,18 +361,18 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
-    private void pushBap(){
 
+    private void PushDataBAP() {
         Map<String, Object> dataBap = new HashMap<>();
         dataBap.put("matakuliah", mataKuliahNow);
-        dataBap.put("jam",getHour());
-        dataBap.put("waktu",getTimeNow());
-        dataBap.put("ruangan",RuanganNow);
-        dataBap.put("materi",mEtMateri.getText().toString());
-        dataBap.put("pertemuan",mEtPertemuan.getText().toString());
-        dataBap.put("hadir",String.valueOf(jumlahMahasiswa));
+        dataBap.put("jam", getHour());
+        dataBap.put("waktu", getTimeNow());
+        dataBap.put("ruangan", RuanganNow);
+        dataBap.put("materi", mEtMateri.getText().toString());
+        dataBap.put("pertemuan", mEtPertemuan.getText().toString());
+        dataBap.put("hadir", String.valueOf(jumlahMahasiswa));
         dataBap.put("created", new Timestamp(new Date()));
-        dataBap.put("kelas",Kelas);
+        dataBap.put("kelas", Kelas);
 
         firebaseFirestore
                 .collection("bap")
@@ -370,7 +386,57 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
-    private void deleteTemporary(){
+    private void updateTrue() {
+        DocumentReference documentReference = firebaseFirestore
+                .collection("prodi")
+                .document("rpla")
+                .collection("kelas")
+                .document("41-03")
+                .collection("jadwal")
+                .document(idDoccument);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("sesi", Constant.SESI_AKTIF);
+        documentReference.update(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showToast("Berhasil Buka Sesi");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showErrorToast("Gagal Buka Sesi");
+            }
+        });
+    }
+
+    private void updateFalse() {
+        DocumentReference documentReference = firebaseFirestore
+                .collection("prodi")
+                .document("rpla")
+                .collection("kelas")
+                .document("41-03")
+                .collection("jadwal")
+                .document(idDoccument);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("sesi", Constant.SESI_TIDAK_AKTIF);
+        documentReference.update(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showToast("Berhasil Tutup Sesi");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showErrorToast("Gagal Tutup Sesi");
+            }
+        });
+    }
+
+    private void deleteTemporary() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -378,16 +444,16 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 reference.removeValue();
                 finish();
             }
-        },DELETE_TEMP);
+        }, DELETE_TEMP);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btnSubmit :
-                if (TextUtils.isEmpty(mEtMateri.getText().toString())){
+        switch (v.getId()) {
+            case R.id.btnSubmit:
+                if (TextUtils.isEmpty(mEtMateri.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form Materi", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(mEtPertemuan.getText().toString())){
+                } else if (TextUtils.isEmpty(mEtPertemuan.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form Pertemuan", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mEtMateri.getText().toString()) && TextUtils.isEmpty(mEtPertemuan.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form", Toast.LENGTH_SHORT).show();

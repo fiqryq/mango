@@ -31,7 +31,7 @@ import com.squareup.picasso.Picasso;
 public class AccountActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
     private TextView tvInfoUsername ;
-    private LinearLayout linearProfile , tvInfoLogout , tvInfoMango;
+    private LinearLayout linearProfile , tvInfoLogout , tvInfoMango , linearStatistik;
     private ImageView imvInfoUsername;
     private MaterialDialog logoutDialog;
 
@@ -39,7 +39,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -50,8 +49,11 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         tvInfoLogout = findViewById(R.id.tvLogoutMhs);
         tvInfoMango = findViewById(R.id.tvInfoMango);
         linearProfile = findViewById(R.id.linearProfile);
+        linearStatistik = findViewById(R.id.linearStatistik);
 
-        getprofile();
+        tvInfoUsername.setText(getNamaMhs());
+        Picasso.get().load(getProfileMhs()).into(imvInfoUsername);
+
         logoutDialog = new MaterialDialog.Builder(this)
                 .setTitle("Logout Dialog")
                 .setMessage("Apakah Kamu Yakin Akan Keluar Dari Mango?")
@@ -81,7 +83,16 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
+        linearStatistik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),StatistikActivity.class);
+                startActivity(intent);
+            }
+        });
+
         tvInfoLogout.setOnClickListener(this::onClick);
+
         tvInfoMango.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,29 +101,6 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             }
         });
 
-    }
-
-    private void getprofile() {
-        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        UserMahasiswa userMahasiswa = new UserMahasiswa();
-                        userMahasiswa.setNama(document.getString("nama"));
-                        userMahasiswa.setGambar(document.getString("gambar"));
-                        tvInfoUsername.setText(userMahasiswa.getNama());
-                        Picasso.get().load(userMahasiswa.getGambar()).into(imvInfoUsername);
-                    } else {
-                        Log.d("gagal", "Documment tidak ada");
-                    }
-                } else {
-                    Log.d("TAG", "gagal", task.getException());
-                }
-            }
-        });
     }
 
     private void logout() {
