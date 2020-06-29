@@ -15,6 +15,7 @@ public class Constant {
     public static final String KEY_SESSION_DOSENTTL = "KEY_SESSION_DOSENTTL";
     public static final String KEY_SESSION_DOSENALAMAT = "KEY_SESSION_DOSENALAMAT";
     public static final String KEY_SESSION_DOSENTAG = "KEY_SESSION_DOSENTAG";
+    public static final String KEY_SESSION_GAMBAR = "KEY_SESSION_DOSENTAG";
 
     // Constant Mahasiswa
     public static final String KEY_SESSION_MAHASISWA_NIM = "KEY_SESSION_MAHASISWA_NIM";

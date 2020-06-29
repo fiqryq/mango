@@ -50,6 +50,9 @@ public class InfoDosenFragment extends BaseFragment {
         tvLogout = view.findViewById(R.id.tvInfoLogoutDosen);
         linearProfile = view.findViewById(R.id.ProfileDosen);
 
+
+        tvUserDosen.setText(getNamaDosen());
+        Picasso.get().load(getGambarDosen()).into(imgDosen);
         tvAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,32 +96,10 @@ public class InfoDosenFragment extends BaseFragment {
                 logoutDialog.show();
             }
         });
-        getDataDosen();
 
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void getDataDosen(){
-        firebaseFirestore
-                .collection("user")
-                .document(getFirebaseUserId())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot doccument = task.getResult();
-                    if (doccument != null && doccument.exists()){
-                        UserDosen userDosen = new UserDosen();
-                        userDosen.setNama(doccument.getString("nama"));
-                        userDosen.setGambar(doccument.getString("gambar"));
-                        tvUserDosen.setText(userDosen.getNama());
-                        Picasso.get().load(userDosen.getGambar()).into(imgDosen);
-                    }
-                }
-            }
-        });
-    }
     private void logout() {
         firebaseAuth.signOut();
         logoutApps();

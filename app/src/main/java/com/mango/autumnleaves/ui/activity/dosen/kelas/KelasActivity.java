@@ -67,7 +67,7 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
-    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa;
+    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa , tvSesiPertemuan;
     private EditText mEtMateri, mEtPertemuan;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
@@ -81,6 +81,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public String datMatakuliah = "";
     public String datDosen = "";
     public String datRuangan = "";
+    public int datPetemuan = 0;
 
     public long jumlahMahasiswa;
 
@@ -96,10 +97,16 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         tvKelas = findViewById(R.id.tvSesiRuangan);
         mViewLogMahasiswa = findViewById(R.id.ViewLogMahasiswa);
         mEtMateri = findViewById(R.id.etMateriSesiKelas);
+        tvSesiPertemuan = findViewById(R.id.tvSesiPertemuan);
         mEtPertemuan = findViewById(R.id.etPertemuanKelas);
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
+        Intent intent = getIntent();
+        datMatakuliah = intent.getStringExtra("MATAKULIAH");
+        datDosen = intent.getStringExtra("DOSEN");
+        datKelas = intent.getStringExtra("KELAS");
+        datRuangan = intent.getStringExtra("RUANGAN");
 
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
         DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
@@ -137,6 +144,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                         jadwal.setDosen(document.getString("dosen"));
                                         jadwal.setJurusan(document.getString("jurusan"));
                                         jadwal.setKelas(document.getString("kelas"));
+                                        jadwal.setPertemuan(document.getLong("pertemuan").intValue());
                                         jadwal.setRuangan(document.getString("ruangan"));
                                         jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
@@ -145,10 +153,12 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                         datMatakuliah = jadwal.getMatakuliah();
                                         datRuangan = jadwal.getRuangan();
                                         datKelas = jadwal.getKelas();
+                                        datPetemuan = (int) jadwal.getPertemuan();
 
                                         tvDosen.setText(": " + datDosen);
                                         tvMatakuliah.setText(": " + datMatakuliah);
                                         tvKelas.setText(": " + datRuangan);
+                                        tvSesiPertemuan.setText(": " + datPetemuan);
 
                                     }
                                 } else {
@@ -278,7 +288,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .collection("prodi")
                 .document("rpla")
                 .collection("kelas")
-                .document("41-03")
+                .document(datKelas)
                 .collection("jadwal")
                 .whereEqualTo("hari", getNameDay())
                 .whereLessThan("waktu_mulai", getHour())
@@ -391,7 +401,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .collection("prodi")
                 .document("rpla")
                 .collection("kelas")
-                .document("41-03")
+                .document(datKelas)
                 .collection("jadwal")
                 .document(idDoccument);
 
@@ -401,7 +411,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        showToast("Berhasil Buka Sesi");
+                        // Handle Success Update
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -416,7 +426,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .collection("prodi")
                 .document("rpla")
                 .collection("kelas")
-                .document("41-03")
+                .document(datKelas)
                 .collection("jadwal")
                 .document(idDoccument);
 
@@ -426,7 +436,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        showToast("Berhasil Tutup Sesi");
+                        // Handle Success Update
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

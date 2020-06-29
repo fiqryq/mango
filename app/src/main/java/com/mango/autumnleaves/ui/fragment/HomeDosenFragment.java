@@ -177,6 +177,10 @@ public class HomeDosenFragment extends BaseFragment {
 
     private void IntentConstraintKelas(){
         Intent intent = new Intent(getActivity(), KelasActivity.class);
+        intent.putExtra("MATAKULIAH",datMatakuliah);
+        intent.putExtra("DOSEN",datDosen);
+        intent.putExtra("RUANGAN",datRuangan);
+        intent.putExtra("KELAS",datKelas);
         startActivity(intent);
     }
 }

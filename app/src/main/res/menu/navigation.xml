@@ -13,6 +13,11 @@
         android:icon="@drawable/ic_book_black_24dp"/>
 
     <item
+        android:id="@+id/jadwal_dosen"
+        android:title="Jadwal"
+        android:icon="@drawable/ic_perm_contact_calendar_black_24dp"/>
+
+    <item
         android:id="@+id/account_menu"
         android:title="@string/account"
         android:icon="@drawable/ic_account_circle_black_24dp"/>

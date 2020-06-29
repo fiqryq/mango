@@ -39,6 +39,11 @@
                 android:layout_height="wrap_content"
                 android:text="Ruangan" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pertemuan" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -63,6 +68,13 @@
 
             <TextView
                 android:id="@+id/tvSesiRuangan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="3dp"
+                android:text="null" />
+
+            <TextView
+                android:id="@+id/tvSesiPertemuan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="3dp"

@@ -115,6 +115,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             userDosen.setNip(documentSnapshot.getString("nip"));
             userDosen.setEmail(documentSnapshot.getString("email"));
             userDosen.setTag(documentSnapshot.getString("tag"));
+            userDosen.setGambar(documentSnapshot.getString("gambar"));
             userDosen.setuId(uid);
             mSession.setupSessionDosen(userDosen);
 

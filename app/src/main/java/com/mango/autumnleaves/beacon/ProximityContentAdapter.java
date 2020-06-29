@@ -65,6 +65,7 @@ public class ProximityContentAdapter extends BaseAdapter {
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
     private FirebaseFirestore firebaseFirestore;
+    private TextView contentMatakuliah;
 
     public ProximityContentAdapter(Context context) {
         this.context = context;
@@ -109,6 +110,7 @@ public class ProximityContentAdapter extends BaseAdapter {
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
         TextView lokasi = convertView.findViewById(R.id.beacon_lokasi);
         LinearLayout tapLayout = convertView.findViewById(R.id.linearLayout);
+        contentMatakuliah = convertView.findViewById(R.id.beacon_matakuliah);
 
         // Set Content Beacon
         ProximityContent content = nearbyContent.get(position);
@@ -212,13 +214,15 @@ public class ProximityContentAdapter extends BaseAdapter {
                             jadwal.setPertemuan(documentSnapshot.getLong("pertemuan").intValue());
                             jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
                             jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
+                            jadwal.setDocId(documentSnapshot.getString("docId"));
 
                             dataMatakuliah = jadwal.getMatakuliah();
                             dataRuangan = jadwal.getRuangan();
                             idMatkul = jadwal.getId();
                             pertemuan = (int) jadwal.getPertemuan();
-                            idDokumen = documentSnapshot.getId();
+                            idDokumen = jadwal.getDocId();
                         }
+
 
                         Map<String, Object> data = new HashMap<>();
                         data.put("nama", nama_mhs);
@@ -255,19 +259,18 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                 .collection("jadwal")
                                                 .document(idMatkul)
                                                 .update(updatePertemuanStat);
-
-
-                                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
-                                        updatePertemuanJadwal.put("pertemuan", pertemuan + 1);
-
-                                        firebaseFirestore
-                                                .collection("prodi")
-                                                .document(jurusanRef)
-                                                .collection("kelas")
-                                                .document(kelasRef)
-                                                .collection("jadwal")
-                                                .document(idDokumen)
-                                                .update(updatePertemuanJadwal);
+//
+//                                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
+//                                        updatePertemuanJadwal.put("pertemuan", pertemuan + 1);
+//
+//                                        firebaseFirestore
+//                                                .collection("prodi")
+//                                                .document(jurusanRef)
+//                                                .collection("kelas")
+//                                                .document(kelasRef)
+//                                                .collection("jadwal")
+//                                                .document(idDokumen)
+//                                                .update(updatePertemuanJadwal);
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -286,6 +289,11 @@ public class ProximityContentAdapter extends BaseAdapter {
                         presensi.setNama(nama_mhs);
                         presensi.setJam(getHour());
                         databaseReference.child(key).setValue(presensi);
+
+
+                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
+                        updatePertemuanJadwal.put("pertemuan", pertemuan + 1);
+
 
                     }
                 });
@@ -371,6 +379,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
                         if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
+                            contentMatakuliah.setText(jadwal.getMatakuliah());
                             mBottomSheetValid.setVisibility(View.VISIBLE);
                             mProgressBarBts.setVisibility(View.GONE);
                             btsMatakuliah.setText(jadwal.getMatakuliah());

@@ -93,6 +93,7 @@ public class DashboardMahasiswaActivity extends BaseActivity {
         dshUsername.setText(getNamaMhs());
 //        dshNim.setText(getNimMhs());
         Picasso.get().load(getProfileMhs()).into(dashImg);
+        emptyView.setVisibility(View.VISIBLE);
 
         proximityContentAdapter = new ProximityContentAdapter(this);
         gridView.setAdapter(proximityContentAdapter);

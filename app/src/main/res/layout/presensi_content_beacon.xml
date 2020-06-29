@@ -70,6 +70,12 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/beacon_matakuliah"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Matakuliah"/>
+
+                    <TextView
                         android:id="@+id/beacon_kelas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

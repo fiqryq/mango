@@ -62,7 +62,7 @@ public class StatistikAdapter extends RecyclerView.Adapter<StatistikAdapter.View
 
         holder.Matakuliah.setText(mData.get(position).getMatakuliah());
         holder.Dosen.setText(mData.get(position).getDosen());
-        holder.Pertemuan.setText("Pertemuan :" + " " +
+        holder.Pertemuan.setText("Hadir :" + " " +
                 String.valueOf(mData.get(position).getPertemuan())
                 + " dari : " +
                 String.valueOf(mData.get(position).getJumlah_pertemuan()));
@@ -103,7 +103,7 @@ public class StatistikAdapter extends RecyclerView.Adapter<StatistikAdapter.View
                                                 float tPertemuan = mData.get(position).getPertemuan();
                                                 float JumPertemuan = mData.get(position).getJumlah_pertemuan();
                                                 float persen = (tPertemuan / JumPertemuan) * 100;
-                                                holder.Persentase.setText(String.valueOf(persen) + "%");
+                                                holder.Persentase.setText(" | Persentase : " + String.valueOf(persen) + "%");
                                                 holder.progressBar.setProgress((int) persen);
                                             }
                                         }

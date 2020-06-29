@@ -53,7 +53,10 @@ public class BaseFragment extends Fragment {
     }
 
     protected String getNamaDosen(){
-        return mSession.getPreferences().getString(Constant.KEY_SESSION_DOSENUSERNAME,"");
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_DOSENNAMA,"");
+    }
+    protected String getGambarDosen(){
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_GAMBAR,"");
     }
 
 }
