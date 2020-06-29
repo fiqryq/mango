@@ -6,12 +6,12 @@
     android:layout_marginHorizontal="5dp"
     android:layout_marginVertical="3dp"
     android:orientation="vertical"
-    android:elevation="3dp">
+    android:elevation="3px">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/content_statistik">
+        android:background="@drawable/content_informasi">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,8 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="Matakuliah"
                 android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/statDosen"
@@ -34,8 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Dosen"
                 android:textSize="14sp"
-                android:layout_marginBottom="3dp"
-                android:textColor="@color/white"/>
+                android:layout_marginBottom="3dp" />
 
             <LinearLayout
                 android:layout_width="250dp"
@@ -44,7 +42,7 @@
                 android:weightSum="2">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
@@ -54,8 +52,7 @@
                         android:layout_height="wrap_content"
                         android:text="Pertemuan"
                         android:textSize="12sp"
-                        android:layout_marginBottom="10dp"
-                        android:textColor="@color/white"/>
+                        android:layout_marginBottom="10dp" />
 
                 </LinearLayout>
 
@@ -70,8 +67,7 @@
                         android:layout_height="wrap_content"
                         android:text="Persentase"
                         android:textSize="12sp"
-                        android:layout_marginBottom="10dp"
-                        android:textColor="@color/white"/>
+                        android:layout_marginBottom="10dp" />
 
                 </LinearLayout>
 

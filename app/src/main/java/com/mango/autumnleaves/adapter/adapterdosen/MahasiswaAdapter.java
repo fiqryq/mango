@@ -42,11 +42,11 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.View
 //        Presensi presensi = mData.get(position);
         holder.tvNamaMahasiswa.setText(mData.get(position));
         holder.tvJamPresensi.setText(mData.get(position));
-        int ai = position + 1;
-        holder.tvNo.setText(String.valueOf(ai));
+//        int ai = position + 1;
+//        holder.tvNo.setText(String.valueOf(ai));
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvNo;
         TextView tvNamaMahasiswa;
@@ -55,9 +55,8 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNo = itemView.findViewById(R.id.tvNomor);
-            tvNamaMahasiswa = itemView.findViewById(R.id.tvNamaMahasiswa);
-//            tvJamPresensi = itemView.findViewById(R.id.tvJamPresensi);
+//            tvNo = itemView.findViewById(R.id.tvNomor);
+//            tvNamaMahasiswa = itemView.findViewById(R.id.tvNamaMahasiswa);
         }
     }
 }

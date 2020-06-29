@@ -11,6 +11,7 @@
 <!--    Custom-->
     <color name="white">#FFFFFF</color>
     <color name="background_white">#F4F4F4</color>
+    <color name="background_white_statik">#ECECEC</color>
     <color name="orangeprimary">#FB8C00</color>
     <color name="orangesecondary">#FFB300</color>
 

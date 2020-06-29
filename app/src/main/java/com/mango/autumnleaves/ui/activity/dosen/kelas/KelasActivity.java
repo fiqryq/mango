@@ -158,7 +158,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                         tvDosen.setText(": " + datDosen);
                                         tvMatakuliah.setText(": " + datMatakuliah);
                                         tvKelas.setText(": " + datRuangan);
-                                        tvSesiPertemuan.setText(": " + datPetemuan);
+                                        tvSesiPertemuan.setText(": " + String.valueOf(datPetemuan));
 
                                     }
                                 } else {

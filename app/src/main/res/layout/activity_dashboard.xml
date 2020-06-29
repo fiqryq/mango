@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#F9FBFF"
+    android:background="@color/background_white"
     tools:context=".MainActivity">
 
     <View
@@ -182,15 +182,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginVertical="5dp"
-                android:layout_marginLeft="7dp"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:fontFamily="sans-serif"
-                android:text="Jadwal Selanjutnya"/>
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginVertical="5dp"-->
+<!--                android:layout_marginLeft="7dp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="15sp"-->
+<!--                android:fontFamily="sans-serif"-->
+<!--                android:text="Jadwal Selanjutnya"/>-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/jadwalToday"
@@ -210,8 +210,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/content_informasi"
-        android:elevation="2dp"
-        android:visibility="gone"
+        android:elevation="1dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8">

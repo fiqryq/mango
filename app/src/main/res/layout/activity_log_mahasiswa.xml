@@ -64,7 +64,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMahasiswaTiga"
+        android:id="@+id/rvMahasiswa"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:cacheColorHint="#FFFFFF"

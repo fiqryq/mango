@@ -12,6 +12,20 @@
         android:orientation="vertical">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jadwal Selanjutnya"
+            android:textSize="14sp"
+            android:layout_marginBottom="5dp"/>
+
+        <View
+            android:layout_width="120dp"
+            android:layout_height="1dp"
+            android:layout_below="@+id/dayLabelsLinearLayout"
+            android:layout_marginBottom="6dp"
+            android:background="@color/gray_btn_bg_color" />
+
+        <TextView
             android:id="@+id/tvMatakuliah"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

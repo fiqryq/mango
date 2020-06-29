@@ -51,22 +51,31 @@
                 android:layout_weight="1">
 
                 <RadioGroup
+                    android:id="@+id/radio_group"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-                    <RadioButton android:id="@+id/radio_pirates"
+
+                    <RadioButton
+                        android:id="@+id/radio_hadir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="H" />
+
                     <RadioButton
+                        android:id="@+id/radio_sakit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="S" />
+
                     <RadioButton
+                        android:id="@+id/radio_izin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="I" />
+
                     <RadioButton
+                        android:id="@+id/radio_alfa"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="A"
