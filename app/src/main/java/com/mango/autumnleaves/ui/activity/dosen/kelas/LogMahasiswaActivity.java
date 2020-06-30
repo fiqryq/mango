@@ -9,27 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
-import com.mango.autumnleaves.adapter.adapterdosen.RoomAdapter;
-import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
-import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.Presensi;
-import com.mango.autumnleaves.model.Room;
 
 import java.util.ArrayList;
 
@@ -42,6 +32,7 @@ public class LogMahasiswaActivity extends AppCompatActivity {
     private ArrayList<String> mDataId;
     private DatabaseReference mDatabase;
     public String kelas;
+    private ProgressBar progressBarLoadMhs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +40,7 @@ public class LogMahasiswaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_mahasiswa);
         Intent intent = getIntent();
         kelas = intent.getStringExtra("DATAKELAS");
+        progressBarLoadMhs = findViewById(R.id.progressMahasiswa);
         LogPresensi();
     }
 

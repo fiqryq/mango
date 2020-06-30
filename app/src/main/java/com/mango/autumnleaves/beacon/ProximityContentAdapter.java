@@ -232,7 +232,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         data.put("jam", getHour());
                         data.put("waktu", getTimeNow());
                         data.put("created", new Timestamp(new Date()));
-                        data.put("status", status + 1);
+                        data.put("status", 0);
 
                         firebaseFirestore
                                 .collection("presensiMahasiswa")
@@ -261,17 +261,17 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                 .document(idMatkul)
                                                 .update(updatePertemuanStat);
 
-                                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
-                                        updatePertemuanJadwal.put("pertemuan", pertemuan + 1);
-
-                                        firebaseFirestore
-                                                .collection("prodi")
-                                                .document(jurusanRef)
-                                                .collection("kelas")
-                                                .document(kelasRef)
-                                                .collection("jadwal")
-                                                .document(idDokumen)
-                                                .update(updatePertemuanJadwal);
+//                                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
+//                                        updatePertemuanJadwal.put("pertemuan", pertemuan + 1);
+//
+//                                        firebaseFirestore
+//                                                .collection("prodi")
+//                                                .document(jurusanRef)
+//                                                .collection("kelas")
+//                                                .document(kelasRef)
+//                                                .collection("jadwal")
+//                                                .document(idDokumen)
+//                                                .update(updatePertemuanJadwal);
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -285,12 +285,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         });
 
                         databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(kelasRef);
-                        String key = databaseReference.push().getKey();
-                        Presensi presensi = new Presensi();
-                        presensi.setNama(nama_mhs);
-                        presensi.setJam(getHour());
-                        databaseReference.child(key).setValue(presensi);
-
+                        databaseReference.child(firebaseAuth.getUid()).child("status").setValue(1);
 
                     }
                 });
