@@ -3,7 +3,16 @@ package com.mango.autumnleaves.model;
 public class Room {
     private String nama;
     private int status;
+    private Room kelas;
     private String userId;
+
+    public Room getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(Room kelas) {
+        this.kelas = kelas;
+    }
 
     public String getNama() {
         return nama;

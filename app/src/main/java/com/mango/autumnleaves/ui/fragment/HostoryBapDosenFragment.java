@@ -55,7 +55,7 @@ public class HostoryBapDosenFragment extends BaseFragment {
                 .collection("bap")
                 .document(getFirebaseUserId())
                 .collection("data")
-                .orderBy("created", Query.Direction.ASCENDING)
+                .orderBy("created", Query.Direction.DESCENDING)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

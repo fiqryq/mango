@@ -84,6 +84,10 @@ public class DashboardMahasiswaActivity extends BaseActivity {
         arrayList = new ArrayList<>();
         GridView gridView = findViewById(R.id.gridView);
 
+        if (flashbar == null) {
+            flashbar = positiveNegativeAction();
+        }
+
         //intentPresensi();
         intentJadwal();
         intentHistory();
@@ -96,17 +100,6 @@ public class DashboardMahasiswaActivity extends BaseActivity {
 
         proximityContentAdapter = new ProximityContentAdapter(this);
         gridView.setAdapter(proximityContentAdapter);
-
-
-//        lihat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (flashbar == null) {
-//                    flashbar = positiveNegativeAction();
-//                }
-//                flashbar.show();
-//            }
-//        });
 
         getEstimote();
         jadwal();
@@ -149,11 +142,13 @@ public class DashboardMahasiswaActivity extends BaseActivity {
                         () -> {
                             Log.d("app", "requirements fulfilled");
                             startProximityContentManager();
+//                            flashbar.show();
                             return null;
                         },
 
                         requirements -> {
                             Log.e("app", "requirements missing: " + requirements);
+//                            flashbar.dismiss();
                             return null;
                         },
 

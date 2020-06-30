@@ -3,13 +3,8 @@ package com.mango.autumnleaves.model;
 public class Presensi {
     private String nama;
     private String jam;
-    private String status;
-
-    public Presensi() {
-        this.nama = nama;
-        this.jam = jam;
-        this.status = status;
-    }
+    private int status;
+    private String kelas;
 
     public String getNama() {
         return nama;
@@ -27,12 +22,19 @@ public class Presensi {
         this.jam = jam;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
+    public String getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
 }

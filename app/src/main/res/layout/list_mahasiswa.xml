@@ -51,7 +51,7 @@
                 android:layout_weight="1">
 
                 <RadioGroup
-                    android:id="@+id/radio_group"
+                    android:id="@+id/radio_kehadiran"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">

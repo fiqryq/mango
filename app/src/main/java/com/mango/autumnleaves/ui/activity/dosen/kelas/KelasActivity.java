@@ -98,7 +98,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         mViewLogMahasiswa = findViewById(R.id.ViewLogMahasiswa);
         mEtMateri = findViewById(R.id.etMateriSesiKelas);
         tvSesiPertemuan = findViewById(R.id.tvSesiPertemuan);
-        mEtPertemuan = findViewById(R.id.etPertemuanKelas);
+//        mEtPertemuan = findViewById(R.id.etPertemuanKelas);
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
@@ -178,21 +178,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         CheckSesi();
         jadwalRef();
         getdatakelas();
-
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data").child(Kelas);
-        rootRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    jumlahMahasiswa = ds.getChildrenCount();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         mViewLogMahasiswa.setOnClickListener(v -> viewLog());
 
@@ -379,8 +364,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         dataBap.put("waktu", getTimeNow());
         dataBap.put("ruangan", RuanganNow);
         dataBap.put("materi", mEtMateri.getText().toString());
-        dataBap.put("pertemuan", mEtPertemuan.getText().toString());
-        dataBap.put("hadir", String.valueOf(jumlahMahasiswa));
+        dataBap.put("pertemuan", "0");
+        dataBap.put("hadir", "0");
         dataBap.put("created", new Timestamp(new Date()));
         dataBap.put("kelas", Kelas);
 
@@ -463,8 +448,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             case R.id.btnSubmit:
                 if (TextUtils.isEmpty(mEtMateri.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form Materi", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(mEtPertemuan.getText().toString())) {
-                    Toast.makeText(mActivity, "Harap Isi Form Pertemuan", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mEtMateri.getText().toString()) && TextUtils.isEmpty(mEtPertemuan.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form", Toast.LENGTH_SHORT).show();
                 } else {
