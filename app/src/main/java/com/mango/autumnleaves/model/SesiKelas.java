@@ -7,6 +7,42 @@ public class SesiKelas {
     private String dosen;
     private String ruangan;
     private String kelas;
+    private long posisi;
+    private long pertemuan;
+    private long jumlah_pertemuan;
+    private String docId;
+
+    public long getPosisi() {
+        return posisi;
+    }
+
+    public void setPosisi(long posisi) {
+        this.posisi = posisi;
+    }
+
+    public long getPertemuan() {
+        return pertemuan;
+    }
+
+    public void setPertemuan(long pertemuan) {
+        this.pertemuan = pertemuan;
+    }
+
+    public long getJumlah_pertemuan() {
+        return jumlah_pertemuan;
+    }
+
+    public void setJumlah_pertemuan(long jumlah_pertemuan) {
+        this.jumlah_pertemuan = jumlah_pertemuan;
+    }
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
 
     public String getKelas() {
         return kelas;

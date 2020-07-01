@@ -23,6 +23,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.adapter.adapterdosen.JadwalDosenAdapter;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.dosen.UserDosen;
@@ -103,9 +104,9 @@ public class JadwalFragment extends BaseFragment {
             }
 
             private void setuprecyclerView(ArrayList<Jadwal> arrayList) {
-                JadwalAdapter jadwalAdapter = new JadwalAdapter(getContext(), arrayList);
+                JadwalDosenAdapter JadwalDosenAdapter = new JadwalDosenAdapter(getContext(), arrayList);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerView.setAdapter(jadwalAdapter);
+                recyclerView.setAdapter(JadwalDosenAdapter);
             }
         });
     }

@@ -72,6 +72,7 @@ public class LogMahasiswaActivity extends AppCompatActivity {
                 return false;
             }
         });
+        progressBarLoadMhs.setVisibility(View.GONE);
         mPresensiRecycleview.setAdapter(mAdapter);
     }
 

@@ -58,7 +58,8 @@ public class ProximityContentAdapter extends BaseAdapter {
     private Context context;
     private String dataMatakuliah, dataWaktuMulai, dataWaktuSelesai, dataRuangan, dataNodata;
     private int status;
-    private int pertemuan;
+    private int pertemuanStat;
+    private int pertemuanJadwal;
     private String idMatkul;
     private String idDokumen;
     private FirebaseAuth firebaseAuth;
@@ -66,6 +67,8 @@ public class ProximityContentAdapter extends BaseAdapter {
     private DatabaseReference databaseReference;
     private FirebaseFirestore firebaseFirestore;
     private TextView contentMatakuliah;
+    private String mhsKelas;
+    private String mhsJurusan;
 
     public ProximityContentAdapter(Context context) {
         this.context = context;
@@ -117,7 +120,54 @@ public class ProximityContentAdapter extends BaseAdapter {
         kelas.setText("Ruangan " + content.getKelas());
         lokasi.setText(content.getLokasi() + " Telkom University");
         status = 0;
-        pertemuan = 0;
+        pertemuanStat = 0;
+        pertemuanJadwal = 0;
+
+        String idUser;
+        idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
+        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        UserMahasiswa userMahasiswa = new UserMahasiswa();
+                        userMahasiswa.setNama(document.getString("nama"));
+                        userMahasiswa.setJurusan(document.getString("jurusan"));
+                        userMahasiswa.setKode_kelas(document.getString("kode_kelas"));
+                        // Doc Ref Dari user
+                        mhsJurusan = userMahasiswa.getJurusan();
+                        mhsKelas = userMahasiswa.getKode_kelas();
+
+                        firebaseFirestore
+                                .collection("prodi")
+                                .document(mhsJurusan)
+                                .collection("kelas")
+                                .document(mhsKelas)
+                                .collection("jadwal")
+                                .whereEqualTo("hari", getNameDay()).whereLessThan("waktu_mulai", getHour())
+                                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                                .limit(1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
+                                    Jadwal jadwal = new Jadwal();
+                                    jadwal.setDocId(doc.getString("docId"));
+                                    idDokumen = jadwal.getDocId();
+                                }
+                            }
+                        });
+
+                    } else {
+                        Log.d("TAG", "Documment tidak ada");
+                    }
+                } else {
+                    Log.d("TAG", "gagal", task.getException());
+                }
+            }
+        });
 
         // BottomSheetDialog
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.TransparentDialog);
@@ -142,6 +192,17 @@ public class ProximityContentAdapter extends BaseAdapter {
                     public void onClick(View v) {
                         FirebasePushData(content,bottomSheetDialog);
                         bottomSheetDialog.dismiss();
+                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
+                        updatePertemuanJadwal.put("pertemuan", pertemuanJadwal + 1);
+
+                        firebaseFirestore
+                                .collection("prodi")
+                                .document(mhsJurusan)
+                                .collection("kelas")
+                                .document(mhsKelas)
+                                .collection("jadwal")
+                                .document(idDokumen)
+                                .update(updatePertemuanJadwal);
                     }
                 });
 
@@ -219,9 +280,10 @@ public class ProximityContentAdapter extends BaseAdapter {
                             dataMatakuliah = jadwal.getMatakuliah();
                             dataRuangan = jadwal.getRuangan();
                             idMatkul = jadwal.getId();
-                            pertemuan = (int) jadwal.getPertemuan();
+                            pertemuanStat = (int) jadwal.getPertemuan();
+                            pertemuanJadwal = (int) jadwal.getPertemuan();
                             idDokumen = jadwal.getDocId();
-                            Log.d("pertemuan",String.valueOf(pertemuan));
+                            Log.d("pertemuan",String.valueOf(pertemuanStat));
                         }
 
 
@@ -232,7 +294,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         data.put("jam", getHour());
                         data.put("waktu", getTimeNow());
                         data.put("created", new Timestamp(new Date()));
-                        data.put("status", 0);
+                        data.put("status", 1);
 
                         firebaseFirestore
                                 .collection("presensiMahasiswa")
@@ -250,7 +312,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                 .show();
 
                                         Map<String,Object> updatePertemuanStat = new HashMap<>();
-                                        updatePertemuanStat.put("pertemuan", pertemuan + 1);
+                                        updatePertemuanStat.put("pertemuan", pertemuanStat + 1);
 
                                         firebaseFirestore
                                                 .collection("statistik")
@@ -260,18 +322,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                                                 .collection("jadwal")
                                                 .document(idMatkul)
                                                 .update(updatePertemuanStat);
-
-//                                        Map<String,Object> updatePertemuanJadwal = new HashMap<>();
-//                                        updatePertemuanJadwal.put("pertemuan", pertemuan + 1);
-//
-//                                        firebaseFirestore
-//                                                .collection("prodi")
-//                                                .document(jurusanRef)
-//                                                .collection("kelas")
-//                                                .document(kelasRef)
-//                                                .collection("jadwal")
-//                                                .document(idDokumen)
-//                                                .update(updatePertemuanJadwal);
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -385,4 +435,5 @@ public class ProximityContentAdapter extends BaseAdapter {
                     }
                 });
     }
+
 }

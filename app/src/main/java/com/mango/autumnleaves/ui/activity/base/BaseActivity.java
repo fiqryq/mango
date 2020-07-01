@@ -96,7 +96,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected String getAlamatMhs(){
-        return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_TTL,"");
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_ALAMAT,"");
+    }
+
+    protected String getNipDosen(){
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_DOSENNIP,"");
     }
 
     protected String getKelasGlobalMhs(){

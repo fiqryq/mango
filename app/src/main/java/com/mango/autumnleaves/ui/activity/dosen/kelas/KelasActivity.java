@@ -82,10 +82,10 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public String datDosen = "";
     public String datRuangan = "";
     public int datPetemuan = 0;
-
+    public String datDocId = "";
     public long jumlahMahasiswa;
 
-    private static int DELETE_TEMP = 6000;
+    private static int UPDATE_TEMP = 6000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +145,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                         jadwal.setJurusan(document.getString("jurusan"));
                                         jadwal.setKelas(document.getString("kelas"));
                                         jadwal.setPertemuan(document.getLong("pertemuan").intValue());
+                                        jadwal.setDocId(document.getString("docId"));
                                         jadwal.setRuangan(document.getString("ruangan"));
                                         jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
@@ -154,6 +155,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                         datRuangan = jadwal.getRuangan();
                                         datKelas = jadwal.getKelas();
                                         datPetemuan = (int) jadwal.getPertemuan();
+                                        datDocId = jadwal.getDocId();
 
                                         tvDosen.setText(": " + datDosen);
                                         tvMatakuliah.setText(": " + datMatakuliah);
@@ -179,6 +181,21 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         jadwalRef();
         getdatakelas();
 
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data").child(datKelas);
+        rootRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    jumlahMahasiswa = ds.getChildrenCount();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         mViewLogMahasiswa.setOnClickListener(v -> viewLog());
 
         switchSesi.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -198,7 +215,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .setPositiveButton("Submit", R.drawable.ic_power_settings_new_black_24dp, (dialogInterface, i) -> {
                     showSuccessToast("Berhasil Submit");
                     PushDataBAP();
-                    deleteTemporary();
+                    updatePertemuan();
+//                    updateData();
                     switchSesi.setChecked(false);
                     dialogInterface.dismiss();
                 })
@@ -261,6 +279,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
+
 
     private void viewLog() {
         Intent intent = new Intent(KelasActivity.this, LogMahasiswaActivity.class);
@@ -365,7 +384,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         dataBap.put("ruangan", RuanganNow);
         dataBap.put("materi", mEtMateri.getText().toString());
         dataBap.put("pertemuan", "0");
-        dataBap.put("hadir", "0");
+        dataBap.put("hadir", jumlahMahasiswa);
         dataBap.put("created", new Timestamp(new Date()));
         dataBap.put("kelas", Kelas);
 
@@ -431,16 +450,30 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
-    private void deleteTemporary() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("data").child(datKelas);
-                reference.removeValue();
-                finish();
-            }
-        }, DELETE_TEMP);
+//    private void updateData() {
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Map<String, Object> updateKehadiran = new HashMap<>();
+//                updateKehadiran.put("status",0);
+//                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("data").child(datKelas).addValueEventListener();
+//                finish();
+//            }
+//        }, UPDATE_TEMP);
+//    }
+
+    private void updatePertemuan(){
+        Map<String, Object> updatePertemuan = new HashMap<>();
+        updatePertemuan.put("pertemuan", datPetemuan + 1);
+        firebaseFirestore
+                .collection("jadwalDosen")
+                .document(getNipDosen())
+                .collection("jadwal")
+                .document(datDocId)
+                .update(updatePertemuan);
     }
+
+
 
     @Override
     public void onClick(View v) {

@@ -61,8 +61,6 @@ public class KelasAdapter extends RecyclerView.Adapter<KelasAdapter.ViewHolder> 
 
         holder.itemView.setSelected(mSelectedId.contains(mDataId.get(position)));
 
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("data").child(presensi.getKelas());
-
 
         int statusMahasiswa = presensi.getStatus();
         String key = mDataId.get(position);
