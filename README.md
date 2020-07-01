@@ -4,8 +4,17 @@
 
 Mango Is Attendance App using [Estimote Proximity Beacon](https://estimote.com/products/).
 
-## Add Proximity SDK
+## Prototype
+- Full Ui Manog [here](https://bit.ly/UIMango) 
+- interactive UI Dosen [here](https://bit.ly/PrototypeMangoDosen)
+- interactive UI Mahasiswa [here](https://bit.ly/ProtoMHS)
 
+## Document
+- Journal
+- Video [here](https://bit.ly/PromosiMango)
+- Poster [here](https://bit.ly/PosterMango)
+
+## Add Proximity SDK
 ```gradle
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -104,6 +113,83 @@ Now we can move on to creating Proximity Zone objects in our app. Back to the fu
 Note that for this setup to work, you need to spread the beacons apart a good few meters. If they overlap, then moving from one beacon to the other is considered moving within the zone, and it won’t trigger additional enter/exit actions.
 If you want to know about movements inside a zone spanned by multiple overlapping beacons, you can use the “onContextChange” action instead. Think about it as: I’m still in the same desks zone (hence no new enter/exits), but my context (which specific desks are in range) has changed (hence the “onContextChange” action).
 
+```java 
+    ProximityZone zone = new ProximityZoneBuilder()
+        // ...
+        .onContextChange(new Function1<Set<? extends ProximityZoneContext>, Unit>() {
+            @Override
+            public Unit invoke(Set<? extends ProximityZoneContext> contexts) {
+                List<String> deskOwners = new ArrayList<>();
+                for (ProximityZoneContext context : contexts) {
+                    deskOwners.add(context.getAttachments().get("desk-owner"));
+                }
+                Log.d("app", "In range of desks: " + deskOwners);
+                return null;
+            }
+        })
+```
+Here’s how this would work in an overlapping scenario:
+
+```
+    # move in range of "Peter's desk" beacon
+    # this is also when the "enter" action would get called
+    Nearby desks: [Peter]
+    # move in range of both beacons
+    Nearby desks: [Peter, Alex]
+    # move out of range of "Peter's desk", but still in range of "Alex's desk"
+    Nearby desks: [Alex]
+    # move out of range of both beacons
+    # this is also when the "exit" action would get called
+    Nearby desks: []
+```
+## About the Proximity Zone range
+
+```java 
+    ProximityZone innerZone = new ProximityZoneBuilder()
+        .forTag("treasure")
+        .inCustomRange(3.0)
+        .create();
+    
+    ProximityZone outerZone = new ProximityZoneBuilder()
+        .forTag("treasure")
+        .inCustomRange(9.0)
+        .create();
+```
+
+## Start proximity observation
+We’re almost there! Before we start proximity observations, there’s just one more thing left to do.
+
+## Request location permissions
+Performing a Bluetooth scan on Android requires the app to obtain an ACCESS_COARSE_LOCATION or ACCESS_FINE_LOCATION permission from the user. There’s a tutorial on Android Developer Portal which shows how to do that: Requesting Permissions at Run Time. However, to get started quickly, we’ll use our little helper library, com.estimote:mustard, to check and request the appropriate permissions with just a few lines of code.
+As an added bonus, it’ll also check if all the other requirements are met—for example, if Bluetooth is available and turned on.
+
+```java 
+    RequirementsWizardFactory
+        .createEstimoteRequirementsWizard()
+        .fulfillRequirements(this,
+        // onRequirementsFulfilled
+        new Function0<Unit>() {
+            @Override public Unit invoke() {
+                Log.d("app", "requirements fulfilled");
+                proximityObserver.startObserving(zone);
+                return null;
+            }
+        },
+        // onRequirementsMissing
+        new Function1<List<? extends Requirement>, Unit>() {
+            @Override public Unit invoke(List<? extends Requirement> requirements) {
+                Log.e("app", "requirements missing: " + requirements);
+                return null;
+            }
+        },
+        // onError
+        new Function1<Throwable, Unit>() {
+            @Override public Unit invoke(Throwable throwable) {
+                Log.e("app", "requirements error: " + throwable);
+                return null;
+            }
+        });
+```
 
 ## Tech 👨‍💻
 
