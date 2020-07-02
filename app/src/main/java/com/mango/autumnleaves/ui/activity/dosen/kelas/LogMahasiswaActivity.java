@@ -51,8 +51,8 @@ public class LogMahasiswaActivity extends AppCompatActivity {
         mData = new ArrayList<>();
         mDataId = new ArrayList<>();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("data").child(kelas);
-        mDatabase.addChildEventListener(childEventListener);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("data");
+        mDatabase.child(kelas).orderByChild("nama").startAt("A").addChildEventListener(childEventListener);
 
         mPresensiRecycleview.setHasFixedSize(true);
 

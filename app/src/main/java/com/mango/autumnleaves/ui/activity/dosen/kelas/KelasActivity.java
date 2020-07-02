@@ -68,7 +68,7 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
     private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa , tvSesiPertemuan;
-    private EditText mEtMateri, mEtPertemuan;
+    private EditText mEtMateri, mEtCatatan;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
@@ -83,7 +83,11 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public String datRuangan = "";
     public int datPetemuan = 0;
     public String datDocId = "";
-    public long jumlahMahasiswa;
+    public long jumlahMahasiswa = 0;
+    public long radioAlfa;
+    public long radioHadir;
+    public long radioIzin;
+    public long radioSakit;
 
     private static int UPDATE_TEMP = 6000;
 
@@ -98,7 +102,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         mViewLogMahasiswa = findViewById(R.id.ViewLogMahasiswa);
         mEtMateri = findViewById(R.id.etMateriSesiKelas);
         tvSesiPertemuan = findViewById(R.id.tvSesiPertemuan);
-//        mEtPertemuan = findViewById(R.id.etPertemuanKelas);
+        mEtCatatan = findViewById(R.id.etCatatanSesiKelas);
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
 
@@ -181,17 +185,67 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         jadwalRef();
         getdatakelas();
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data").child(datKelas);
-        rootRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data");
+        rootRef.child(datKelas).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    jumlahMahasiswa = ds.getChildrenCount();
-                }
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                jumlahMahasiswa = snapshot.getChildrenCount();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference hadirCount = FirebaseDatabase.getInstance().getReference().child("data");
+        hadirCount.child(datKelas).orderByChild("status").equalTo(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                radioHadir = snapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference IzinCount = FirebaseDatabase.getInstance().getReference().child("data");
+        IzinCount.child(datKelas).orderByChild("status").equalTo(2).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                radioIzin = snapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference sakitCount = FirebaseDatabase.getInstance().getReference().child("data");
+        sakitCount.child(datKelas).orderByChild("status").equalTo(3).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                radioSakit = snapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference alfaCount = FirebaseDatabase.getInstance().getReference().child("data");
+        alfaCount.child(datKelas).orderByChild("status").equalTo(0).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                radioAlfa = snapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -212,7 +266,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .setTitle("Submit Bap")
                 .setMessage("Apakah Kamu Yakin Akan Submit Bap?")
                 .setCancelable(false)
-                .setPositiveButton("Submit", R.drawable.ic_power_settings_new_black_24dp, (dialogInterface, i) -> {
+                .setPositiveButton("Submit", (dialogInterface, i) -> {
                     showSuccessToast("Berhasil Submit");
                     PushDataBAP();
                     updatePertemuan();
@@ -383,8 +437,13 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         dataBap.put("waktu", getTimeNow());
         dataBap.put("ruangan", RuanganNow);
         dataBap.put("materi", mEtMateri.getText().toString());
-        dataBap.put("pertemuan", "0");
-        dataBap.put("hadir", jumlahMahasiswa);
+        dataBap.put("catatan", mEtCatatan.getText().toString());
+        dataBap.put("pertemuan", datPetemuan);
+        dataBap.put("hadir",radioHadir);
+        dataBap.put("sakit",radioSakit);
+        dataBap.put("izin",radioIzin);
+        dataBap.put("alfa",radioAlfa);
+        dataBap.put("jumlahMhs", jumlahMahasiswa);
         dataBap.put("created", new Timestamp(new Date()));
         dataBap.put("kelas", Kelas);
 
@@ -481,9 +540,11 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             case R.id.btnSubmit:
                 if (TextUtils.isEmpty(mEtMateri.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form Materi", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(mEtMateri.getText().toString()) && TextUtils.isEmpty(mEtPertemuan.getText().toString())) {
+                } else if (TextUtils.isEmpty(mEtMateri.getText().toString()) && TextUtils.isEmpty(mEtCatatan.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if (TextUtils.isEmpty(mEtCatatan.getText().toString()) && TextUtils.isEmpty(mEtMateri.getText().toString())) {
+                    Toast.makeText(mActivity, "Harap Isi Form", Toast.LENGTH_SHORT).show();}
+                else {
                     bapdialog.show();
                 }
         }

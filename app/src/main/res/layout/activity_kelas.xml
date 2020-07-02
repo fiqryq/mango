@@ -111,6 +111,17 @@
                 android:id="@+id/etMateriSesiKelas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Materi" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Catatan" />
+
+            <EditText
+                android:id="@+id/etCatatanSesiKelas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:hint="Masukan Catatan" />
 
 <!--            <TextView-->

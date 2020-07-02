@@ -58,8 +58,10 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/iconMatakuliah"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:visibility="visible"
                         android:src="@drawable/ic_book_black_24dp"/>
 
                     <ImageView
@@ -85,6 +87,7 @@
                         android:id="@+id/beacon_matakuliah"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="visible"
                         android:text="Matakuliah"/>
 
                     <TextView

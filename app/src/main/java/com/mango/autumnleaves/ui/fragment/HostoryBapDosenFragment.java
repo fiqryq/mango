@@ -67,9 +67,13 @@ public class HostoryBapDosenFragment extends BaseFragment {
                         Bap.setWaktu(document.getString("waktu"));
                         Bap.setJam(document.getString("jam"));
                         Bap.setMateri(document.getString("materi"));
-                        Bap.setPertemuan(document.getString("pertemuan"));
-                        Bap.setHadir(document.getString("hadir"));
+                        Bap.setPertemuan(document.getLong("pertemuan").intValue());
+                        Bap.setJumlahMhs(document.getLong("jumlahMhs").intValue());
                         Bap.setKelas(document.getString("kelas"));
+                        Bap.setHadir(document.getLong("hadir").intValue());
+                        Bap.setAlfa(document.getLong("alfa").intValue());
+                        Bap.setSakit(document.getLong("sakit").intValue());
+                        Bap.setIzin(document.getLong("izin").intValue());
                         arrayList.add(Bap);
                     }
                 } else {

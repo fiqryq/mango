@@ -48,8 +48,12 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
         String tanggal = mData.get(position).getWaktu();
         String waktu = mData.get(position).getJam();
         String materi = mData.get(position).getMateri();
-        String hadir = mData.get(position).getHadir();
-        String pertemuan = mData.get(position).getPertemuan();
+        int JumlahMhs = mData.get(position).getJumlahMhs();
+        int pertemuan = mData.get(position).getPertemuan();
+        int hadir = mData.get(position).getHadir();
+        int izin = mData.get(position).getIzin();
+        int alfa = mData.get(position).getAlfa();
+        int sakit = mData.get(position).getSakit();
         String kelas = mData.get(position).getKelas();
 
         holder.BapLayout.setOnClickListener(new View.OnClickListener() {
@@ -62,8 +66,12 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
                 intent.putExtra("WAKTU",waktu);
                 intent.putExtra("MATERI",materi);
                 intent.putExtra("PERTEMUAN",pertemuan);
-                intent.putExtra("HADIR",hadir);
+                intent.putExtra("JUMLAHMHS",JumlahMhs);
                 intent.putExtra("KELAS",kelas);
+                intent.putExtra("HADIR",hadir);
+                intent.putExtra("ALFA",alfa);
+                intent.putExtra("SAKIT",sakit);
+                intent.putExtra("IZIN",izin);
                 mContext.startActivity(intent);
             }
         });

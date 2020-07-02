@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -40,6 +41,8 @@ import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -112,6 +115,7 @@ public class ProximityContentAdapter extends BaseAdapter {
         // Inisialisasi Di sini
         TextView kelas = convertView.findViewById(R.id.beacon_kelas);
         TextView lokasi = convertView.findViewById(R.id.beacon_lokasi);
+        ImageView iconMatakuliah = convertView.findViewById(R.id.iconMatakuliah);
         LinearLayout tapLayout = convertView.findViewById(R.id.linearLayout);
         contentMatakuliah = convertView.findViewById(R.id.beacon_matakuliah);
 
@@ -185,12 +189,12 @@ public class ProximityContentAdapter extends BaseAdapter {
                 LinearLayout linearLayout = bottomSheetView.findViewById(R.id.linearLayoutBotttomSheetValid);
                 ProgressBar mProgressBarBts = bottomSheetView.findViewById(R.id.progressBts);
 
-                firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan,bottomSheetDialog, linearLayout,mProgressBarBts);
+                firestorescheduleRef(btsMatakuliah,btsJam,content,btsWaktu,btsRuangan,bottomSheetDialog, linearLayout,mProgressBarBts,iconMatakuliah);
                 bottomSheetView.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
                 bottomSheetView.findViewById(R.id.btsPresensi).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FirebasePushData(content,bottomSheetDialog);
+                        FirebasePushData(content,bottomSheetDialog,iconMatakuliah);
                         bottomSheetDialog.dismiss();
                         Map<String,Object> updatePertemuanJadwal = new HashMap<>();
                         updatePertemuanJadwal.put("pertemuan", pertemuanJadwal + 1);
@@ -214,7 +218,7 @@ public class ProximityContentAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void FirebasePushData(ProximityContent content ,BottomSheetDialog bottomSheetViewPresensi){
+    private void FirebasePushData(ProximityContent content , BottomSheetDialog bottomSheetViewPresensi, ImageView iconMatakuliah){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
@@ -233,7 +237,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
                         String nama_mhs = userMahasiswa.getNama();
-                        dataRef(jurusanRef,kelasRef,nama_mhs,content,bottomSheetViewPresensi);
+                        dataRef(jurusanRef,kelasRef,nama_mhs,content,bottomSheetViewPresensi,iconMatakuliah);
 
                     } else {
                         Log.d("TAG", "Documment tidak ada");
@@ -244,8 +248,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-
-    private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , BottomSheetDialog bottomSheetViewPresensi){
+    private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , BottomSheetDialog bottomSheetViewPresensi , ImageView iconMatakuliah){
         firebaseFirestore
                 .collection("prodi")
                 .document(jurusanRef)
@@ -340,7 +343,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                     }
                 });
     }
-    private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid,ProgressBar mProgressBarBts){
+    private void firestorescheduleRef(TextView btsMatakuliah , TextView btsJam , ProximityContent content, TextView btsWaktu , TextView btsRuangan,BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid,ProgressBar mProgressBarBts,ImageView iconMatakuliah){
         String idUser;
         idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // doccumentsnapshoot untuk mendapatkan dokumen user secara spesifik
@@ -358,7 +361,7 @@ public class ProximityContentAdapter extends BaseAdapter {
                         // Doc Ref Dari user
                         String jurusanRef = userMahasiswa.getJurusan();
                         String kelasRef = userMahasiswa.getKode_kelas();
-                        setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content,bottomSheetViewPresensi, mBottomSheetValid,mProgressBarBts);
+                        setScheduleBeacon(jurusanRef,kelasRef,btsMatakuliah,btsRuangan,btsWaktu,btsJam,content,bottomSheetViewPresensi, mBottomSheetValid,mProgressBarBts,iconMatakuliah);
                     } else {
                         Log.d("TAG", "Documment tidak ada");
                     }
@@ -368,7 +371,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
-    private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan , TextView btsWaktu, TextView btsJam, ProximityContent content, BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid, ProgressBar mProgressBarBts) {
+    private void setScheduleBeacon(String jurusanRef, String kelasRef , TextView btsMatakuliah , TextView btsRuangan , TextView btsWaktu, TextView btsJam, ProximityContent content, BottomSheetDialog bottomSheetViewPresensi, LinearLayout mBottomSheetValid, ProgressBar mProgressBarBts, ImageView iconMatakuliah) {
 
         firebaseFirestore
                 .collection("presensiMahasiswa")
@@ -422,6 +425,8 @@ public class ProximityContentAdapter extends BaseAdapter {
 
                         if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
                             contentMatakuliah.setText(jadwal.getMatakuliah());
+//                            contentMatakuliah.setVisibility(View.VISIBLE);
+//                            iconMatakuliah.setVisibility(View.VISIBLE);
                             mBottomSheetValid.setVisibility(View.VISIBLE);
                             mProgressBarBts.setVisibility(View.GONE);
                             btsMatakuliah.setText(jadwal.getMatakuliah());

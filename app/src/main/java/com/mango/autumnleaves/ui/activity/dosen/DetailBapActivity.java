@@ -9,7 +9,8 @@ import android.widget.TextView;
 import com.mango.autumnleaves.R;
 
 public class DetailBapActivity extends AppCompatActivity {
-    private TextView mBapMatakuliah , mBapRuangan , mBapWaktu , mBapJam , mBapMateri , mBaphadir , mBapPertemuan , mBapKelas;
+    private TextView mBapMatakuliah , mBapRuangan , mBapWaktu , mBapJam , mBapMateri , mbaPJumlahMhs , mBapPertemuan , mBapKelas;
+    private TextView mHadir,mIzin,mAlfa,mSakit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,8 +22,13 @@ public class DetailBapActivity extends AppCompatActivity {
         mBapJam = findViewById(R.id.bapJam);
         mBapMateri = findViewById(R.id.bapMateri);
         mBapPertemuan = findViewById(R.id.bapPertemuan);
-        mBaphadir = findViewById(R.id.bapHadir);
+        mbaPJumlahMhs = findViewById(R.id.bapHadir);
         mBapKelas = findViewById(R.id.bapKelas);
+        mHadir = findViewById(R.id.bapMhsHadir);
+        mIzin = findViewById(R.id.bapMhsIzin);
+        mAlfa = findViewById(R.id.bapMhsAlfa);
+        mSakit = findViewById(R.id.bapMhsSakit);
+
 
         Intent intent = getIntent();
         String matakuliah = intent.getStringExtra("MATAKULIAH");
@@ -30,8 +36,12 @@ public class DetailBapActivity extends AppCompatActivity {
         String tanggal = intent.getStringExtra("TANGGAL");
         String waktuPresensi = intent.getStringExtra("WAKTU");
         String materi = intent.getStringExtra("MATERI");
-        String pertemuan = intent.getStringExtra("PERTEMUAN");
-        String hadir = intent.getStringExtra("HADIR");
+        int pertemuan = intent.getIntExtra("PERTEMUAN",0);
+        int jumlahmhs = intent.getIntExtra("JUMLAHMHS",0);
+        int hadir = intent.getIntExtra("HADIR",0);
+        int sakit = intent.getIntExtra("SAKIT",0);
+        int izin = intent.getIntExtra("IZIN",0);
+        int alfa = intent.getIntExtra("ALFA",0);
         String kelas = intent.getStringExtra("KELAS");
 
         mBapMatakuliah.setText(": " + matakuliah);
@@ -40,7 +50,11 @@ public class DetailBapActivity extends AppCompatActivity {
         mBapJam.setText(": " + waktuPresensi);
         mBapMateri.setText(": " + materi);
         mBapPertemuan.setText(": " + pertemuan);
-        mBaphadir.setText(": " + hadir);
+        mbaPJumlahMhs.setText(": " + jumlahmhs);
         mBapKelas.setText(": " + kelas);
+        mHadir.setText(": " + hadir);
+        mSakit.setText(": " + sakit);
+        mAlfa.setText(": " + alfa);
+        mIzin.setText(": " + izin);
     }
 }
