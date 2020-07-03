@@ -185,6 +185,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         jadwalRef();
         getdatakelas();
 
+        // Count Data
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference().child("data");
         rootRef.child(datKelas).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -250,6 +251,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
 
+
         mViewLogMahasiswa.setOnClickListener(v -> viewLog());
 
         switchSesi.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -271,6 +273,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                     PushDataBAP();
                     updatePertemuan();
 //                    updateData();
+                    UpdateStatus();
                     switchSesi.setChecked(false);
                     dialogInterface.dismiss();
                 })
@@ -281,6 +284,27 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .build();
 
         btnSubmit.setOnClickListener(this::onClick);
+    }
+
+    private void UpdateStatus(){
+        // Reset
+        DatabaseReference updateStatus = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference statusReff = updateStatus.child("data").child(datKelas);
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int setToAlfa = 0;
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    ds.child("status").getRef().setValue(setToAlfa);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        statusReff.addListenerForSingleValueEvent(eventListener);
     }
 
     private void getdatakelas() {
@@ -333,7 +357,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             }
         });
     }
-
 
     private void viewLog() {
         Intent intent = new Intent(KelasActivity.this, LogMahasiswaActivity.class);

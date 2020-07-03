@@ -22,7 +22,8 @@
             android:id="@+id/linearProfile"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:background="@color/white"
+            android:background="@drawable/content_informasi"
+            android:layout_marginHorizontal="10dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:focusable="true"
             android:layout_marginVertical="5dp"
@@ -53,7 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginVertical="5dp"
-            android:background="@color/white"
+            android:background="@drawable/content_informasi"
+            android:layout_marginHorizontal="10dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:focusable="true"
             android:elevation="2dp"
@@ -62,7 +64,7 @@
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/graph"
+                android:background="@drawable/ic_donut_small_black_24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="15dp"/>
 
@@ -85,7 +87,8 @@
             android:layout_height="70dp"
             android:layout_marginVertical="5dp"
             android:elevation="2dp"
-            android:background="@color/white"
+            android:background="@drawable/content_informasi"
+            android:layout_marginHorizontal="10dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true">
 
@@ -121,7 +124,8 @@
             android:layout_height="70dp"
             android:layout_marginVertical="5dp"
             android:elevation="2dp"
-            android:background="@color/white"
+            android:background="@drawable/content_informasi"
+            android:layout_marginHorizontal="10dp"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true">
 

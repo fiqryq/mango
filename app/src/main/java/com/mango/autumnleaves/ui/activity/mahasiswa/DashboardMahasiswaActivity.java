@@ -2,14 +2,21 @@ package com.mango.autumnleaves.ui.activity.mahasiswa;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import android.view.View;
@@ -17,6 +24,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andrognito.flashbar.Flashbar;
 import com.estimote.mustard.rx_goodness.rx_requirements_wizard.RequirementsWizardFactory;
@@ -37,6 +45,7 @@ import com.mango.autumnleaves.beacon.ProximityContentManager;
 import com.mango.autumnleaves.model.Jadwal;
 
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,6 +60,7 @@ public class DashboardMahasiswaActivity extends BaseActivity {
     private ImageView dashImg;
     private Flashbar flashbar = null;
     private LinearLayout emptyView;
+    private MaterialDialog mDeviceIdDialog;
 
     private ProximityContentManager proximityContentManager;
     private ProximityContentAdapter proximityContentAdapter;
@@ -76,8 +86,6 @@ public class DashboardMahasiswaActivity extends BaseActivity {
         imvHistory = findViewById(R.id.history);
         imvProfile = findViewById(R.id.informasi);
         dshUsername = findViewById(R.id.dashUsername);
-//        lihat = findViewById(R.id.lihatsemua);
-//        dshNim = findViewById(R.id.dashNim);
         dashImg = findViewById(R.id.dashIgm);
         recyclerView = findViewById(R.id.jadwalToday);
         emptyView = findViewById(R.id.linerEmptyView);
@@ -95,7 +103,6 @@ public class DashboardMahasiswaActivity extends BaseActivity {
 
         //setdata User
         dshUsername.setText(getNamaMhs());
-//        dshNim.setText(getNimMhs());
         Picasso.get().load(getProfileMhs()).into(dashImg);
 
         proximityContentAdapter = new ProximityContentAdapter(this);
@@ -104,7 +111,27 @@ public class DashboardMahasiswaActivity extends BaseActivity {
         getEstimote();
         jadwal();
 
+        String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        if (DeviceIdMahasiswa().equals(android_id)){
+            Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setIcon(R.drawable.adt_ic_warning)
+                    .setTitle("Mango")
+                    .setMessage("Akun Tidak Cocok Dengan Perangkat")
+                    .setCancelable(false)
+                    .setPositiveButton("Keluar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            firebaseAuth.signOut();
+                            logoutApps();
+                        }
+                    })
+                    .show();
+        }
+
     }
+
     private void intentJadwal() {
         //intent menu jadwal
         imvJadwal.setOnClickListener(v -> {

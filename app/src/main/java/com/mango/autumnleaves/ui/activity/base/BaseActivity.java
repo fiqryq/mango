@@ -103,55 +103,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mSession.getPreferences().getString(Constant.KEY_SESSION_DOSENNIP,"");
     }
 
-    protected String getKelasGlobalMhs(){
-        // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
-        DocumentReference docRef = firebaseFirestore.collection("user").document(getFirebaseUserId());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-
-                        UserDosen userDosen = new UserDosen();
-                        userDosen.setNama(document.getString("nama"));
-                        userDosen.setJurusan(document.getString("jurusan"));
-                        userDosen.setNip(document.getString("nip"));
-
-                        // Doc Ref Dari user
-                        String nipRef = userDosen.getNip();
-
-                        // Querysnapshot untuk mendapatkan semua data dari doccument
-                        firebaseFirestore
-                                .collection("jadwalDosen")
-                                .document(nipRef)
-                                .collection("jadwal")
-                                .whereEqualTo("hari", getNameDay())
-                                .whereLessThan("waktu_mulai", getHour())
-                                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
-                                .limit(1)
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        SesiKelas sesiKelas = new SesiKelas();
-                                        sesiKelas.setKelas(document.getString("kelas"));
-                                        kelasGlobal = sesiKelas.getKelas();
-                                    }
-                                } else {
-                                    Log.d("tes", "Error getting documents: ", task.getException());
-                                }
-                            }
-                        });
-                    } else {
-                        Log.d("gagal", "Documment tidak ada");
-                    }
-                } else {
-                    Log.d("gagal", "gagal", task.getException());
-                }
-            }
-        });
-        return kelasGlobal;
+    protected String DeviceIdMahasiswa(){
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_DEVICE,"");
     }
 }

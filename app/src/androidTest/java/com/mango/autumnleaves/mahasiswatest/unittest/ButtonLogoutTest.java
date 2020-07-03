@@ -33,6 +33,6 @@ public class ButtonLogoutTest {
         onView(withId(R.id.informasi)).perform(click());
         onView(withId(R.id.tvLogoutMhs)).perform(click());
         Thread.sleep(3000);
-        onView(withText("Logout")).perform(click()).check(myIsDisplayed());
+        onView(withText("keluar")).perform(click()).check(myIsDisplayed());
     }
 }

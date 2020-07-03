@@ -109,20 +109,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
         });
     }
 
-    private void getDevice(String idUser){
-        DocumentReference docRef = firebaseFirestore.collection("user").document(idUser);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()){
-                        String deviceId = document.getString("deviceId");
-                    }
-                }
-            }
-        });
-    }
+
 
     // Save Session
     private void saveSession(String uid, String userTag, DocumentSnapshot documentSnapshot) {

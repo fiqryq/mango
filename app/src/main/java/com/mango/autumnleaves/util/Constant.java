@@ -47,6 +47,5 @@ public class Constant {
         return getContentResolver();
     }
 
-    public static final String DEVICE_ID = deviceId;
 
 }

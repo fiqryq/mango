@@ -1,5 +1,7 @@
 package com.mango.autumnleaves.mahasiswatest.uitest;
 
+import android.widget.TextView;
+
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -58,11 +60,11 @@ public class MahasiswaUi {
         Espresso.onView(ViewMatchers.withId(R.id.informasi)).perform(click());
         Espresso.onView(ViewMatchers.withId(R.id.tvInfoUsername)).perform(click());
         Thread.sleep(3000);
-        Espresso.onView(ViewMatchers.withId(R.id.imv_back)).perform(click());
+        pressBack();
 
         // Logout
         onView(withId(R.id.tvLogoutMhs)).perform(click());
         Thread.sleep(3000);
-        onView(withText("Logout")).perform(click()).check(myIsDisplayed());
+        onView(withText("keluar")).perform(click()).check(myIsDisplayed());
     }
 }

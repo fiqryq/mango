@@ -50,14 +50,16 @@ public class ShowHistoryTest {
         Espresso.onView(ViewMatchers.withId(R.id.history)).perform(click());
         Thread.sleep(5000);
         onData(anything()).inAdapterView(withId(R.id.rvHistory)).atPosition(0).
-                onChildView(withId(R.id.linearLayout)).perform(click());
-        onView(withText("OK")).perform(click()).check(myIsDisplayed());
+                onChildView(withId(R.id.linearLayout))
+                .perform(click());
+        onView(withText("OK")).perform(click())
+                .check(myIsDisplayed());
         pressBack();
 
         // Logout
         onView(withId(R.id.informasi)).perform(click());
         onView(withId(R.id.tvLogoutMhs)).perform(click());
         Thread.sleep(3000);
-        onView(withText("Logout")).perform(click()).check(myIsDisplayed());
+        onView(withText("keluar")).perform(click()).check(myIsDisplayed());
     }
 }
