@@ -18,10 +18,13 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.comparesEqualTo;
 
 @RunWith(AndroidJUnit4.class)
 public class ButtonPresensiTest {
@@ -35,30 +38,15 @@ public class ButtonPresensiTest {
 
     @Test
     public void ButtonPresensiTest() throws InterruptedException {
-
-        // Login
-        String username = "febbydahlan034@gmail.com";
-        String password = "123456";
-
-        Espresso.onView(ViewMatchers.withId(R.id.etusername)).perform(typeText(username));
-        Espresso.closeSoftKeyboard();
-        Espresso.onView(withId(R.id.etpassword)).perform(typeText(password));
-        Espresso.closeSoftKeyboard();
-        Espresso.onView(withId(R.id.button_login)).perform(click());
         Thread.sleep(10000);
-
         //Button Presensi
         onData(anything()).inAdapterView(withId(R.id.gridView)).atPosition(0).
                 onChildView(withId(R.id.linearLayout)).perform(click());
+        Thread.sleep(3000);
+        Espresso.onView(withId(R.id.btsPresensi)).check(myIsDisplayed());
         Thread.sleep(5000);
         Espresso.onView(withId(R.id.btsPresensi)).perform(click());
         Thread.sleep(5000);
         onView(withText("OK")).perform(click()).check(myIsDisplayed());
-        pressBack();
-
-        onView(withId(R.id.informasi)).perform(click());
-        onView(withId(R.id.tvLogoutMhs)).perform(click());
-        Thread.sleep(3000);
-        onView(withText("keluar")).perform(click()).check(myIsDisplayed());
     }
 }

@@ -31,8 +31,9 @@ public class ButtonLogoutTest {
     @Test
     public void ButtonLogoutTest() throws InterruptedException {
         Espresso.onView(withId(R.id.account_menu)).perform(click());
+        Espresso.onView(withId(R.id.tvInfoLogoutDosen)).check(myIsDisplayed());
         Espresso.onView(withId(R.id.tvInfoLogoutDosen)).perform(click());
         Thread.sleep(1000);
-        onView(withText("Logout")).perform(click()).check(myIsDisplayed());
+        onView(withText("Keluar")).perform(click());
     }
 }

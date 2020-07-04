@@ -31,8 +31,9 @@ public class ButtonLogoutTest {
     @Test
     public void ButtonLogoutTest() throws InterruptedException {
         onView(withId(R.id.informasi)).perform(click());
+        onView(withId(R.id.tvInfoUsername)).check(myIsDisplayed());
         onView(withId(R.id.tvLogoutMhs)).perform(click());
         Thread.sleep(3000);
-        onView(withText("keluar")).perform(click()).check(myIsDisplayed());
+        onView(withText("Keluar")).perform(click());
     }
 }

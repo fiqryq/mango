@@ -33,8 +33,11 @@ public class ButtonSesiTest {
     public void ButtonSesi() throws InterruptedException {
         Thread.sleep(5000);
         Espresso.onView(withId(R.id.constraintKelas)).perform(click());
+        Espresso.onView(withId(R.id.ButtonSwitch)).check(myIsDisplayed());
         Espresso.onView(withId(R.id.ButtonSwitch)).perform(swipeRight());
+        Espresso.onView(withText("Sesi Aktif")).check(myIsDisplayed());
         Thread.sleep(3000);
         Espresso.onView(withId(R.id.ButtonSwitch)).perform(swipeLeft());
+        Espresso.onView(withText("Sesi Tidak Aktif")).check(myIsDisplayed());
     }
 }

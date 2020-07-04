@@ -33,24 +33,11 @@ public class ShowJadwalTest {
 
     @Test
     public void showJadwal() throws InterruptedException {
-        String username = "febbydahlan034@gmail.com";
-        String password = "123456";
-
-        Espresso.onView(ViewMatchers.withId(R.id.etusername)).perform(typeText(username));
-        Espresso.closeSoftKeyboard();
-        Espresso.onView(withId(R.id.etpassword)).perform(typeText(password));
-        Espresso.closeSoftKeyboard();
-        Espresso.onView(withId(R.id.button_login)).perform(click());
-        Thread.sleep(5000);
 
         Espresso.onView(ViewMatchers.withId(R.id.jadwal)).perform(click());
         Thread.sleep(5000);
+        Espresso.onView(withId(R.id.tvJadwalHariIni)).check(myIsDisplayed());
         pressBack();
 
-        // Logout
-        onView(withId(R.id.informasi)).perform(click());
-        onView(withId(R.id.tvLogoutMhs)).perform(click());
-        Thread.sleep(3000);
-        onView(withText("keluar")).perform(click()).check(myIsDisplayed());
     }
 }

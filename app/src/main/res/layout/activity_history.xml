@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
+    android:id="@+id/linearHistoryMhs"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -29,4 +30,4 @@
         app:layout_constraintTop_toBottomOf="@+id/tableRow"
         tools:layout_editor_absoluteX="-47dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

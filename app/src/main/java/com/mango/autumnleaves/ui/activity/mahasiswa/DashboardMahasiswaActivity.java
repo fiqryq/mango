@@ -113,7 +113,7 @@ public class DashboardMahasiswaActivity extends BaseActivity {
 
         String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         if (DeviceIdMahasiswa().equals(android_id)){
-            Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show();
+
         } else {
             new AlertDialog.Builder(this)
                     .setIcon(R.drawable.adt_ic_warning)
