@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.mango.autumnleaves.R;
 
 public class DetailBapActivity extends AppCompatActivity {
-    private TextView mBapMatakuliah , mBapRuangan , mBapWaktu , mBapJam , mBapMateri , mbaPJumlahMhs , mBapPertemuan , mBapKelas;
+    private TextView mBapMatakuliah , mBapRuangan , mBapWaktu , mBapJam , mBapMateri , mbaPJumlahMhs , mBapPertemuan , mBapKelas , mBapCatatan;
     private TextView mHadir,mIzin,mAlfa,mSakit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class DetailBapActivity extends AppCompatActivity {
         mIzin = findViewById(R.id.bapMhsIzin);
         mAlfa = findViewById(R.id.bapMhsAlfa);
         mSakit = findViewById(R.id.bapMhsSakit);
+        mBapCatatan = findViewById(R.id.bapCatatan);
 
 
         Intent intent = getIntent();
@@ -43,6 +44,7 @@ public class DetailBapActivity extends AppCompatActivity {
         int izin = intent.getIntExtra("IZIN",0);
         int alfa = intent.getIntExtra("ALFA",0);
         String kelas = intent.getStringExtra("KELAS");
+        String catatan = intent.getStringExtra("CATATAN");
 
         mBapMatakuliah.setText(": " + matakuliah);
         mBapRuangan.setText(": " + ruangan);
@@ -56,5 +58,6 @@ public class DetailBapActivity extends AppCompatActivity {
         mSakit.setText(": " + sakit);
         mAlfa.setText(": " + alfa);
         mIzin.setText(": " + izin);
+        mBapCatatan.setText(": " + catatan);
     }
 }

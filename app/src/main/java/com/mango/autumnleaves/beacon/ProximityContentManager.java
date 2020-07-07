@@ -57,7 +57,6 @@ public class ProximityContentManager extends BaseActivity {
                         List<ProximityContent> nearbyContent = new ArrayList<>(contexts.size());
 
                         for (ProximityZoneContext proximityContext : contexts) {
-                            // Ngodingnya di sini
                             String kelas = proximityContext.getAttachments().get("kelas");
                             String lokasi = proximityContext.getAttachments().get("lokasi");
                             if (kelas == null) {

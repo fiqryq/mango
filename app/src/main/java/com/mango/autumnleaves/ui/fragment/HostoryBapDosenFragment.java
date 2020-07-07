@@ -74,6 +74,7 @@ public class HostoryBapDosenFragment extends BaseFragment {
                         Bap.setAlfa(document.getLong("alfa").intValue());
                         Bap.setSakit(document.getLong("sakit").intValue());
                         Bap.setIzin(document.getLong("izin").intValue());
+                        Bap.setCatatan(document.getString("catatan"));
                         arrayList.add(Bap);
                     }
                 } else {

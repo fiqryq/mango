@@ -2,6 +2,7 @@ package com.mango.autumnleaves.ui.activity.dosen.kelas;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +50,7 @@ import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
 import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.SesiKelas;
 import com.mango.autumnleaves.model.dosen.UserDosen;
+import com.mango.autumnleaves.ui.fragment.HomeDosenFragment;
 import com.mango.autumnleaves.util.Constant;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
@@ -89,7 +91,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public long radioIzin;
     public long radioSakit;
 
-    private static int UPDATE_TEMP = 6000;
+    private static int INTENT_TEMP = 6000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -272,7 +274,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                     showSuccessToast("Berhasil Submit");
                     PushDataBAP();
                     updatePertemuan();
-//                    updateData();
+                    back();
                     UpdateStatus();
                     switchSesi.setChecked(false);
                     dialogInterface.dismiss();
@@ -532,17 +534,14 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
-//    private void updateData() {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Map<String, Object> updateKehadiran = new HashMap<>();
-//                updateKehadiran.put("status",0);
-//                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("data").child(datKelas).addValueEventListener();
-//                finish();
-//            }
-//        }, UPDATE_TEMP);
-//    }
+    private void back() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onBackPressed();
+            }
+        }, INTENT_TEMP);
+    }
 
     private void updatePertemuan(){
         Map<String, Object> updatePertemuan = new HashMap<>();

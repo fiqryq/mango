@@ -159,6 +159,8 @@ public class ProximityContentAdapter extends BaseAdapter {
                                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
                                     Jadwal jadwal = new Jadwal();
                                     jadwal.setDocId(doc.getString("docId"));
+                                    jadwal.setMatakuliah(doc.getString("matakuliah"));
+                                    contentMatakuliah.setText(jadwal.getMatakuliah());
                                     idDokumen = jadwal.getDocId();
                                 }
                             }
@@ -424,9 +426,6 @@ public class ProximityContentAdapter extends BaseAdapter {
                         int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
                         if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
-                            contentMatakuliah.setText(jadwal.getMatakuliah());
-//                            contentMatakuliah.setVisibility(View.VISIBLE);
-//                            iconMatakuliah.setVisibility(View.VISIBLE);
                             mBottomSheetValid.setVisibility(View.VISIBLE);
                             mProgressBarBts.setVisibility(View.GONE);
                             btsMatakuliah.setText(jadwal.getMatakuliah());

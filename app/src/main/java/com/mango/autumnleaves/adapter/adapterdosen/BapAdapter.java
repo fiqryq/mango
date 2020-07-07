@@ -55,6 +55,7 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
         int alfa = mData.get(position).getAlfa();
         int sakit = mData.get(position).getSakit();
         String kelas = mData.get(position).getKelas();
+        String catatan = mData.get(position).getCatatan();
 
         holder.BapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +73,7 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
                 intent.putExtra("ALFA",alfa);
                 intent.putExtra("SAKIT",sakit);
                 intent.putExtra("IZIN",izin);
+                intent.putExtra("CATATAN",catatan);
                 mContext.startActivity(intent);
             }
         });
