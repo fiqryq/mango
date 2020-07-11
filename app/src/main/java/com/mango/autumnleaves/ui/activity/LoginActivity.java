@@ -110,7 +110,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     }
 
 
-
     // Save Session
     private void saveSession(String uid, String userTag, DocumentSnapshot documentSnapshot) {
         if (userTag.equals(Constant.TAG_USER_DOSEN)) {
@@ -139,6 +138,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             mSession.setupSessionMahasiswa(userMahasiswa);
         }
         checkUserLogin(mSession.getPreferences().getString(Constant.KEY_IS_LOGIN, ""));
+        checkUserDeviceId(mSession.getPreferences().getString(Constant.KEY_DEVICE_ID,""));
     }
 
     private void checkUserLogin(String cekPengguna) {
@@ -152,6 +152,22 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                 Intent i = new Intent(LoginActivity.this, MainDosenActivity.class);
                 startActivity(i);
                 finish();
+            }
+        }
+    }
+
+    private void checkUserDeviceId(String checkId){
+        String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        if (checkId != null){
+            if (checkId.equalsIgnoreCase(android_id)){
+                Intent j = new Intent(LoginActivity.this, DashboardMahasiswaActivity.class);
+                startActivity(j);
+                finish();
+            } else {
+                logoutApps();
+                firebaseAuth.signOut();
+                finish();
+                showErrorToast("Akun Tidak Cocok Dengan Perangkat Anda");
             }
         }
     }

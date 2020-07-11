@@ -32,6 +32,7 @@ public class Constant {
     public static final String KEY_SESSION_MAHASISWA_DEVICE = "KEY_SESSION_MAHASISWA_DEVICE";
 
     public static final String KEY_IS_LOGIN = "KEY_IS_LOGIN";
+    public static final String KEY_DEVICE_ID = "KEY_DEVICE_ID";
     public static final String KEY_UID = "KEY_UID";
     public static final String KEY_MAHASISWA_KELAS = "KEY_MAHASISWA_KELAS";
     public static final String KEY_MAHASISWA_JURUSAN = "KEY_MAHASISWA_JURUSAN";

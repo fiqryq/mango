@@ -32,8 +32,8 @@ public class Session {
         editor.putString(Constant.KEY_SESSION_MAHASISWA_GAMBAR, userMahasiswa.getGambar());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_DEVICE, userMahasiswa.getDeviceId());
         editor.putString(Constant.KEY_IS_LOGIN, userMahasiswa.getTag());
+        editor.putString(Constant.KEY_DEVICE_ID, userMahasiswa.getDeviceId());
         editor.putString(Constant.KEY_UID, userMahasiswa.getuId());
-
         editor.commit();
     }
 

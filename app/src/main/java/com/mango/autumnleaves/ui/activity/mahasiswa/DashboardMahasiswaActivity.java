@@ -110,26 +110,6 @@ public class DashboardMahasiswaActivity extends BaseActivity {
 
         getEstimote();
         jadwal();
-
-        String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        if (DeviceIdMahasiswa().equals(android_id)){
-
-        } else {
-            new AlertDialog.Builder(this)
-                    .setIcon(R.drawable.adt_ic_warning)
-                    .setTitle("Mango")
-                    .setMessage("Akun Tidak Cocok Dengan Perangkat")
-                    .setCancelable(false)
-                    .setPositiveButton("Keluar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            firebaseAuth.signOut();
-                            logoutApps();
-                        }
-                    })
-                    .show();
-        }
-
     }
 
     private void intentJadwal() {
