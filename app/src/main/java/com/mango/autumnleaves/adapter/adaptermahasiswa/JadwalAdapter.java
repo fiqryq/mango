@@ -43,7 +43,7 @@ public class JadwalAdapter extends RecyclerView.Adapter<JadwalAdapter.ViewHolder
         holder.matakuliah.setText(mData.get(position).getMatakuliah());
         holder.dosen.setText(mData.get(position).getDosen());
         holder.ruangan.setText(mData.get(position).getRuangan());
-        holder.waktu.setText(mData.get(position).getWaktu_mulai() + " " + mData.get(position).getWaktu_selesai() + " " + "Wib");
+        holder.waktu.setText(mData.get(position).getWaktu_mulai() + "-" + mData.get(position).getWaktu_selesai() + " " + "Wib");
     }
 
     @Override

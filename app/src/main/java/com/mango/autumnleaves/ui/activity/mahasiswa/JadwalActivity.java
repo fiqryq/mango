@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
+import android.app.DirectAction;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -145,8 +146,6 @@ public class JadwalActivity extends BaseActivity {
                             jadwal.setWaktu_mulai(documentSnapshot.getString("waktu_mulai"));
                             jadwal.setWaktu_selesai(documentSnapshot.getString("waktu_selesai"));
 
-                            Log.d("dokumenId",documentSnapshot.getId());
-
                             int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
                             int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
@@ -190,8 +189,7 @@ public class JadwalActivity extends BaseActivity {
                         .collection("kelas")
                         .document(getKelasMhs())
                         .collection("jadwal")
-                        .orderBy("posisi")
-                        .whereGreaterThan("posisi",0)
+                        .orderBy("waktu_mulai", Query.Direction.ASCENDING)
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
