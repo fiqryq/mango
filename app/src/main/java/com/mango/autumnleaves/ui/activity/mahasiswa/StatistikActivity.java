@@ -28,7 +28,7 @@ public class StatistikActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistik);
+        setContentView(R.layout.statistik_activity);
 
         recyclerView = findViewById(R.id.rvStatistik);
         arrayList = new ArrayList<>();
