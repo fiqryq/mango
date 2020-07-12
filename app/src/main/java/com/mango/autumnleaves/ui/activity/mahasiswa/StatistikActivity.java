@@ -1,7 +1,7 @@
 package com.mango.autumnleaves.ui.activity.mahasiswa;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,9 +14,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.StatistikAdapter;
-import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.Statistik;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 
@@ -24,8 +22,8 @@ import java.util.ArrayList;
 
 public class StatistikActivity extends BaseActivity {
 
-    private ArrayList<Statistik> arrayList;
-    private RecyclerView recyclerView;
+    ArrayList<Statistik> arrayList;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

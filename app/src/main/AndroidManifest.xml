@@ -21,7 +21,7 @@
         <activity android:name=".ui.activity.mahasiswa.StatistikActivity" android:label="Statistik">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.mahasiswa.AccountActivity" />
+                android:value=".ui.activity.mahasiswa.AccountActivity"/>
         </activity>
         <activity
             android:name=".ui.activity.dosen.kelas.LogMahasiswaActivity"
@@ -33,14 +33,14 @@
         <activity
             android:name=".ui.activity.mahasiswa.DetailHistoryActivity"
             android:label="Data Presensi"
-            android:screenOrientation="portrait">
+            android:screenOrientation="locked">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.HistoryActivity" />
         </activity>
         <activity
             android:name=".ui.activity.dosen.kelas.KelasActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/KelasTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -49,34 +49,34 @@
         <activity
             android:name=".ui.activity.dosen.DetailBapActivity"
             android:label="Data Bap"
-            android:screenOrientation="portrait">
+            android:screenOrientation="locked">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.dosen.DetailBapActivity" />
         </activity>
         <activity
             android:name=".ui.activity.dosen.ProfileDosenActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="Tentang Mango"
-            android:screenOrientation="portrait">
+            android:screenOrientation="locked">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.AccountActivity" />
         </activity>
         <activity
             android:name=".ui.activity.dosen.MainDosenActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/InfoDosenTheme" />
         <activity
             android:name=".ui.activity.mahasiswa.PresensiDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="locked" />
         <activity
             android:name=".ui.activity.mahasiswa.HistoryActivity"
             android:label="@string/history"
-            android:screenOrientation="portrait">
+            android:screenOrientation="locked">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.mahasiswa.DashboardMahasiswaActivity" />
@@ -84,7 +84,7 @@
         <activity
             android:name=".ui.activity.mahasiswa.ProfileActivity"
             android:label="Profile"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/ProfileTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -92,12 +92,12 @@
         </activity>
         <activity
             android:name=".ui.activity.mahasiswa.DashboardMahasiswaActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".ui.activity.mahasiswa.AccountActivity"
             android:label="Akun"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/InfoTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -106,7 +106,7 @@
         <activity
             android:name=".ui.activity.mahasiswa.JadwalActivity"
             android:label="Jadwal"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -114,7 +114,7 @@
         </activity>
         <activity
             android:name=".ui.activity.SplashScreen"
-            android:screenOrientation="portrait"
+            android:screenOrientation="locked"
             android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
