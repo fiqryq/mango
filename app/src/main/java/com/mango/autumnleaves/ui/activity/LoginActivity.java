@@ -1,5 +1,6 @@
 package com.mango.autumnleaves.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,17 +57,16 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                 String mPassword = password.getText().toString();
 
                 if (TextUtils.isEmpty(username.getText()) && TextUtils.isEmpty(password.getText())) {
-                    showToast("Username / Password Kosong");
+                    showErrorToast("Username / Password Kosong");
                     onHideProgress();
                 } else if (TextUtils.isEmpty(username.getText())) {
-                    showToast("Username Kosong");
+                    showErrorToast("Username Kosong");
                     onHideProgress();
                 } else if (TextUtils.isEmpty(password.getText())) {
-                    showToast("Password Kosong");
+                    showErrorToast("Password Kosong");
                     onHideProgress();
                 } else {
                     getAuthFirebase(mUsername, mPassword);
-                    Log.d("idDevice",Constant.KEY_MAHASISWA_JURUSAN);
                 }
             }
         });
@@ -138,13 +138,13 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             mSession.setupSessionMahasiswa(userMahasiswa);
         }
         checkUserLogin(mSession.getPreferences().getString(Constant.KEY_IS_LOGIN, ""));
-        checkUserDeviceId(mSession.getPreferences().getString(Constant.KEY_DEVICE_ID,""));
     }
 
     private void checkUserLogin(String cekPengguna) {
+        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         onHideProgress();
         if (cekPengguna != null) {
-            if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA)) {
+            if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA) && android_id.equalsIgnoreCase(DeviceIdMahasiswa())) {
                 Intent j = new Intent(LoginActivity.this, DashboardMahasiswaActivity.class);
                 startActivity(j);
                 finish();
@@ -152,22 +152,8 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                 Intent i = new Intent(LoginActivity.this, MainDosenActivity.class);
                 startActivity(i);
                 finish();
-            }
-        }
-    }
-
-    private void checkUserDeviceId(String checkId){
-        String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        if (checkId != null){
-            if (checkId.equalsIgnoreCase(android_id)){
-                Intent j = new Intent(LoginActivity.this, DashboardMahasiswaActivity.class);
-                startActivity(j);
-                finish();
             } else {
-                logoutApps();
-                firebaseAuth.signOut();
-                finish();
-                showErrorToast("Akun Tidak Cocok Dengan Perangkat Anda");
+                showErrorToast("Akun Tidak Cocok Dengan Perangkat");
             }
         }
     }
@@ -184,7 +170,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
     @Override
     public void onFailedAuthFirebase() {
-        showErrorToast("Gagal Auth Firebase");
+        showErrorToast("Login Gagal");
         progres.setVisibility(View.GONE);
     }
 

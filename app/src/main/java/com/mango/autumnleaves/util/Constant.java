@@ -42,11 +42,5 @@ public class Constant {
     public static final String SESI_AKTIF = "1";
     public static final String SESI_TIDAK_AKTIF = "0";
 
-    public static String deviceId = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
-
-    private static ContentResolver getContentResolver() {
-        return getContentResolver();
-    }
-
 
 }
