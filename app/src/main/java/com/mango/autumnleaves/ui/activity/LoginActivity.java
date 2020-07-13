@@ -159,7 +159,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
             logoutApps();
             firebaseAuth.signOut();
         }
-
+        
     }
 
     @Override

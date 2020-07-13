@@ -82,6 +82,5 @@ public class DetailBapActivity extends AppCompatActivity {
         mIzin.setText(": " + izin);
         mBapCatatan.setText(": " + catatan);
 
-
     }
 }

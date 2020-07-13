@@ -128,7 +128,7 @@ public class JadwalActivity extends BaseActivity {
                 .collection("jadwal")
                 .whereEqualTo("hari", getNameDay())
                 .whereLessThan("waktu_mulai", getHour())
-                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                .orderBy("waktu_mulai", Query.Direction.ASCENDING)
                 .limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -189,6 +189,7 @@ public class JadwalActivity extends BaseActivity {
                         .collection("kelas")
                         .document(getKelasMhs())
                         .collection("jadwal")
+                        .orderBy("posisi")
                         .orderBy("waktu_mulai", Query.Direction.ASCENDING)
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
