@@ -11,6 +11,15 @@ public class UserDosen {
     private String ttl;
     private String alamat;
     private String jurusan;
+    private String deviceId;
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getJurusan() {
         return jurusan;

@@ -16,6 +16,7 @@ public class Constant {
     public static final String KEY_SESSION_DOSENALAMAT = "KEY_SESSION_DOSENALAMAT";
     public static final String KEY_SESSION_DOSENTAG = "KEY_SESSION_DOSENTAG";
     public static final String KEY_SESSION_GAMBAR = "KEY_SESSION_DOSENTAG";
+    public static final String KEY_SESSION_DEVICE_ID = "KEY_SESSION_DEVICE_ID";
 
     // Constant Mahasiswa
     public static final String KEY_SESSION_MAHASISWA_NIM = "KEY_SESSION_MAHASISWA_NIM";
@@ -33,6 +34,7 @@ public class Constant {
 
     public static final String KEY_IS_LOGIN = "KEY_IS_LOGIN";
     public static final String KEY_DEVICE_ID = "KEY_DEVICE_ID";
+    public static final String KEY_DEVICE_ID_DOSEN = "KEY_DEVICE_ID_DOSEN";
     public static final String KEY_UID = "KEY_UID";
     public static final String KEY_MAHASISWA_KELAS = "KEY_MAHASISWA_KELAS";
     public static final String KEY_MAHASISWA_JURUSAN = "KEY_MAHASISWA_JURUSAN";

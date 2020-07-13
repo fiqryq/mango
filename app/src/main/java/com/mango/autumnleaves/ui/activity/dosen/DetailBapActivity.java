@@ -1,9 +1,13 @@
 package com.mango.autumnleaves.ui.activity.dosen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.mango.autumnleaves.R;
@@ -11,6 +15,25 @@ import com.mango.autumnleaves.R;
 public class DetailBapActivity extends AppCompatActivity {
     private TextView mBapMatakuliah , mBapRuangan , mBapWaktu , mBapJam , mBapMateri , mbaPJumlahMhs , mBapPertemuan , mBapKelas , mBapCatatan;
     private TextView mHadir,mIzin,mAlfa,mSakit;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_bap,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.edit_bap:
+                Intent intent = new Intent(DetailBapActivity.this,EditBapActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +52,6 @@ public class DetailBapActivity extends AppCompatActivity {
         mAlfa = findViewById(R.id.bapMhsAlfa);
         mSakit = findViewById(R.id.bapMhsSakit);
         mBapCatatan = findViewById(R.id.bapCatatan);
-
 
         Intent intent = getIntent();
         String matakuliah = intent.getStringExtra("MATAKULIAH");
@@ -59,5 +81,7 @@ public class DetailBapActivity extends AppCompatActivity {
         mAlfa.setText(": " + alfa);
         mIzin.setText(": " + izin);
         mBapCatatan.setText(": " + catatan);
+
+
     }
 }

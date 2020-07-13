@@ -18,10 +18,13 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.mahasiswa.StatistikActivity" android:label="Statistik">
+        <activity android:name=".ui.activity.dosen.EditBapActivity"></activity>
+        <activity
+            android:name=".ui.activity.mahasiswa.StatistikActivity"
+            android:label="Statistik">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.mahasiswa.AccountActivity"/>
+                android:value=".ui.activity.mahasiswa.AccountActivity" />
         </activity>
         <activity
             android:name=".ui.activity.dosen.kelas.LogMahasiswaActivity"

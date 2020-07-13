@@ -1,12 +1,13 @@
-<TableLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tableBap"
     android:layout_marginBottom="3dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TableRow
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:background="@drawable/custom_ripple"
         android:padding="5dp">
 
@@ -17,6 +18,6 @@
             android:layout_weight="1"
             android:text="Tanggal" />
 
-    </TableRow>
+    </LinearLayout>
 
-</TableLayout>
+</LinearLayout>

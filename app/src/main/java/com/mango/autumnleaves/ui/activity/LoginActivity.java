@@ -82,7 +82,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                     onFailedAuthFirebase();
                 }
             });
-
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 onSuccessAuthFirebase(firebaseUser.getUid());
@@ -152,10 +151,15 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                 Intent i = new Intent(LoginActivity.this, MainDosenActivity.class);
                 startActivity(i);
                 finish();
-            } else {
-                showErrorToast("Akun Tidak Cocok Dengan Perangkat");
             }
         }
+
+        if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA) && !android_id.equalsIgnoreCase(DeviceIdMahasiswa())){
+            showErrorToast("Device Id Tidak Cocok");
+            logoutApps();
+            firebaseAuth.signOut();
+        }
+
     }
 
     @Override

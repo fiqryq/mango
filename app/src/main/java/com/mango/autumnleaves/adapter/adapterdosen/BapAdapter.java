@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -87,7 +88,7 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvBapTanggal;
-        TableLayout BapLayout;
+        LinearLayout BapLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
