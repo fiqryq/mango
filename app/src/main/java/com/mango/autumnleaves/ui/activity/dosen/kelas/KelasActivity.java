@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +43,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.model.Bap;
 import com.mango.autumnleaves.model.Jadwal;
+import com.mango.autumnleaves.model.MainBap;
+import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
 import com.mango.autumnleaves.ui.activity.LoginActivity;
 import com.mango.autumnleaves.ui.activity.SplashScreen;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
@@ -71,7 +75,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
     private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa , tvSesiPertemuan;
     private EditText mEtMateri, mEtCatatan;
-    private Button btnSubmit;
+    private Button btnSubmit, btnBukaSesi;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
 
@@ -107,6 +111,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         mEtCatatan = findViewById(R.id.etCatatanSesiKelas);
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
+        btnBukaSesi = findViewById(R.id.buttonBukaSesi);
 
         Intent intent = getIntent();
         datMatakuliah = intent.getStringExtra("MATAKULIAH");
@@ -456,32 +461,87 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void PushDataBAP() {
-        Map<String, Object> dataBap = new HashMap<>();
-        dataBap.put("matakuliah", mataKuliahNow);
-        dataBap.put("jam", getHour());
-        dataBap.put("waktu", getTimeNow());
-        dataBap.put("ruangan", RuanganNow);
-        dataBap.put("materi", mEtMateri.getText().toString());
-        dataBap.put("catatan", mEtCatatan.getText().toString());
-        dataBap.put("pertemuan", datPetemuan);
-        dataBap.put("hadir",radioHadir);
-        dataBap.put("sakit",radioSakit);
-        dataBap.put("izin",radioIzin);
-        dataBap.put("alfa",radioAlfa);
-        dataBap.put("jumlahMhs", jumlahMahasiswa);
-        dataBap.put("created", new Timestamp(new Date()));
-        dataBap.put("kelas", Kelas);
+//        Map<String, Object> dataBap = new HashMap<>();
+//        dataBap.put("matakuliah", mataKuliahNow);
+//        dataBap.put("jam", getHour());
+//        dataBap.put("waktu", getTimeNow());
+//        dataBap.put("ruangan", RuanganNow);
+//        dataBap.put("materi", mEtMateri.getText().toString());
+//        dataBap.put("catatan", mEtCatatan.getText().toString());
+//        dataBap.put("pertemuan", datPetemuan);
+//        dataBap.put("hadir",radioHadir);
+//        dataBap.put("sakit",radioSakit);
+//        dataBap.put("izin",radioIzin);
+//        dataBap.put("alfa",radioAlfa);
+//        dataBap.put("jumlahMhs", jumlahMahasiswa);
+//        dataBap.put("created", new Timestamp(new Date()));
+//        dataBap.put("kelas", Kelas);
+//        dataBap.put("status", 1);
+//
+//        firebaseFirestore
+//                .collection("bap")
+//                .document(getFirebaseUserId())
+//                .collection("data")
+//                .add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//            @Override
+//            public void onSuccess(DocumentReference documentReference) {
+//
+//            }
+//        });
 
-        firebaseFirestore
-                .collection("bap")
-                .document(getFirebaseUserId())
-                .collection("data")
-                .add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("bap");
+        final String key = reference.push().getKey();
+        reference.child(key).setValue(new MainBap(
+                getFirebaseUserId(),
+                mataKuliahNow,
+                RuanganNow,
+                Kelas, getTimeNow(),
+                mEtMateri.getText().toString(),
+                mEtCatatan.getText().toString(),
+                1,
+                1
+        )).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-
+            public void onComplete(@NonNull Task<Void> task) {
+                updateBAPBeforeSubmit(key);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showSuccessToast("Gagal Membuat BAP");
             }
         });
+    }
+
+    private void updateBAPBeforeSubmit(String key) {
+        String kelas = Kelas;
+
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("bap").child(key).child("siswa");
+
+        firebaseFirestore.collection("user").whereEqualTo("kode_kelas", kelas).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            Log.d("CHECK_TAG", doc.getId());
+                            String id_mahasiswa = doc.getId();
+                            String nama = doc.get("nama").toString();
+
+                            String keyPush = reference.push().getKey();
+                            Map<String, Object> values = new HashMap<String, Object>();
+
+                            values.put("id_mahasiswa", id_mahasiswa);
+                            values.put("nama", nama);
+                            values.put("status", 0);
+
+                            reference.child(keyPush).updateChildren(values);
+                        }
+
+                        showSuccessToast("Berhasil Membuka BAP");
+                    }
+                });
     }
 
     private void updateTrue() {

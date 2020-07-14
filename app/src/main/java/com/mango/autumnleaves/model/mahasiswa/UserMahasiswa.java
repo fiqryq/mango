@@ -14,6 +14,28 @@ public class UserMahasiswa {
     private String uId;
     private String deviceId;
 
+    public UserMahasiswa(Integer id_mahasiswa, String nim_mhs, String nama, String username, String password, String telp, String kelamin, String ttl, String alamat, String kode_kelas, String uId, String deviceId, String status, String tag, String gambar, String jurusan) {
+        this.id_mahasiswa = id_mahasiswa;
+        this.nim_mhs = nim_mhs;
+        this.nama = nama;
+        this.username = username;
+        this.password = password;
+        this.telp = telp;
+        this.kelamin = kelamin;
+        this.ttl = ttl;
+        this.alamat = alamat;
+        this.kode_kelas = kode_kelas;
+        this.uId = uId;
+        this.deviceId = deviceId;
+        this.status = status;
+        this.tag = tag;
+        this.gambar = gambar;
+        this.jurusan = jurusan;
+    }
+
+    public UserMahasiswa() {
+    }
+
     public String getDeviceId() {
         return deviceId;
     }

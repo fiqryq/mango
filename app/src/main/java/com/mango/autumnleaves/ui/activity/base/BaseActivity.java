@@ -106,4 +106,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected String DeviceIdMahasiswa(){
         return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_DEVICE,"");
     }
+
+    protected String getIdDosen(){
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_ID_DOSEN,"");
+    }
 }

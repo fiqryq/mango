@@ -50,6 +50,7 @@ public class Session {
         editor.putString(Constant.KEY_SESSION_DOSENKELAMIN, userDosen.getKelamin());
         editor.putString(Constant.KEY_SESSION_DEVICE_ID, userDosen.getDeviceId());
         editor.putString(Constant.KEY_DEVICE_ID_DOSEN, userDosen.getDeviceId());
+        editor.putString(Constant.KEY_SESSION_ID_DOSEN, userDosen.getIdDosen());
         editor.putString(Constant.KEY_IS_LOGIN, userDosen.getTag());
         editor.putString(Constant.KEY_UID, userDosen.getuId());
 

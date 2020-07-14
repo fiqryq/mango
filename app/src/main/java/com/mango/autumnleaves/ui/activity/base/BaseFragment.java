@@ -59,4 +59,6 @@ public class BaseFragment extends Fragment {
         return mSession.getPreferences().getString(Constant.KEY_SESSION_GAMBAR,"");
     }
 
+
+
 }

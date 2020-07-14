@@ -85,6 +85,11 @@ public class HomeDosenFragment extends BaseFragment {
         });
 
         showJadwal();
+        checkBAP();
+    }
+
+    private void checkBAP() {
+//        firebaseFirestore.collection("bap").document(getFirebaseUserId()).collection("data")
     }
 
     // Show Jadwal
