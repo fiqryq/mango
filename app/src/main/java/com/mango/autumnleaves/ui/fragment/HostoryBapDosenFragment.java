@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -47,38 +48,68 @@ public class HostoryBapDosenFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         arrayList = new ArrayList<>();
-        showHistory();
+        showdata();
     }
 
-    private void showHistory() {
+//    private void showHistory() {
+//        firebaseFirestore
+//                .collection("bap")
+//                .document(getFirebaseUserId())
+//                .collection("data")
+//                .orderBy("created", Query.Direction.DESCENDING)
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Bap Bap = new Bap();
+//                        Bap.setMatakuliah(document.getString("matakuliah"));
+//                        Bap.setRuangan(document.getString("ruangan"));
+//                        Bap.setWaktu(document.getString("waktu"));
+//                        Bap.setJam(document.getString("jam"));
+//                        Bap.setMateri(document.getString("materi"));
+//                        Bap.setPertemuan(document.getLong("pertemuan").intValue());
+//                        Bap.setJumlahMhs(document.getLong("jumlahMhs").intValue());
+//                        Bap.setKelas(document.getString("kelas"));
+//                        Bap.setHadir(document.getLong("hadir").intValue());
+//                        Bap.setAlfa(document.getLong("alfa").intValue());
+//                        Bap.setSakit(document.getLong("sakit").intValue());
+//                        Bap.setIzin(document.getLong("izin").intValue());
+//                        Bap.setCatatan(document.getString("catatan"));
+//                        arrayList.add(Bap);
+//                    }
+//                } else {
+//                    Log.d("tes", "Error getting documents: ", task.getException());
+//                }
+////                setuprecyclerview(arrayList);
+//            }
+//        });
+//    }
+
+    private void showdata() {
         firebaseFirestore
-                .collection("bap")
+                .collection("dosen")
                 .document(getFirebaseUserId())
-                .collection("data")
-                .orderBy("created", Query.Direction.DESCENDING)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .collection("bap")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Bap Bap = new Bap();
-                        Bap.setMatakuliah(document.getString("matakuliah"));
-                        Bap.setRuangan(document.getString("ruangan"));
-                        Bap.setWaktu(document.getString("waktu"));
-                        Bap.setJam(document.getString("jam"));
-                        Bap.setMateri(document.getString("materi"));
-                        Bap.setPertemuan(document.getLong("pertemuan").intValue());
-                        Bap.setJumlahMhs(document.getLong("jumlahMhs").intValue());
-                        Bap.setKelas(document.getString("kelas"));
-                        Bap.setHadir(document.getLong("hadir").intValue());
-                        Bap.setAlfa(document.getLong("alfa").intValue());
-                        Bap.setSakit(document.getLong("sakit").intValue());
-                        Bap.setIzin(document.getLong("izin").intValue());
-                        Bap.setCatatan(document.getString("catatan"));
-                        arrayList.add(Bap);
-                    }
-                } else {
-                    Log.d("tes", "Error getting documents: ", task.getException());
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                    Bap Bap = new Bap();
+                    Bap.setMatakuliah(queryDocumentSnapshot.getString("matakuliah"));
+                    Bap.setRuangan(queryDocumentSnapshot.getString("ruangan"));
+                    Bap.setWaktu(queryDocumentSnapshot.getString("waktu"));
+                    Bap.setJam(queryDocumentSnapshot.getString("jam"));
+                    Bap.setMateri(queryDocumentSnapshot.getString("materi"));
+                    Bap.setPertemuan(queryDocumentSnapshot.getLong("pertemuan").intValue());
+                    Bap.setJumlahMhs(queryDocumentSnapshot.getLong("jumlahMhs").intValue());
+                    Bap.setKelas(queryDocumentSnapshot.getString("kelas"));
+                    Bap.setHadir(queryDocumentSnapshot.getLong("hadir").intValue());
+                    Bap.setAlfa(queryDocumentSnapshot.getLong("alfa").intValue());
+                    Bap.setSakit(queryDocumentSnapshot.getLong("sakit").intValue());
+                    Bap.setIzin(queryDocumentSnapshot.getLong("izin").intValue());
+                    Bap.setCatatan(queryDocumentSnapshot.getString("catatan"));
+                    arrayList.add(Bap);
                 }
                 setuprecyclerview(arrayList);
             }
