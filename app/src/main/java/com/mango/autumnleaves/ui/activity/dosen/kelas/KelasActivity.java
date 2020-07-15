@@ -295,9 +295,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int setToAlfa = 0;
                 for (DataSnapshot ds : snapshot.getChildren()){
-                    ds.child("status").getRef().setValue(setToAlfa);
+                    ds.child("status").getRef().setValue(0);
                 }
             }
 
