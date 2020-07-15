@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,186 +10,203 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/abu"
-        android:padding="10dp"
-        android:weightSum="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="280dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/abu"
+            android:padding="10dp"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Matakuliah" />
+            <LinearLayout
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
+                <TextView
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Matakuliah" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Ruangan" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Kelas" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Waktu" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Jam" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Jumlah Mahasiswa" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Hadir" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Alfa" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Sakit" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Izin" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Materi" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Pertemuan" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Catatan" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Ruangan" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Kelas" />
+                <TextView
+                    android:id="@+id/bapMatakuliah"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Waktu" />
+                <TextView
+                    android:id="@+id/bapRuangan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Jam" />
+                <TextView
+                    android:id="@+id/bapKelas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Jumlah Mahasiswa" />
+                <TextView
+                    android:id="@+id/bapWaktu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Hadir" />
+                <TextView
+                    android:id="@+id/bapJam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Alfa" />
+                <TextView
+                    android:id="@+id/bapHadir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Sakit" />
+                <TextView
+                    android:id="@+id/bapMhsHadir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Izin" />
+                <TextView
+                    android:id="@+id/bapMhsAlfa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Materi" />
+                <TextView
+                    android:id="@+id/bapMhsSakit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Pertemuan" />
+                <TextView
+                    android:id="@+id/bapMhsIzin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:text="Catatan" />
+
+                <TextView
+                    android:id="@+id/bapMateri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
+
+                <TextView
+                    android:id="@+id/bapPertemuan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
+
+                <TextView
+                    android:id="@+id/bapCatatan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="data" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/bapMatakuliah"
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapRuangan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapKelas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapWaktu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapJam"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapHadir"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapMhsHadir"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapMhsAlfa"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapMhsSakit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapMhsIzin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-
-            <TextView
-                android:id="@+id/bapMateri"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapPertemuan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
-
-            <TextView
-                android:id="@+id/bapCatatan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="data" />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
