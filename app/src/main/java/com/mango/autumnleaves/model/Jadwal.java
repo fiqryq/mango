@@ -14,6 +14,15 @@ public class Jadwal {
     private long pertemuan;
     private long jumlah_pertemuan;
     private String docId;
+    private long status;
+
+    public long getStatus() {
+        return status;
+    }
+
+    public void setStatus(long status) {
+        this.status = status;
+    }
 
     public String getDocId() {
         return docId;

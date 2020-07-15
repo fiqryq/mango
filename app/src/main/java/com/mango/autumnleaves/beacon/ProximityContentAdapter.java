@@ -30,12 +30,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirestoreRegistrar;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
+import com.google.protobuf.StringValue;
 import com.mango.autumnleaves.model.History;
 import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
@@ -250,6 +253,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
     }
+
     private void dataRef(String jurusanRef,String kelasRef, String nama_mhs, ProximityContent content , BottomSheetDialog bottomSheetViewPresensi , ImageView iconMatakuliah){
         firebaseFirestore
                 .collection("prodi")
@@ -288,59 +292,66 @@ public class ProximityContentAdapter extends BaseAdapter {
                             pertemuanStat = (int) jadwal.getPertemuan();
                             pertemuanJadwal = (int) jadwal.getPertemuan();
                             idDokumen = jadwal.getDocId();
-                            Log.d("pertemuan",String.valueOf(pertemuanStat));
+
                         }
 
+                        Map<String, Object> BapPertemuan = new HashMap<>();
+                        BapPertemuan.put("status",1);
 
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("nama", nama_mhs);
-                        data.put("matakuliah", dataMatakuliah);
-                        data.put("ruangan", content.getKelas());
-                        data.put("jam", getHour());
-                        data.put("waktu", getTimeNow());
-                        data.put("created", new Timestamp(new Date()));
-                        data.put("status", 1);
-
-                        firebaseFirestore
-                                .collection("presensiMahasiswa")
-                                .document("kelas")
-                                .collection(kelasRef)
-                                .document("presensi")
-                                .collection(firebaseAuth.getUid())
-                                .add(data)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
-                                        new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE)
-                                                .setTitleText("Berhasil Presensi")
-                                                .setContentText("klik tombl ok untuk keluar")
-                                                .show();
-
-                                        Map<String,Object> updatePertemuanStat = new HashMap<>();
-                                        updatePertemuanStat.put("pertemuan", pertemuanStat + 1);
-
-                                        firebaseFirestore
-                                                .collection("statistik")
-                                                .document("kelas")
-                                                .collection(kelasRef)
-                                                .document(firebaseAuth.getUid())
-                                                .collection("jadwal")
-                                                .document(idMatkul)
-                                                .update(updatePertemuanStat);
-
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                new KAlertDialog(context, KAlertDialog.ERROR_TYPE)
-                                        .setTitleText("Oops...")
-                                        .setContentText("Gagal Presensi")
-                                        .show();
-                            }
-                        });
-
-                        databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(kelasRef);
-                        databaseReference.child(firebaseAuth.getUid()).child("status").setValue(1);
+                        firebaseFirestore.collection("matakuliah")
+                                .document(idMatkul)
+                                .collection("pertemuan")
+                                .document(String.valueOf(pertemuanJadwal)).update("mahasiswa."+firebaseUser.getUid()+".status", 1);
+//
+//                        Map<String, Object> data = new HashMap<>();
+//                        data.put("nama", nama_mhs);
+//                        data.put("matakuliah", dataMatakuliah);
+//                        data.put("ruangan", content.getKelas());
+//                        data.put("jam", getHour());
+//                        data.put("waktu", getTimeNow());
+//                        data.put("created", new Timestamp(new Date()));
+//                        data.put("status", 1);
+//
+//                        firebaseFirestore
+//                                .collection("presensiMahasiswa")
+//                                .document("kelas")
+//                                .collection(kelasRef)
+//                                .document("presensi")
+//                                .collection(firebaseAuth.getUid())
+//                                .add(data)
+//                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                    @Override
+//                                    public void onSuccess(DocumentReference documentReference) {
+//                                        new KAlertDialog(context, KAlertDialog.SUCCESS_TYPE)
+//                                                .setTitleText("Berhasil Presensi")
+//                                                .setContentText("klik tombl ok untuk keluar")
+//                                                .show();
+//
+//                                        Map<String,Object> updatePertemuanStat = new HashMap<>();
+//                                        updatePertemuanStat.put("pertemuan", pertemuanStat + 1);
+//
+//                                        firebaseFirestore
+//                                                .collection("statistik")
+//                                                .document("kelas")
+//                                                .collection(kelasRef)
+//                                                .document(firebaseAuth.getUid())
+//                                                .collection("jadwal")
+//                                                .document(idMatkul)
+//                                                .update(updatePertemuanStat);
+//
+//                                    }
+//                                }).addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                new KAlertDialog(context, KAlertDialog.ERROR_TYPE)
+//                                        .setTitleText("Oops...")
+//                                        .setContentText("Gagal Presensi")
+//                                        .show();
+//                            }
+//                        });
+//
+//                        databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(kelasRef);
+//                        databaseReference.child(firebaseAuth.getUid()).child("status").setValue(1);
 
                     }
                 });
@@ -392,6 +403,7 @@ public class ProximityContentAdapter extends BaseAdapter {
             }
         });
 
+
         firebaseFirestore
                 .collection("prodi")
                 .document(jurusanRef)
@@ -405,37 +417,63 @@ public class ProximityContentAdapter extends BaseAdapter {
                 .addSnapshotListener((queryDocumentSnapshots, e) -> {
                     for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                         Jadwal jadwal = new Jadwal();
-                        jadwal.setMatakuliah(documentSnapshot.getString("matakuliah"));
-                        jadwal.setRuangan(documentSnapshot.getString("ruangan"));
+                        jadwal.setId(documentSnapshot.getString("id"));
+                        jadwal.setPertemuan(documentSnapshot.getLong("pertemuan").intValue());
                         jadwal.setSesi(documentSnapshot.getString("sesi"));
+//
+//                        int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
+//                        int sekarang = Integer.parseInt(getHour().replace(":", ""));
 
-                        if (jadwal.getSesi().equals("1")){
-                            if (status == 0){
-                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
-                            } else if (status == 1){
-                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
+                        long pertemuan = jadwal.getPertemuan();
+
+                        firebaseFirestore
+                                .collection("matakuliah")
+                                .document(jadwal.getId())
+                                .collection("pertemuan")
+                                .document(String.valueOf(pertemuan)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()){
+                                    DocumentSnapshot docum = task.getResult();
+                                    if (docum.exists()){
+                                        Jadwal jad = new Jadwal();
+                                        jad.setMatakuliah(docum.getString("matakuliah"));
+                                        jad.setStatus(docum.getLong("status").intValue());
+
+                                        long BtnStatus = jad.getStatus();
+
+                                        if (jadwal.getSesi().equals("1")){
+                                            if (BtnStatus == 0){
+                                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.VISIBLE);
+                                            } else if (BtnStatus == 1){
+                                                bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
+                                            }
+                                        } else {
+                                            bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
+                                        }
+
+                                        mBottomSheetValid.setVisibility(View.VISIBLE);
+                                        mProgressBarBts.setVisibility(View.GONE);
+                                        btsMatakuliah.setText(jad.getMatakuliah());
+                                        btsRuangan.setText(content.getKelas());
+                                        btsWaktu.setText(getTimeNow());
+                                        btsJam.setText(getHour());
+                                    }
+                                }
                             }
-                        } else {
-                            bottomSheetViewPresensi.findViewById(R.id.btsPresensi).setVisibility(View.GONE);
-                        }
+                        });
 
-                        Log.d("TESQUERY", "jadwal ruangan " + status);
-                        Log.d("TESQUERY", "jadwal contex " + content.getKelas());
-
-                        int selesai = Integer.parseInt(documentSnapshot.getString("waktu_selesai").replace(":", ""));
-                        int sekarang = Integer.parseInt(getHour().replace(":", ""));
-
-                        if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
-                            mBottomSheetValid.setVisibility(View.VISIBLE);
-                            mProgressBarBts.setVisibility(View.GONE);
-                            btsMatakuliah.setText(jadwal.getMatakuliah());
-                            btsRuangan.setText(content.getKelas());
-                            btsWaktu.setText(getTimeNow());
-                            btsJam.setText(getHour());
-                        }else {
-                            Toast.makeText(context, "Tidak ada Kelas", Toast.LENGTH_SHORT).show();
-                            bottomSheetViewPresensi.cancel();
-                        }
+//                        if (sekarang <= selesai && jadwal.getRuangan().equals(content.getKelas())){
+//                            mBottomSheetValid.setVisibility(View.VISIBLE);
+//                            mProgressBarBts.setVisibility(View.GONE);
+//                            btsMatakuliah.setText(jadwal.getMatakuliah());
+//                            btsRuangan.setText(content.getKelas());
+//                            btsWaktu.setText(getTimeNow());
+//                            btsJam.setText(getHour());
+//                        }else {
+//                            Toast.makeText(context, "Tidak ada Kelas", Toast.LENGTH_SHORT).show();
+//                            bottomSheetViewPresensi.cancel();
+//                        }
                     }
                 });
     }

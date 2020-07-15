@@ -15,10 +15,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.StatistikAdapter;
+import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.Statistik;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class StatistikActivity extends BaseActivity {
 
@@ -34,7 +36,7 @@ public class StatistikActivity extends BaseActivity {
         arrayList = new ArrayList<>();
 
         getDataMatakuliah();
-
+        getStatistik();
     }
 
     private void getDataMatakuliah(){
@@ -59,6 +61,19 @@ public class StatistikActivity extends BaseActivity {
                     }
                 }
                 setuprecyclerView(arrayList);
+            }
+        });
+    }
+    private void getStatistik(){
+        firebaseFirestore.collection("matakuliah").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+
+                    }
+                }
+
             }
         });
     }
