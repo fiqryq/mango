@@ -2,19 +2,35 @@ package com.mango.autumnleaves.ui.activity.dosen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.adapter.adapterdosen.DetailBapAdapter;
+import com.mango.autumnleaves.model.dosen.DetailBap;
+import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 
-public class DetailBapActivity extends AppCompatActivity {
+public class DetailBapActivity extends BaseActivity {
     private TextView mBapMatakuliah , mBapRuangan , mBapWaktu , mBapJam , mBapMateri , mbaPJumlahMhs , mBapPertemuan , mBapKelas , mBapCatatan;
     private TextView mHadir,mIzin,mAlfa,mSakit;
+    private RecyclerView mRecycleView;
+    private DetailBapAdapter mAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,5 +98,38 @@ public class DetailBapActivity extends AppCompatActivity {
         mIzin.setText(": " + izin);
         mBapCatatan.setText(": " + catatan);
 
+        showRecycle();
+    }
+
+    private void showRecycle() {
+        CollectionReference reference = FirebaseFirestore.getInstance().collection("dosen").document(getFirebaseUserId()).collection("bap");
+        Query query = reference;
+
+        FirestoreRecyclerOptions<DetailBap> options = new FirestoreRecyclerOptions.Builder<DetailBap>()
+                .setQuery(query, DetailBap.class)
+                .build();
+
+        mAdapter = new DetailBapAdapter(options, this);
+
+        mRecycleView = findViewById(R.id.recycleViewDetailBap);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        mRecycleView.setHasFixedSize(true);
+        mRecycleView.setLayoutManager(layoutManager);
+        mRecycleView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 }

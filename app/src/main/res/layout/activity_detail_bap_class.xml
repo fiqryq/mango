@@ -202,10 +202,19 @@
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleViewDetailBap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+
+
         </LinearLayout>
+        <Button
+            android:id="@+id/button_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="button test"/>
+
 
     </LinearLayout>
 

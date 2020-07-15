@@ -50,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.view.View.GONE;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
@@ -274,6 +275,30 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .build();
 
         btnSubmit.setOnClickListener(this::onClick);
+
+        checkButton(switchSesi, btnSubmit, mViewLogMahasiswa);
+    }
+
+    private void checkButton(Switch sesiSwitch, Button button, TextView textView) {
+        Timestamp stamp = new Timestamp(new Date());
+        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").orderBy("created", Query.Direction.DESCENDING).limit(1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                    Log.d("SNAPSHOT", doc.getId());
+                    int status = Integer.parseInt(doc.get("status").toString());
+                    if (status == 1) {
+                        sesiSwitch.setVisibility(GONE);
+                        button.setVisibility(GONE);
+                        textView.setVisibility(GONE);
+                    } else {
+                        sesiSwitch.setVisibility(View.VISIBLE);
+                        button.setVisibility(View.VISIBLE);
+                        textView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     private void UpdateStatus() {
@@ -471,6 +496,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 dataBap.put("jumlahMhs", jumlahMahasiswa);
                 dataBap.put("created", new Timestamp(new Date()));
                 dataBap.put("kelas", Kelas);
+                dataBap.put("status", 1);
 
                 for (DataSnapshot data : snapshot.getChildren()) {
                     String key = data.getKey();

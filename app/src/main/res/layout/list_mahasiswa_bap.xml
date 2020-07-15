@@ -22,7 +22,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tvNomor"
+                    android:id="@+id/tvNomor_bap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -37,7 +37,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/tvNamaMahasiswa"
+                    android:id="@+id/tvNamaMahasiswa_bap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
