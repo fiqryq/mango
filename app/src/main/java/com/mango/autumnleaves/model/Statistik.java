@@ -2,12 +2,25 @@ package com.mango.autumnleaves.model;
 
 public class Statistik {
     private String id;
+    private String matakuliah;
+    private String dosen;
+    private long pertemuan;
+    private long jumlah_pertemuan;
 
-    public Statistik(String id) {
-        this.id = id;
+    public long getPertemuan() {
+        return pertemuan;
     }
 
-    public Statistik() {
+    public void setPertemuan(long pertemuan) {
+        this.pertemuan = pertemuan;
+    }
+
+    public String getDosen() {
+        return dosen;
+    }
+
+    public void setDosen(String dosen) {
+        this.dosen = dosen;
     }
 
     public String getId() {
@@ -16,5 +29,22 @@ public class Statistik {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getMatakuliah() {
+        return matakuliah;
+    }
+
+    public void setMatakuliah(String matakuliah) {
+        this.matakuliah = matakuliah;
+    }
+
+
+    public long getJumlah_pertemuan() {
+        return jumlah_pertemuan;
+    }
+
+    public void setJumlah_pertemuan(long jumlah_pertemuan) {
+        this.jumlah_pertemuan = jumlah_pertemuan;
     }
 }

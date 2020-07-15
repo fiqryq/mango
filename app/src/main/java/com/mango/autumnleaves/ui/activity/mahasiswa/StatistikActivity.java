@@ -52,42 +52,29 @@ public class StatistikActivity extends BaseActivity {
     }
 
     private void getDataMatakuliah() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference reference = db.collection("matakuliah");
-
-        Query query = reference;
-
-        FirestoreRecyclerOptions<Statistik> options = new FirestoreRecyclerOptions.Builder<Statistik>().setQuery(query, Statistik.class).build();
-
-        mAdapter = new StatistikAdapter(options, getKelasMhs());
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mAdapter);
-
-//        firebaseFirestore
-//                .collection("statistik")
-//                .document("kelas")
-//                .collection(getKelasMhs())
-//                .document(getFirebaseUserId())
-//                .collection("jadwal")
-//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()){
-//                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-//                        Statistik statistik = new Statistik();
-//                        statistik.setId(documentSnapshot.getString("id"));
-//                        statistik.setDosen(documentSnapshot.getString("dosen"));
-//                        statistik.setMatakuliah(documentSnapshot.getString("matakuliah"));
-//                        statistik.setPertemuan(documentSnapshot.getLong("pertemuan").intValue());
-//                        statistik.setJumlah_pertemuan(documentSnapshot.getLong("jumlah_pertemuan").intValue());
-//                        arrayList.add(statistik);
-//                    }
-//                }
-//                setuprecyclerView(arrayList);
-//            }
-//        });
+        firebaseFirestore
+                .collection("statistik")
+                .document("kelas")
+                .collection(getKelasMhs())
+                .document(getFirebaseUserId())
+                .collection("jadwal")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        Statistik statistik = new Statistik();
+                        statistik.setId(documentSnapshot.getString("id"));
+                        statistik.setDosen(documentSnapshot.getString("dosen"));
+                        statistik.setMatakuliah(documentSnapshot.getString("matakuliah"));
+                        statistik.setPertemuan(documentSnapshot.getLong("pertemuan").intValue());
+                        statistik.setJumlah_pertemuan(documentSnapshot.getLong("jumlah_pertemuan").intValue());
+                        arrayList.add(statistik);
+                    }
+                }
+                setuprecyclerView(arrayList);
+            }
+        });
     }
     private void getStatistik(){
         firebaseFirestore.collection("matakuliah").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -104,20 +91,8 @@ public class StatistikActivity extends BaseActivity {
     }
 
     private void setuprecyclerView(ArrayList<Statistik> arrayList) {
-//        StatistikAdapter statistikAdapter = new StatistikAdapter(getApplicationContext(),arrayList);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-//        recyclerView.setAdapter(statistikAdapter);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAdapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAdapter.stopListening();
+        StatistikAdapter statistikAdapter = new StatistikAdapter(getApplicationContext(),arrayList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setAdapter(statistikAdapter);
     }
 }
