@@ -1,6 +1,7 @@
 package com.mango.autumnleaves.ui.activity.mahasiswa;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +17,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.ui.activity.AboutActivity;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
@@ -28,12 +35,17 @@ import com.shreyaspatil.MaterialDialog.interfaces.OnDismissListener;
 import com.shreyaspatil.MaterialDialog.interfaces.OnShowListener;
 import com.squareup.picasso.Picasso;
 
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
+
 public class AccountActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
     private TextView tvInfoUsername ;
     private LinearLayout linearProfile , tvInfoLogout , tvInfoMango , linearStatistik;
     private ImageView imvInfoUsername;
     private MaterialDialog logoutDialog;
+    public String dataKelas = "";
+    public String dataId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,29 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 
         tvInfoUsername.setText(getNamaMhs());
         Picasso.get().load(getProfileMhs()).into(imvInfoUsername);
+
+        firebaseFirestore.collection("jadwal").document(getJurusanMhs()).collection("kelas").document(getKelasMhs()).collection("jadwal")
+                .whereEqualTo("hari", getNameDay())
+                .whereLessThan("waktu_mulai", getHour())
+                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                .limit(1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("TAGQUERYSNAPHSOT", "Listen failed.", e);
+                    return;
+                }
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    Jadwal jadwal = new Jadwal();
+                    jadwal.setId(documentSnapshot.getString("id"));
+                    jadwal.setKelas(documentSnapshot.getString("kelas"));
+
+                    dataKelas = jadwal.getKelas();
+                    dataId = jadwal.getId();
+
+                }
+            }
+        });
 
         logoutDialog = new MaterialDialog.Builder(this)
                 .setTitle("Logout Dialog")
@@ -87,6 +122,8 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),StatistikActivity.class);
+                intent.putExtra("KELAS",dataKelas);
+                intent.putExtra("DATAID",dataId);
                 startActivity(intent);
             }
         });
