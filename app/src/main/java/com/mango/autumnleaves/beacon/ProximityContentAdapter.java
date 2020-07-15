@@ -299,8 +299,8 @@ public class ProximityContentAdapter extends BaseAdapter {
                         BapPertemuan.put("status",1);
 
                         firebaseFirestore.collection("matakuliah")
-                                .document(idMatkul)
-                                .collection("pertemuan")
+                                .document(kelasRef)
+                                .collection(idMatkul)
                                 .document(String.valueOf(pertemuanJadwal)).update("mahasiswa."+firebaseUser.getUid()+".status", 1);
 //
 //                        Map<String, Object> data = new HashMap<>();
@@ -428,8 +428,8 @@ public class ProximityContentAdapter extends BaseAdapter {
 
                         firebaseFirestore
                                 .collection("matakuliah")
-                                .document(jadwal.getId())
-                                .collection("pertemuan")
+                                .document(kelasRef)
+                                .collection(jadwal.getId())
                                 .document(String.valueOf(pertemuan)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
