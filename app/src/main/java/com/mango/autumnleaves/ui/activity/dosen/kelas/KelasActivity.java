@@ -2,23 +2,15 @@ package com.mango.autumnleaves.ui.activity.dosen.kelas;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +20,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,14 +34,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.Jadwal;
-import com.mango.autumnleaves.ui.activity.LoginActivity;
-import com.mango.autumnleaves.ui.activity.SplashScreen;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
-import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
-import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.model.SesiKelas;
 import com.mango.autumnleaves.model.dosen.UserDosen;
-import com.mango.autumnleaves.ui.fragment.HomeDosenFragment;
 import com.mango.autumnleaves.util.Constant;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
@@ -59,6 +45,7 @@ import com.shreyaspatil.MaterialDialog.interfaces.OnDismissListener;
 import com.shreyaspatil.MaterialDialog.interfaces.OnShowListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +56,7 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
-    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa , tvSesiPertemuan;
+    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa, tvSesiPertemuan;
     private EditText mEtMateri, mEtCatatan;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
@@ -271,8 +258,9 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 .setMessage("Apakah Kamu Yakin Akan Submit Bap?")
                 .setCancelable(false)
                 .setPositiveButton("Submit", (dialogInterface, i) -> {
-                    showSuccessToast("Berhasil Submit");
-                    PushDataBAP();
+//                    showSuccessToast("Berhasil Submit");
+//                    PushDataBAP();
+                    pushBAP();
                     updatePertemuan();
                     back();
                     UpdateStatus();
@@ -288,15 +276,16 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         btnSubmit.setOnClickListener(this::onClick);
     }
 
-    private void UpdateStatus(){
+    private void UpdateStatus() {
         // Reset
         DatabaseReference updateStatus = FirebaseDatabase.getInstance().getReference();
         DatabaseReference statusReff = updateStatus.child("data").child(datKelas);
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()){
-                    ds.child("status").getRef().setValue(0);
+                int setToAlfa = 0;
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    ds.child("status").getRef().setValue(setToAlfa);
                 }
             }
 
@@ -307,6 +296,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         };
         statusReff.addListenerForSingleValueEvent(eventListener);
     }
+
 
     private void getdatakelas() {
         // doccumentsnapshoot untuk mendapatkan dokumen secara spesifik
@@ -454,6 +444,59 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         });
     }
 
+    private void pushBAP() {
+        Map<String, Object> dataBap = new HashMap<>();
+        HashMap<String, Object> mahasiswaBap = new HashMap<>();
+        Map<String, Object> idMahasiswa = new HashMap<>();
+
+        ArrayList<Object> nama_array = new ArrayList<>();
+        ArrayList<Object> status_array = new ArrayList<>();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("data").child(Kelas);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                dataBap.put("matakuliah", mataKuliahNow);
+                dataBap.put("jam", getHour());
+                dataBap.put("waktu", getTimeNow());
+                dataBap.put("ruangan", RuanganNow);
+                dataBap.put("materi", mEtMateri.getText().toString());
+                dataBap.put("catatan", mEtCatatan.getText().toString());
+                dataBap.put("pertemuan", datPetemuan);
+                dataBap.put("hadir", radioHadir);
+                dataBap.put("sakit", radioSakit);
+                dataBap.put("izin", radioIzin);
+                dataBap.put("alfa", radioAlfa);
+                dataBap.put("jumlahMhs", jumlahMahasiswa);
+                dataBap.put("created", new Timestamp(new Date()));
+                dataBap.put("kelas", Kelas);
+
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    String key = data.getKey();
+                    String name = data.child("nama").getValue().toString();
+                    int status = Integer.parseInt(data.child("status").getValue().toString());
+
+                    idMahasiswa.put(key, Arrays.asList(name, status));
+
+                    dataBap.put("mahasiswa", idMahasiswa);
+                }
+
+                firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        showSuccessToast("Berhasil bapp");
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private void PushDataBAP() {
         Map<String, Object> dataBap = new HashMap<>();
         dataBap.put("matakuliah", mataKuliahNow);
@@ -463,10 +506,10 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         dataBap.put("materi", mEtMateri.getText().toString());
         dataBap.put("catatan", mEtCatatan.getText().toString());
         dataBap.put("pertemuan", datPetemuan);
-        dataBap.put("hadir",radioHadir);
-        dataBap.put("sakit",radioSakit);
-        dataBap.put("izin",radioIzin);
-        dataBap.put("alfa",radioAlfa);
+        dataBap.put("hadir", radioHadir);
+        dataBap.put("sakit", radioSakit);
+        dataBap.put("izin", radioIzin);
+        dataBap.put("alfa", radioAlfa);
         dataBap.put("jumlahMhs", jumlahMahasiswa);
         dataBap.put("created", new Timestamp(new Date()));
         dataBap.put("kelas", Kelas);
@@ -542,7 +585,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         }, INTENT_TEMP);
     }
 
-    private void updatePertemuan(){
+    private void updatePertemuan() {
         Map<String, Object> updatePertemuan = new HashMap<>();
         updatePertemuan.put("pertemuan", datPetemuan + 1);
         firebaseFirestore
@@ -562,8 +605,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 } else if (TextUtils.isEmpty(mEtMateri.getText().toString()) && TextUtils.isEmpty(mEtCatatan.getText().toString())) {
                     Toast.makeText(mActivity, "Harap Isi Form", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(mEtCatatan.getText().toString()) && TextUtils.isEmpty(mEtMateri.getText().toString())) {
-                    Toast.makeText(mActivity, "Harap Isi Form", Toast.LENGTH_SHORT).show();}
-                else {
+                    Toast.makeText(mActivity, "Harap Isi Form", Toast.LENGTH_SHORT).show();
+                } else {
                     bapdialog.show();
                 }
         }
