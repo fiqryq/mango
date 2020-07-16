@@ -40,7 +40,7 @@ public class HomeDosenFragment extends BaseFragment {
     private TextView HariIni , tvNodata , tvRuangan , tvWaktuMulai , tvWaktuSelesai , tvMatakuliah , tvViewKelas ;
     private ConstraintLayout ConstraintKelas;
     private ProgressBar progressBar;
-    private String datMatakuliah , datDosen , datRuangan , datKelas;
+    private String datMatakuliah , datDosen , datRuangan , datKelas , idMatkul;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class HomeDosenFragment extends BaseFragment {
         datDosen ="";
         datKelas ="";
         datRuangan ="";
+        idMatkul = "";
 
         ConstraintKelas = view.findViewById(R.id.constraintKelas);
         ConstraintKelas.setVisibility(View.GONE);
@@ -130,6 +131,7 @@ public class HomeDosenFragment extends BaseFragment {
                                         jadwal.setDosen(document.getString("dosen"));
                                         jadwal.setJurusan(document.getString("jurusan"));
                                         jadwal.setKelas(document.getString("kelas"));
+                                        jadwal.setId(document.getString("id"));
                                         jadwal.setRuangan(document.getString("ruangan"));
                                         jadwal.setWaktu_mulai(document.getString("waktu_mulai"));
                                         jadwal.setWaktu_selesai(document.getString("waktu_selesai"));
@@ -138,6 +140,7 @@ public class HomeDosenFragment extends BaseFragment {
                                         datMatakuliah = jadwal.getMatakuliah();
                                         datRuangan = jadwal.getRuangan();
                                         datKelas = jadwal.getKelas();
+                                        idMatkul = jadwal.getId();
 
                                         Log.d("Berhasil",document.getData().toString());
 
@@ -186,6 +189,7 @@ public class HomeDosenFragment extends BaseFragment {
         intent.putExtra("DOSEN",datDosen);
         intent.putExtra("RUANGAN",datRuangan);
         intent.putExtra("KELAS",datKelas);
+        intent.putExtra("IDMATKUL",idMatkul);
         startActivity(intent);
     }
 }

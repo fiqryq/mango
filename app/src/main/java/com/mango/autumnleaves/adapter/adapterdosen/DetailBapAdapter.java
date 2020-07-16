@@ -17,34 +17,46 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.model.dosen.DetailBap;
 
-public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, DetailBapAdapter.DetailBapHolder> {
+import java.util.List;
+
+public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.ViewHolder> {
 
     private Context mContext;
+    private List<DetailBap> mData;
 
-    public DetailBapAdapter(@NonNull FirestoreRecyclerOptions<DetailBap> options, Context mContext) {
-        super(options);
+    public DetailBapAdapter(Context mContext, List<DetailBap> mData) {
         this.mContext = mContext;
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull DetailBapHolder holder, int position, @NonNull DetailBap model) {
-        Log.d("CHECK_ADAPTER", String.valueOf(position));
+        this.mData = mData;
     }
 
     @NonNull
     @Override
-    public DetailBapHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.list_mahasiswa_bap, parent, false);
-        return new DetailBapAdapter.DetailBapHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        view = inflater.inflate(R.layout.list_mahasiswa_bap, parent,false);
+        return new ViewHolder(view);
     }
 
-    class DetailBapHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.tvNamaMahasiswa.setText(mData.get(position).getName());
+        int status = mData.get(position).getStatus();
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return mData.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvNo;
         final TextView tvNamaMahasiswa;
         final RadioGroup radioKehadiran;
         final RadioButton radioHadir , radioSakit , radioIzin , radioAlfa;
 
-        public DetailBapHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvNo = itemView.findViewById(R.id.tvNomor_bap);

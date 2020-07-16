@@ -44,5 +44,6 @@
     <string name="Profile">Profile</string>
     <string name="Cancel">Batal</string>
     <string name="About">Tentang</string>
+    <string name="potong">=[</string>
 
 </resources>

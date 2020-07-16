@@ -15,17 +15,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.airbnb.lottie.L;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adapterdosen.DetailBapAdapter;
 import com.mango.autumnleaves.model.dosen.DetailBap;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,15 +117,72 @@ public class DetailBapActivity extends BaseActivity {
     }
 
     private void showRecycle(String id) {
+        ArrayList<DetailBap> arrayList = new ArrayList<>();
         firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                String mahasiswa = documentSnapshot.get("mahasiswa").toString();
-//                documentSnapshot
-                Map<String, Object> detailBap = documentSnapshot.getData();
-                Log.d("ARRAY_DETAIL", detailBap.toString());
+                Log.d("HHHH", String.valueOf(documentSnapshot.get("mahasiswa")));
+
+                String objek = documentSnapshot.get("mahasiswa").toString();
+                String rep = objek.replace("{", "");
+                String rep2 = rep.replace("}", "");
+                String rep3 = rep2.replace(",", "',");
+
+                String[] userId = rep3.split("\\]',");
+
+                for (int i = 0; i < userId.length; i++) {
+                    String[] pisahKeyValue = userId[i].split("=\\[");
+
+                    String realKey = null;
+                    String contentTmp = null;
+
+                    for (int j = 0; j < pisahKeyValue.length ; j++) {
+                        realKey = pisahKeyValue[0].replace(" ", "");
+                        contentTmp = pisahKeyValue[1];
+                    }
+//                    Log.d("HAHAH", realKey);
+//                    Log.d("HAHAH", contentTmp);
+
+                    String nama = null;
+                    String status = null;
+
+                    String[] splitContent = contentTmp.split("', ");
+
+                    for (int j = 0; j < splitContent.length; j++) {
+                        nama = splitContent[0];
+                        status = splitContent[1].replace("]", "");
+                    }
+
+                    Log.d("HAHAH", realKey);
+                    Log.d("HAHAH", nama);
+                    Log.d("HAHAH", status);
+
+                    DetailBap model = new DetailBap();
+
+                    model.setName(nama);
+                    model.setStatus(Integer.parseInt(status));
+                    arrayList.add(model);
+
+//                    Log.d("HAHAH", pisahKeyValue[0]);
+                }
+//                Log.d("HAHAH", split[0]);
+                setupRecycleView(arrayList);
             }
         });
+//        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                DocumentSnapshot snapshot = task.getResult();
+//                Map<String, Object> map = snapshot.getData();
+//
+//
+//
+//                JsonParser parser = new JsonParser();
+//                JsonObject jsonObject = (JsonObject) parser.parse(String.valueOf(snapshot.get("mahasiswa")));
+//
+//                Log.d("HHHH", jsonObject.toString());
+//            }
+//        });
 //        DocumentSnapshot reference = FirebaseFirestore.getInstance().collection("dosen").document(getFirebaseUserId()).collection("bap").document(id);
 //        Query query = reference;
 
@@ -134,6 +200,13 @@ public class DetailBapActivity extends BaseActivity {
 //        mRecycleView.setHasFixedSize(true);
 //        mRecycleView.setLayoutManager(layoutManager);
 //        mRecycleView.setAdapter(mAdapter);
+    }
+
+    private void setupRecycleView(ArrayList<DetailBap> arraylist) {
+        DetailBapAdapter detailBapAdapter = new DetailBapAdapter(this, arraylist);
+        mRecycleView = findViewById(R.id.recycleViewDetailBap);
+        mRecycleView.setLayoutManager(new LinearLayoutManager(this));
+        mRecycleView.setAdapter(detailBapAdapter);
     }
 
     @Override

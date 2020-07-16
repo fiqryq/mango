@@ -1,23 +1,26 @@
 package com.mango.autumnleaves.model.dosen;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class DetailBap {
-    private String nama;
+    private String name;
     private int status;
 
-    public DetailBap(String nama, int status) {
-        this.nama = nama;
+    public DetailBap(String name, int status) {
+        this.name = name;
         this.status = status;
     }
 
     public DetailBap() {
     }
 
-    public String getNama() {
-        return nama;
+    public String getName() {
+        return name;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getStatus() {
