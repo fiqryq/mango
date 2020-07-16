@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +35,7 @@ public class HostoryBapDosenFragment extends BaseFragment {
 
     private ArrayList<Bap> arrayList;
     RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class HostoryBapDosenFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         arrayList = new ArrayList<>();
+        progressBar = view.findViewById(R.id.progressBarBap);
         showdata();
     }
 
@@ -91,9 +94,11 @@ public class HostoryBapDosenFragment extends BaseFragment {
                 .collection("dosen")
                 .document(getFirebaseUserId())
                 .collection("bap")
+                .orderBy("created", Query.Direction.DESCENDING)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                progressBar.setVisibility(View.GONE);
                 for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                     Bap Bap = new Bap();
                     Bap.setMatakuliah(queryDocumentSnapshot.getString("matakuliah"));
@@ -104,10 +109,6 @@ public class HostoryBapDosenFragment extends BaseFragment {
                     Bap.setPertemuan(queryDocumentSnapshot.getLong("pertemuan").intValue());
                     Bap.setJumlahMhs(queryDocumentSnapshot.getLong("jumlahMhs").intValue());
                     Bap.setKelas(queryDocumentSnapshot.getString("kelas"));
-                    Bap.setHadir(queryDocumentSnapshot.getLong("hadir").intValue());
-                    Bap.setAlfa(queryDocumentSnapshot.getLong("alfa").intValue());
-                    Bap.setSakit(queryDocumentSnapshot.getLong("sakit").intValue());
-                    Bap.setIzin(queryDocumentSnapshot.getLong("izin").intValue());
                     Bap.setCatatan(queryDocumentSnapshot.getString("catatan"));
                     Bap.setId(queryDocumentSnapshot.getId());
                     arrayList.add(Bap);

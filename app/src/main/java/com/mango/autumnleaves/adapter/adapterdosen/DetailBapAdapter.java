@@ -15,17 +15,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mango.autumnleaves.R;
+import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.dosen.DetailBap;
+import com.mango.autumnleaves.model.dosen.UserDosen;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
+import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 
 public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.ViewHolder> {
 
@@ -33,6 +45,8 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
     private List<DetailBap> mData;
     private String mIdDosen;
     private String mIdBap;
+    private String mIdMatkul ="";
+    private String mKelasMatkul ="";
 
     public DetailBapAdapter(Context mContext, List<DetailBap> mData, String mIdDosen, String mIdBap) {
         this.mContext = mContext;
@@ -54,7 +68,7 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        view = inflater.inflate(R.layout.list_mahasiswa_bap, parent,false);
+        view = inflater.inflate(R.layout.list_mahasiswa_bap, parent, false);
         return new ViewHolder(view);
     }
 
@@ -64,6 +78,46 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
         int ai = position + 1;
         holder.tvNo.setText(String.valueOf(ai));
         holder.tvNamaMahasiswa.setText(mData.get(position).getName());
+
+        DocumentReference documentReference = FirebaseFirestore.getInstance()
+                .collection("user").document(mIdDosen);
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+                        UserDosen userDosen = new UserDosen();
+                        userDosen.setNip(document.getString("nip"));
+                        // Doc Ref Dari user
+                        String nipRef = userDosen.getNip();
+
+                        FirebaseFirestore.getInstance()
+                                .collection("jadwalDosen")
+                                .document(nipRef)
+                                .collection("jadwal")
+                                .whereEqualTo("hari", getNameDay())
+                                .whereLessThan("waktu_mulai", getHour())
+                                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                                .limit(1)
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Jadwal jadwal = new Jadwal();
+                                        jadwal.setId(document.getString("id"));
+                                        jadwal.setKelas(document.getString("kelas"));
+                                        mIdMatkul = jadwal.getId();
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
 
         reference = FirebaseFirestore.getInstance().collection("dosen").document(mIdDosen).collection("bap").document(mIdBap);
@@ -87,6 +141,7 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
         }
 
         String nama = mData.get(position).getName();
+        idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 0));
 
         holder.radioSakit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +168,6 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             @Override
             public void onClick(View v) {
                 idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 1));
-
             }
         });
 
@@ -134,11 +188,11 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
         });
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         final TextView tvNo;
         final TextView tvNamaMahasiswa;
         final RadioGroup radioKehadiran;
-        final RadioButton radioHadir , radioSakit , radioIzin , radioAlfa;
+        final RadioButton radioHadir, radioSakit, radioIzin, radioAlfa;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -151,5 +205,26 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             radioIzin = itemView.findViewById(R.id.radio_izin_bap);
             radioAlfa = itemView.findViewById(R.id.radio_alfa_bap);
         }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return false;
+        }
     }
 }
+
+
+//                Map<String,Object> updateStat = new HashMap<>();
+//                updateStat.put("pertemuan",-1);
+//
+//                FirebaseFirestore.getInstance().collection("statistik").document("kelas")
+//                        .collection(mKelasMatkul)
+//                        .document(mData.get(position)
+//                                .getIdMahasiswa())
+//                        .collection("jadwal")
+//                        .document(mIdMatkul).update(updateStat);

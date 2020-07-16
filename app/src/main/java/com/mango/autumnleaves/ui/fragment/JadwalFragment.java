@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +42,7 @@ public class JadwalFragment extends BaseFragment {
 
     private ArrayList<Jadwal> arrayList;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class JadwalFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.rvJadwalDosen);
         arrayList = new ArrayList<>();
+        progressBar = view.findViewById(R.id.progressBarJadwalDosen);
+        progressBar.setVisibility(View.VISIBLE);
         showJadwal();
     }
 
@@ -83,6 +87,7 @@ public class JadwalFragment extends BaseFragment {
                                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                     @Override
                                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                                        progressBar.setVisibility(View.GONE);
                                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                                             Jadwal jadwal = new Jadwal();
                                             jadwal.setHari(document.getString("hari"));

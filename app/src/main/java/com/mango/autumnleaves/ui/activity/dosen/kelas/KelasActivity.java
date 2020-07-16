@@ -40,6 +40,7 @@ import com.mango.autumnleaves.ui.activity.base.BaseActivity;
 import com.mango.autumnleaves.model.SesiKelas;
 import com.mango.autumnleaves.model.dosen.UserDosen;
 import com.mango.autumnleaves.util.Constant;
+import com.mango.autumnleaves.util.CustomLoadingDialog;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 import com.shreyaspatil.MaterialDialog.interfaces.OnCancelListener;
@@ -83,7 +84,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public long radioIzin;
     public long radioSakit;
 
-    private static int INTENT_TEMP = 6000;
+    private static int INTENT_TEMP = 3000;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,9 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         linearContainer = findViewById(R.id.linearContainer);
         emptyView = findViewById(R.id.emptyBap);
         emptyView.setVisibility(GONE);
+
+        final CustomLoadingDialog loadingDialog = new CustomLoadingDialog(KelasActivity.this);
+        loadingDialog.startLoadingDialog();
 
         Intent intent = getIntent();
         datMatakuliah = intent.getStringExtra("MATAKULIAH");
@@ -159,6 +164,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                         datKelas = jadwal.getKelas();
                                         datPetemuan = (int) jadwal.getPertemuan();
                                         datDocId = jadwal.getDocId();
+                                        loadingDialog.dismissDialog();
 
                                         tvDosen.setText(": " + datDosen);
                                         tvMatakuliah.setText(": " + datMatakuliah);
@@ -197,59 +203,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
             }
         });
-
-        DatabaseReference hadirCount = FirebaseDatabase.getInstance().getReference().child("data");
-        hadirCount.child(datKelas).orderByChild("status").equalTo(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                radioHadir = snapshot.getChildrenCount();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        DatabaseReference IzinCount = FirebaseDatabase.getInstance().getReference().child("data");
-        IzinCount.child(datKelas).orderByChild("status").equalTo(2).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                radioIzin = snapshot.getChildrenCount();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        DatabaseReference sakitCount = FirebaseDatabase.getInstance().getReference().child("data");
-        sakitCount.child(datKelas).orderByChild("status").equalTo(3).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                radioSakit = snapshot.getChildrenCount();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        DatabaseReference alfaCount = FirebaseDatabase.getInstance().getReference().child("data");
-        alfaCount.child(datKelas).orderByChild("status").equalTo(0).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                radioAlfa = snapshot.getChildrenCount();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
 
         mViewLogMahasiswa.setOnClickListener(v -> viewLog());
 
@@ -331,7 +284,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
                             int status = Integer.parseInt(doc.get("status").toString());
 
-                            if (hitungJam >= 3) {
+                            if (hitungJam <= 3) {
                                 if (status == 1) {
                                     sesiSwitch.setVisibility(GONE);
                                     button.setVisibility(GONE);
@@ -366,9 +319,8 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int setToAlfa = 0;
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    ds.child("status").getRef().setValue(setToAlfa);
+                    ds.child("status").getRef().setValue(0);
                 }
             }
 
@@ -547,10 +499,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 dataBap.put("materi", mEtMateri.getText().toString());
                 dataBap.put("catatan", mEtCatatan.getText().toString());
                 dataBap.put("pertemuan", datPetemuan);
-                dataBap.put("hadir", radioHadir);
-                dataBap.put("sakit", radioSakit);
-                dataBap.put("izin", radioIzin);
-                dataBap.put("alfa", radioAlfa);
                 dataBap.put("jumlahMhs", jumlahMahasiswa);
                 dataBap.put("created", new Timestamp(new Date()));
                 dataBap.put("kelas", Kelas);
@@ -582,32 +530,32 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void PushDataBAP() {
-        Map<String, Object> dataBap = new HashMap<>();
-        dataBap.put("matakuliah", mataKuliahNow);
-        dataBap.put("jam", getHour());
-        dataBap.put("waktu", getTimeNow());
-        dataBap.put("ruangan", RuanganNow);
-        dataBap.put("materi", mEtMateri.getText().toString());
-        dataBap.put("catatan", mEtCatatan.getText().toString());
-        dataBap.put("pertemuan", datPetemuan);
-        dataBap.put("hadir", radioHadir);
-        dataBap.put("sakit", radioSakit);
-        dataBap.put("izin", radioIzin);
-        dataBap.put("alfa", radioAlfa);
-        dataBap.put("jumlahMhs", jumlahMahasiswa);
-        dataBap.put("created", new Timestamp(new Date()));
-        dataBap.put("kelas", Kelas);
-
-        firebaseFirestore
-                .collection("bap")
-                .document(getFirebaseUserId())
-                .collection("data")
-                .add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-
-            }
-        });
+//        Map<String, Object> dataBap = new HashMap<>();
+//        dataBap.put("matakuliah", mataKuliahNow);
+//        dataBap.put("jam", getHour());
+//        dataBap.put("waktu", getTimeNow());
+//        dataBap.put("ruangan", RuanganNow);
+//        dataBap.put("materi", mEtMateri.getText().toString());
+//        dataBap.put("catatan", mEtCatatan.getText().toString());
+//        dataBap.put("pertemuan", datPetemuan);
+//        dataBap.put("hadir", radioHadir);
+//        dataBap.put("sakit", radioSakit);
+//        dataBap.put("izin", radioIzin);
+//        dataBap.put("alfa", radioAlfa);
+//        dataBap.put("jumlahMhs", jumlahMahasiswa);
+//        dataBap.put("created", new Timestamp(new Date()));
+//        dataBap.put("kelas", Kelas);
+//
+//        firebaseFirestore
+//                .collection("bap")
+//                .document(getFirebaseUserId())
+//                .collection("data")
+//                .add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//            @Override
+//            public void onSuccess(DocumentReference documentReference) {
+//
+//            }
+//        });
     }
 
     private void updateTrue() {

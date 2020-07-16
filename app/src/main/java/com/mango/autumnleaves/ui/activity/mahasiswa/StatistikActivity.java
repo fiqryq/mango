@@ -24,6 +24,8 @@ import com.mango.autumnleaves.adapter.adaptermahasiswa.StatistikAdapter;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.Statistik;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasActivity;
+import com.mango.autumnleaves.util.CustomLoadingDialog;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,17 +43,17 @@ public class StatistikActivity extends BaseActivity {
 
         recyclerView = findViewById(R.id.rvStatistik);
         arrayList = new ArrayList<>();
+        final CustomLoadingDialog loadingDialog = new CustomLoadingDialog(StatistikActivity.this);
+        loadingDialog.startLoadingDialog();
 
         Intent intent = getIntent();
         String kelas = intent.getStringExtra("KELAS");
         String idMatkul = intent.getStringExtra("DATAID");
 
-
-        getDataMatakuliah();
-        getStatistik();
+        getDataMatakuliah(loadingDialog);
     }
 
-    private void getDataMatakuliah() {
+    private void getDataMatakuliah(CustomLoadingDialog loadingDialog) {
         firebaseFirestore
                 .collection("statistik")
                 .document("kelas")
@@ -61,6 +63,7 @@ public class StatistikActivity extends BaseActivity {
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                loadingDialog.dismissDialog();
                 if (task.isSuccessful()){
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
                         Statistik statistik = new Statistik();
@@ -73,19 +76,6 @@ public class StatistikActivity extends BaseActivity {
                     }
                 }
                 setuprecyclerView(arrayList);
-            }
-        });
-    }
-    private void getStatistik(){
-        firebaseFirestore.collection("matakuliah").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-
-                    }
-                }
-
             }
         });
     }

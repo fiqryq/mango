@@ -12,7 +12,7 @@ import com.mango.autumnleaves.util.Constant;
 
 public class SplashScreen extends BaseActivity {
 
-    private static int SPLASH_TIME_OUT = 2000;
+    private static int SPLASH_TIME_OUT = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

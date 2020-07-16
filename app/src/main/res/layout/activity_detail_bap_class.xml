@@ -204,6 +204,14 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBarLoadBap"
+            style="?android:attr/progressBarStyle"
+            android:layout_gravity="center"
+            android:paddingTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleViewDetailBap"
             android:layout_width="match_parent"

@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.airbnb.lottie.L;
@@ -34,6 +35,8 @@ import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adapterdosen.DetailBapAdapter;
 import com.mango.autumnleaves.model.dosen.DetailBap;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasActivity;
+import com.mango.autumnleaves.util.CustomLoadingDialog;
 
 import org.json.JSONException;
 
@@ -46,8 +49,11 @@ public class DetailBapActivity extends BaseActivity {
     private TextView mHadir,mIzin,mAlfa,mSakit;
     private RecyclerView mRecycleView;
     private DetailBapAdapter mAdapter;
+    private ProgressBar progressBar;
 
-    private static int INTENT_TEMP = 2000;
+    final CustomLoadingDialog loadingDialog = new CustomLoadingDialog(DetailBapActivity.this);
+
+    private static int INTENT_TEMP = 1000;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,8 +67,7 @@ public class DetailBapActivity extends BaseActivity {
         switch (item.getItemId()){
             case R.id.edit_bap:
                 saveData();
-//                Intent intent = new Intent(DetailBapActivity.this,EditBapActivity.class);
-//                startActivity(intent);
+                loadingDialog.startLoadingDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -81,11 +86,8 @@ public class DetailBapActivity extends BaseActivity {
         mBapPertemuan = findViewById(R.id.bapPertemuan);
         mbaPJumlahMhs = findViewById(R.id.bapHadir);
         mBapKelas = findViewById(R.id.bapKelas);
-//        mHadir = findViewById(R.id.bapMhsHadir);
-//        mIzin = findViewById(R.id.bapMhsIzin);
-//        mAlfa = findViewById(R.id.bapMhsAlfa);
-//        mSakit = findViewById(R.id.bapMhsSakit);
         mBapCatatan = findViewById(R.id.bapCatatan);
+        progressBar = findViewById(R.id.progressBarLoadBap);
 
         Intent intent = getIntent();
         String matakuliah = intent.getStringExtra("MATAKULIAH");
@@ -95,10 +97,6 @@ public class DetailBapActivity extends BaseActivity {
         String materi = intent.getStringExtra("MATERI");
         int pertemuan = intent.getIntExtra("PERTEMUAN",0);
         int jumlahmhs = intent.getIntExtra("JUMLAHMHS",0);
-        int hadir = intent.getIntExtra("HADIR",0);
-        int sakit = intent.getIntExtra("SAKIT",0);
-        int izin = intent.getIntExtra("IZIN",0);
-        int alfa = intent.getIntExtra("ALFA",0);
         String kelas = intent.getStringExtra("KELAS");
         String catatan = intent.getStringExtra("CATATAN");
         String id_bap = intent.getStringExtra("ID_BAP");
@@ -122,9 +120,12 @@ public class DetailBapActivity extends BaseActivity {
 
     private void showRecycle(String id) {
         ArrayList<DetailBap> arrayList = new ArrayList<>();
-        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap")
+                .document(id).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                progressBar.setVisibility(View.GONE);
                 Log.d("HHHH", String.valueOf(documentSnapshot.get("mahasiswa")));
 
                 String objek = documentSnapshot.get("mahasiswa").toString();
