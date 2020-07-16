@@ -68,30 +68,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:text="Hadir" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Alfa" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Sakit" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Izin" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:text="Materi" />
 
                 <TextView
@@ -151,31 +127,6 @@
                     android:text="data" />
 
                 <TextView
-                    android:id="@+id/bapMhsHadir"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="data" />
-
-                <TextView
-                    android:id="@+id/bapMhsAlfa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="data" />
-
-                <TextView
-                    android:id="@+id/bapMhsSakit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="data" />
-
-                <TextView
-                    android:id="@+id/bapMhsIzin"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="data" />
-
-
-                <TextView
                     android:id="@+id/bapMateri"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -196,6 +147,60 @@
             </LinearLayout>
 
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orangesecondary"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="15dp"
+                    android:textColor="@color/white"
+                    android:text="No" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tvNamaMahasiswa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:text="Nama" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/white"
+                    android:text="Status Kehadiran" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

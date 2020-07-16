@@ -61,7 +61,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
     private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa, tvSesiPertemuan , emptyView;
     private EditText mEtMateri, mEtCatatan;
-    private LinearLayout linearBap , linearBapForm;
+    private LinearLayout linearBap , linearBapForm ,linearContainer;
     private ConstraintLayout constraintBap;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
@@ -101,6 +101,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         switchSesi = findViewById(R.id.ButtonSwitch);
         linearBap = findViewById(R.id.linearBap);
         linearBapForm = findViewById(R.id.linearBapForm);
+        linearContainer = findViewById(R.id.linearContainer);
         emptyView = findViewById(R.id.emptyBap);
         emptyView.setVisibility(GONE);
 
@@ -338,6 +339,7 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                                     mEtCatatan.setVisibility(GONE);
                                     mEtMateri.setVisibility(GONE);
                                     linearBapForm.setVisibility(GONE);
+                                    linearContainer.setVisibility(GONE);
                                     linearBap.setVisibility(GONE);
                                     emptyView.setVisibility(View.VISIBLE);
                                 } else {

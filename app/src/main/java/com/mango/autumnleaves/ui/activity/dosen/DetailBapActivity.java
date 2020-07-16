@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,6 +47,8 @@ public class DetailBapActivity extends BaseActivity {
     private RecyclerView mRecycleView;
     private DetailBapAdapter mAdapter;
 
+    private static int INTENT_TEMP = 2000;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -57,8 +60,9 @@ public class DetailBapActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.edit_bap:
-                Intent intent = new Intent(DetailBapActivity.this,EditBapActivity.class);
-                startActivity(intent);
+                saveData();
+//                Intent intent = new Intent(DetailBapActivity.this,EditBapActivity.class);
+//                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -77,10 +81,10 @@ public class DetailBapActivity extends BaseActivity {
         mBapPertemuan = findViewById(R.id.bapPertemuan);
         mbaPJumlahMhs = findViewById(R.id.bapHadir);
         mBapKelas = findViewById(R.id.bapKelas);
-        mHadir = findViewById(R.id.bapMhsHadir);
-        mIzin = findViewById(R.id.bapMhsIzin);
-        mAlfa = findViewById(R.id.bapMhsAlfa);
-        mSakit = findViewById(R.id.bapMhsSakit);
+//        mHadir = findViewById(R.id.bapMhsHadir);
+//        mIzin = findViewById(R.id.bapMhsIzin);
+//        mAlfa = findViewById(R.id.bapMhsAlfa);
+//        mSakit = findViewById(R.id.bapMhsSakit);
         mBapCatatan = findViewById(R.id.bapCatatan);
 
         Intent intent = getIntent();
@@ -107,10 +111,10 @@ public class DetailBapActivity extends BaseActivity {
         mBapPertemuan.setText(": " + pertemuan);
         mbaPJumlahMhs.setText(": " + jumlahmhs);
         mBapKelas.setText(": " + kelas);
-        mHadir.setText(": " + hadir);
-        mSakit.setText(": " + sakit);
-        mAlfa.setText(": " + alfa);
-        mIzin.setText(": " + izin);
+//        mHadir.setText(": " + hadir);
+//        mSakit.setText(": " + sakit);
+//        mAlfa.setText(": " + alfa);
+//        mIzin.setText(": " + izin);
         mBapCatatan.setText(": " + catatan);
 
         showRecycle(id_bap);
@@ -159,6 +163,7 @@ public class DetailBapActivity extends BaseActivity {
 
                     DetailBap model = new DetailBap();
 
+                    model.setIdMahasiswa(realKey);
                     model.setName(nama);
                     model.setStatus(Integer.parseInt(status));
                     arrayList.add(model);
@@ -166,7 +171,7 @@ public class DetailBapActivity extends BaseActivity {
 //                    Log.d("HAHAH", pisahKeyValue[0]);
                 }
 //                Log.d("HAHAH", split[0]);
-                setupRecycleView(arrayList);
+                setupRecycleView(arrayList, id);
             }
         });
 //        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -202,22 +207,20 @@ public class DetailBapActivity extends BaseActivity {
 //        mRecycleView.setAdapter(mAdapter);
     }
 
-    private void setupRecycleView(ArrayList<DetailBap> arraylist) {
-        DetailBapAdapter detailBapAdapter = new DetailBapAdapter(this, arraylist);
+    private void setupRecycleView(ArrayList<DetailBap> arraylist, String idBap) {
+        mAdapter = new DetailBapAdapter(this, arraylist, getFirebaseUserId(), idBap);
         mRecycleView = findViewById(R.id.recycleViewDetailBap);
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        mRecycleView.setAdapter(detailBapAdapter);
+        mRecycleView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        mAdapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        mAdapter.stopListening();
+    private void saveData() {
+        mAdapter.updateData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onBackPressed();
+            }
+        }, INTENT_TEMP);
     }
 }

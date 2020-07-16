@@ -88,7 +88,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
+        android:id="@+id/linearBapForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#DAE8FC"
@@ -99,7 +99,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linearBap">
 
         <LinearLayout
-            android:id="@+id/linearBapForm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
@@ -137,6 +136,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/abu"
@@ -144,7 +144,7 @@
         android:weightSum="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+        app:layout_constraintTop_toBottomOf="@+id/linearBapForm">
 
         <LinearLayout
             android:layout_width="match_parent"
