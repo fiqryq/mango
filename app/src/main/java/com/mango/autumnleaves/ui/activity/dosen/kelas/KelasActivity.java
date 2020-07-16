@@ -2,6 +2,7 @@ package com.mango.autumnleaves.ui.activity.dosen.kelas;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,8 +59,10 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
-    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa, tvSesiPertemuan;
+    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa, tvSesiPertemuan , emptyView;
     private EditText mEtMateri, mEtCatatan;
+    private LinearLayout linearBap , linearBapForm;
+    private ConstraintLayout constraintBap;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
@@ -95,6 +99,10 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         mEtCatatan = findViewById(R.id.etCatatanSesiKelas);
         btnSubmit = findViewById(R.id.btnSubmit);
         switchSesi = findViewById(R.id.ButtonSwitch);
+        linearBap = findViewById(R.id.linearBap);
+        linearBapForm = findViewById(R.id.linearBapForm);
+        emptyView = findViewById(R.id.emptyBap);
+        emptyView.setVisibility(GONE);
 
         Intent intent = getIntent();
         datMatakuliah = intent.getStringExtra("MATAKULIAH");
@@ -281,22 +289,70 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
     private void checkButton(Switch sesiSwitch, Button button, TextView textView) {
         Timestamp stamp = new Timestamp(new Date());
-        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").orderBy("created", Query.Direction.DESCENDING).limit(1).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        Date currentDate = stamp.toDate();
+
+        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").orderBy("created", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                HashMap<String, Long> stampDatabase = new HashMap<>();
+
                 for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                     Log.d("SNAPSHOT", doc.getId());
                     int status = Integer.parseInt(doc.get("status").toString());
-                    if (status == 1) {
-                        sesiSwitch.setVisibility(GONE);
-                        button.setVisibility(GONE);
-                        textView.setVisibility(GONE);
-                    } else {
-                        sesiSwitch.setVisibility(View.VISIBLE);
-                        button.setVisibility(View.VISIBLE);
-                        textView.setVisibility(View.VISIBLE);
+
+                    Log.d("CHECK_WAKTU", String.valueOf(status));
+
+                    stampDatabase.put(doc.getId(), doc.getTimestamp("created").getSeconds());
+
+                    Log.d("CHECK_WAKTU", String.valueOf(doc.getTimestamp("created").toDate()));
+                    Log.d("COMPARE_WAKTU", String.valueOf(currentDate.compareTo(doc.getTimestamp("created").toDate())));
+                }
+
+                Map.Entry<String, Long> minCompare = null;
+
+                for (Map.Entry<String, Long> entry : stampDatabase.entrySet()) {
+                    if (minCompare == null || minCompare.getValue() < entry.getValue()) {
+                        minCompare = entry;
                     }
                 }
+
+                Log.d("CHECK_STAMP", String.valueOf(minCompare));
+                Log.d("CHECK_STAMP", String.valueOf(System.currentTimeMillis() / 1000));
+
+                try {
+                    long hitung = (System.currentTimeMillis() / 1000) - minCompare.getValue();
+                    Log.d("CHECK_STAMP", String.valueOf(hitung / 3600));
+
+                    long hitungJam = hitung / 3600;
+
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        if (doc.getId() == minCompare.getKey()) {
+
+                            int status = Integer.parseInt(doc.get("status").toString());
+
+                            if (hitungJam >= 3) {
+                                if (status == 1) {
+                                    sesiSwitch.setVisibility(GONE);
+                                    button.setVisibility(GONE);
+                                    textView.setVisibility(GONE);
+                                    mEtCatatan.setVisibility(GONE);
+                                    mEtMateri.setVisibility(GONE);
+                                    linearBapForm.setVisibility(GONE);
+                                    linearBap.setVisibility(GONE);
+                                    emptyView.setVisibility(View.VISIBLE);
+                                } else {
+                                    sesiSwitch.setVisibility(View.VISIBLE);
+                                    button.setVisibility(View.VISIBLE);
+                                    textView.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    }
+
+                } catch (NullPointerException e1) {
+
+                }
+
             }
         });
     }

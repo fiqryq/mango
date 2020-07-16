@@ -109,6 +109,7 @@ public class HostoryBapDosenFragment extends BaseFragment {
                     Bap.setSakit(queryDocumentSnapshot.getLong("sakit").intValue());
                     Bap.setIzin(queryDocumentSnapshot.getLong("izin").intValue());
                     Bap.setCatatan(queryDocumentSnapshot.getString("catatan"));
+                    Bap.setId(queryDocumentSnapshot.getId());
                     arrayList.add(Bap);
                 }
                 setuprecyclerview(arrayList);

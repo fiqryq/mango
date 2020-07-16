@@ -2,6 +2,7 @@ package com.mango.autumnleaves.adapter.adapterdosen;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
         int sakit = mData.get(position).getSakit();
         String kelas = mData.get(position).getKelas();
         String catatan = mData.get(position).getCatatan();
+        String id = mData.get(position).getId();
 
         holder.BapLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +77,7 @@ public class BapAdapter extends RecyclerView.Adapter<BapAdapter.ViewHolder> {
                 intent.putExtra("SAKIT",sakit);
                 intent.putExtra("IZIN",izin);
                 intent.putExtra("CATATAN",catatan);
+                intent.putExtra("ID_BAP", id);
                 mContext.startActivity(intent);
             }
         });

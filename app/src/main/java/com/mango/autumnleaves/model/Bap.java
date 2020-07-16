@@ -1,6 +1,16 @@
 package com.mango.autumnleaves.model;
 
 public class Bap {
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String matakuliah;
     private String jam;
     private String waktu;
