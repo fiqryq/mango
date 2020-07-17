@@ -1,6 +1,7 @@
 package com.mango.autumnleaves.adapter.adapterdosen;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
     private String mIdBap;
     private String mIdMatkul ="";
     private String mKelasMatkul ="";
+    private static int Post = 3000;
 
     public DetailBapAdapter(Context mContext, List<DetailBap> mData, String mIdDosen, String mIdBap) {
         this.mContext = mContext;
@@ -147,6 +149,14 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             @Override
             public void onClick(View v) {
                 idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 3));
+                dataBap.put("mahasiswa", idMahasiswa);
+
+                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -154,6 +164,14 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             @Override
             public void onClick(View v) {
                 idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 0));
+                dataBap.put("mahasiswa", idMahasiswa);
+
+                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -161,6 +179,14 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             @Override
             public void onClick(View v) {
                 idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 2));
+                dataBap.put("mahasiswa", idMahasiswa);
+
+                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -168,10 +194,20 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             @Override
             public void onClick(View v) {
                 idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 1));
+                dataBap.put("mahasiswa", idMahasiswa);
+
+                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
-        dataBap.put("mahasiswa", idMahasiswa);
+
+
+
     }
 
     @Override
@@ -180,15 +216,10 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
     }
 
     public void updateData() {
-        reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
         final TextView tvNo;
         final TextView tvNamaMahasiswa;
         final RadioGroup radioKehadiran;
@@ -204,16 +235,6 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             radioSakit = itemView.findViewById(R.id.radio_sakit_bap);
             radioIzin = itemView.findViewById(R.id.radio_izin_bap);
             radioAlfa = itemView.findViewById(R.id.radio_alfa_bap);
-        }
-
-        @Override
-        public void onClick(View v) {
-
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            return false;
         }
     }
 }

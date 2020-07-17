@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+import com.mango.autumnleaves.ui.activity.dosen.DetailBapActivity;
 import com.mango.autumnleaves.ui.activity.dosen.MainDosenActivity;
 import com.mango.autumnleaves.ui.activity.mahasiswa.DashboardMahasiswaActivity;
 import com.mango.autumnleaves.model.dosen.UserDosen;
@@ -32,22 +33,25 @@ import com.mango.autumnleaves.model.mahasiswa.UserMahasiswa;
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.callback.LoginViewCallback;
 import com.mango.autumnleaves.util.Constant;
+import com.mango.autumnleaves.util.CustomLoadingDialog;
 
 public class LoginActivity extends BaseActivity implements LoginViewCallback {
     private EditText username, password;
     private ProgressDialog progressDialog;
     private View progres;
+    final CustomLoadingDialog loadingDialog = new CustomLoadingDialog(LoginActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         username = findViewById(R.id.etusername);
         password = findViewById(R.id.etpassword);
-        progres = findViewById(R.id.progressBarLogin);
 
         Button btLogin = findViewById(R.id.button_login);
+
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +168,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
     @Override
     public void onBackPressed() {
-        progressDialog.dismiss();
+        loadingDialog.dismissDialog();
     }
 
     @Override
@@ -175,16 +179,16 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     @Override
     public void onFailedAuthFirebase() {
         showErrorToast("Login Gagal");
-        progres.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onShowProgress() {
-        progres.setVisibility(View.VISIBLE);
+        loadingDialog.startLoadingDialog();
     }
 
     @Override
     public void onHideProgress() {
-        progres.setVisibility(View.GONE);
+//        loadingDialog.dismissDialog();
     }
 }
