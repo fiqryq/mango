@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -21,9 +22,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,11 +48,17 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
 
     private String idDosen;
     private String idBap;
+    private String nipDosen;
+    public String idMatkul = "";
+    public String KelasMatkul = "";
+    public int Pertemuan = 0;
+    public DocumentReference statRef;
 
-    public DetailBapAdapter(@NonNull FirestoreRecyclerOptions<DetailBap> options, String idDosen, String idBap) {
+    public DetailBapAdapter(@NonNull FirestoreRecyclerOptions<DetailBap> options, String idDosen, String idBap, String nipDosen) {
         super(options);
         this.idDosen = idDosen;
         this.idBap = idBap;
+        this.nipDosen = nipDosen;
     }
 
     @Override
@@ -57,12 +67,38 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         String nama = model.getName();
         String idDokumen = getSnapshots().getSnapshot(position).getId();
 
+
         DocumentReference reference = FirebaseFirestore.getInstance()
                 .collection("dosen").document(idDosen)
                 .collection("bap").document(idBap)
                 .collection("mahasiswa").document(idDokumen);
 
+        FirebaseFirestore.getInstance()
+                .collection("jadwalDosen")
+                .document(nipDosen)
+                .collection("jadwal")
+                .whereEqualTo("hari", getNameDay())
+                .whereLessThan("waktu_mulai", getHour())
+                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
+                .limit(1)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setId(document.getString("id"));
+                        jadwal.setKelas(document.getString("kelas"));
+
+                        idMatkul = jadwal.getId();
+                        KelasMatkul = jadwal.getKelas();
+                    }
+                }
+            }
+        });
+
         HashMap<String, Object> update = new HashMap<>();
+        HashMap<String, Object> updateStat = new HashMap<>();
 
 
         if (status == 1) {
@@ -83,32 +119,60 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         holder.radioAlfa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                statRef = (DocumentReference) FirebaseFirestore.getInstance()
+                        .collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").document(idMatkul);
+
                 update.put("status", 0);
                 reference.update(update);
+                updateStat.put("pertemuan", 1);
+                statRef.update(updateStat);
             }
         });
 
         holder.radioIzin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DocumentReference statRef = (DocumentReference) FirebaseFirestore.getInstance()
+                        .collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").document(idMatkul);
+
                 update.put("status", 2);
                 reference.update(update);
+                updateStat.put("pertemuan", 1);
+                statRef.update(updateStat);
             }
         });
 
         holder.radioHadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DocumentReference statRef = (DocumentReference) FirebaseFirestore.getInstance()
+                        .collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").document(idMatkul);
+
                 update.put("status", 1);
                 reference.update(update);
+                updateStat.put("pertemuan", 1);
+                statRef.update(updateStat);
             }
         });
 
         holder.radioSakit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DocumentReference statRef = (DocumentReference) FirebaseFirestore.getInstance()
+                        .collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").document(idMatkul);
+
                 update.put("status", 3);
                 reference.update(update);
+                updateStat.put("pertemuan", 1);
+                statRef.update(updateStat);
             }
         });
 
@@ -116,6 +180,7 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         holder.tvNo.setText(String.valueOf(ai));
         holder.tvNamaMahasiswa.setText(nama);
     }
+
 
     @NonNull
     @Override
@@ -144,14 +209,3 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         }
     }
 }
-
-
-//                Map<String,Object> updateStat = new HashMap<>();
-//                updateStat.put("pertemuan",-1);
-//
-//                FirebaseFirestore.getInstance().collection("statistik").document("kelas")
-//                        .collection(mKelasMatkul)
-//                        .document(mData.get(position)
-//                                .getIdMahasiswa())
-//                        .collection("jadwal")
-//                        .document(mIdMatkul).update(updateStat);

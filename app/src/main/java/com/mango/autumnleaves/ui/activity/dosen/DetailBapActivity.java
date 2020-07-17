@@ -80,6 +80,7 @@ public class DetailBapActivity extends BaseActivity {
             @Override
             public void run() {
                 onBackPressed();
+                showToast("berhasil Update");
             }
         }, INTENT_TEMP);
     }
@@ -120,13 +121,8 @@ public class DetailBapActivity extends BaseActivity {
         mBapPertemuan.setText(": " + pertemuan);
         mbaPJumlahMhs.setText(": " + jumlahmhs);
         mBapKelas.setText(": " + kelas);
-//        mHadir.setText(": " + hadir);
-//        mSakit.setText(": " + sakit);
-//        mAlfa.setText(": " + alfa);
-//        mIzin.setText(": " + izin);
         mBapCatatan.setText(": " + catatan);
 
-//        showRecycle(id_bap);
         mShowData(id_bap);
     }
 
@@ -138,7 +134,7 @@ public class DetailBapActivity extends BaseActivity {
         Query query = reference.orderBy("name", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<DetailBap> options = new FirestoreRecyclerOptions.Builder<DetailBap>().setQuery(query, DetailBap.class).build();
-        mAdapter = new DetailBapAdapter(options, getFirebaseUserId(), id_bap);
+        mAdapter = new DetailBapAdapter(options, getFirebaseUserId(), id_bap,getNipDosen());
         progressBar.setVisibility(View.GONE);
 
         mRecycleView = findViewById(R.id.recycleViewDetailBap);
@@ -255,6 +251,5 @@ public class DetailBapActivity extends BaseActivity {
 //        mRecycleView.setLayoutManager(new LinearLayoutManager(this));
 //        mRecycleView.setAdapter(mAdapter);
 //    }
-
 
 }

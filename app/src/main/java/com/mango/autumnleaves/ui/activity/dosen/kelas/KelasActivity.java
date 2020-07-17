@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -60,10 +61,9 @@ import static com.mango.autumnleaves.util.FunctionHelper.Func.getTimeNow;
 
 public class KelasActivity extends BaseActivity implements View.OnClickListener, OnShowListener, OnCancelListener, OnDismissListener {
 
-    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa, tvSesiPertemuan , emptyView;
+    private TextView tvMatakuliah, tvDosen, tvKelas, mViewLogMahasiswa, tvSesiPertemuan, emptyView;
     private EditText mEtMateri, mEtCatatan;
-    private LinearLayout linearBap , linearBapForm ,linearContainer;
-    private ConstraintLayout constraintBap;
+    private LinearLayout linearBap, linearBapForm, linearContainer;
     private Button btnSubmit;
     private MaterialDialog bapdialog;
     private Switch switchSesi;
@@ -79,10 +79,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
     public int datPetemuan = 0;
     public String datDocId = "";
     public long jumlahMahasiswa = 0;
-    public long radioAlfa;
-    public long radioHadir;
-    public long radioIzin;
-    public long radioSakit;
 
     private static int INTENT_TEMP = 3000;
 
@@ -226,9 +222,10 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                     pushBAP();
                     updatePertemuan();
                     back();
-                    UpdateStatus();
+//                    UpdateStatus();
                     switchSesi.setChecked(false);
                     dialogInterface.dismiss();
+                    loadingDialog.startLoadingDialog();
                 })
                 .setNegativeButton("Cancel", (dialogInterface, which) -> {
                     Toast.makeText(getApplicationContext(), "Dibatalkan", Toast.LENGTH_SHORT).show();
@@ -310,26 +307,6 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
 
             }
         });
-    }
-
-    private void UpdateStatus() {
-        // Reset
-        DatabaseReference updateStatus = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference statusReff = updateStatus.child("data").child(datKelas);
-        ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    ds.child("status").getRef().setValue(0);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        statusReff.addListenerForSingleValueEvent(eventListener);
     }
 
 
@@ -484,57 +461,130 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
         HashMap<String, Object> mahasiswaBap = new HashMap<>();
         Map<String, Object> idMahasiswa = new HashMap<>();
 
-        ArrayList<Object> nama_array = new ArrayList<>();
-        ArrayList<Object> status_array = new ArrayList<>();
+        dataBap.put("matakuliah", mataKuliahNow);
+        dataBap.put("jam", getHour());
+        dataBap.put("waktu", getTimeNow());
+        dataBap.put("ruangan", RuanganNow);
+        dataBap.put("materi", mEtMateri.getText().toString());
+        dataBap.put("catatan", mEtCatatan.getText().toString());
+        dataBap.put("pertemuan", datPetemuan);
+        dataBap.put("jumlahMhs", jumlahMahasiswa);
+        dataBap.put("created", new Timestamp(new Date()));
+        dataBap.put("kelas", Kelas);
+        dataBap.put("status", 1);
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("data").child(Kelas);
-        reference.addValueEventListener(new ValueEventListener() {
+        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onSuccess(DocumentReference documentReference) {
 
-                dataBap.put("matakuliah", mataKuliahNow);
-                dataBap.put("jam", getHour());
-                dataBap.put("waktu", getTimeNow());
-                dataBap.put("ruangan", RuanganNow);
-                dataBap.put("materi", mEtMateri.getText().toString());
-                dataBap.put("catatan", mEtCatatan.getText().toString());
-                dataBap.put("pertemuan", datPetemuan);
-                dataBap.put("jumlahMhs", jumlahMahasiswa);
-                dataBap.put("created", new Timestamp(new Date()));
-                dataBap.put("kelas", Kelas);
-                dataBap.put("status", 1);
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("data").child(Kelas);
 
-                firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+
                         for (DataSnapshot data : snapshot.getChildren()) {
                             String key = data.getKey();
                             String name = data.child("nama").getValue().toString();
                             int status = Integer.parseInt(data.child("status").getValue().toString());
 
-                            HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("id_mahasiswa", key);
                             hashMap.put("name", name);
-                            hashMap.put("status", 0);
+                            hashMap.put("status", status);
 
                             firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(documentReference.getId()).collection("mahasiswa").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
-                                    showSuccessToast("Berhasil bapp");
+//                                    showSuccessToast("Berhasil bapp");
                                 }
                             });
                         }
                     }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
                 });
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+//                        (new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        HashMap<String, Object> hashMap = new HashMap<>();
+//
+//                        for (DataSnapshot data : snapshot.getChildren()) {
+//                            String key = data.getKey();
+//                            String name = data.child("nama").getValue().toString();
+//                            int status = Integer.parseInt(data.child("status").getValue().toString());
+//
+//                            hashMap.put("id_mahasiswa", key);
+//                            hashMap.put("name", name);
+//                            hashMap.put("status", 0);
+//
+//                            firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(documentReference.getId()).collection("mahasiswa").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                @Override
+//                                public void onSuccess(DocumentReference documentReference) {
+//                                    showSuccessToast("Berhasil bapp");
+//                                }
+//                            });
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
             }
         });
+
+
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                dataBap.put("matakuliah", mataKuliahNow);
+//                dataBap.put("jam", getHour());
+//                dataBap.put("waktu", getTimeNow());
+//                dataBap.put("ruangan", RuanganNow);
+//                dataBap.put("materi", mEtMateri.getText().toString());
+//                dataBap.put("catatan", mEtCatatan.getText().toString());
+//                dataBap.put("pertemuan", datPetemuan);
+//                dataBap.put("jumlahMhs", jumlahMahasiswa);
+//                dataBap.put("created", new Timestamp(new Date()));
+//                dataBap.put("kelas", Kelas);
+//                dataBap.put("status", 1);
+//
+//                firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        for (DataSnapshot data : snapshot.getChildren()) {
+//                            String key = data.getKey();
+//                            String name = data.child("nama").getValue().toString();
+//                            int status = Integer.parseInt(data.child("status").getValue().toString());
+//
+//                            HashMap<String, Object> hashMap = new HashMap<>();
+//                            hashMap.put("id_mahasiswa", key);
+//                            hashMap.put("name", name);
+//                            hashMap.put("status", 0);
+//
+//                            firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(documentReference.getId()).collection("mahasiswa").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                @Override
+//                                public void onSuccess(DocumentReference documentReference) {
+//
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
+//
+//                showSuccessToast("Berhasil bapp");
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
     private void PushDataBAP() {
@@ -621,8 +671,30 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void run() {
                 onBackPressed();
+                showToast("Berhasil Submit Bap");
+                UpdateStatus();
             }
         }, INTENT_TEMP);
+    }
+
+    private void UpdateStatus() {
+        // Reset
+        DatabaseReference updateStatus = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference statusReff = updateStatus.child("data").child(datKelas);
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    ds.child("status").getRef().setValue(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        statusReff.addListenerForSingleValueEvent(eventListener);
     }
 
     private void updatePertemuan() {
