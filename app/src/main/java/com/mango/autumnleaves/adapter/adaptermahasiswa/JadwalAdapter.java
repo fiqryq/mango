@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.model.Presensi;
 import com.mango.autumnleaves.ui.activity.mahasiswa.DashboardMahasiswaActivity;

@@ -4,12 +4,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DetailBap {
-    private String idMahasiswa;
+    private String id_mahasiswa;
     private String name;
     private int status;
 
-    public DetailBap(String idMahasiswa, String name, int status) {
-        this.idMahasiswa = idMahasiswa;
+    public DetailBap(String id_mahasiswa, String name, int status) {
+        this.id_mahasiswa = id_mahasiswa;
         this.name = name;
         this.status = status;
     }
@@ -17,12 +17,12 @@ public class DetailBap {
     public DetailBap() {
     }
 
-    public String getIdMahasiswa() {
-        return idMahasiswa;
+    public String getId_mahasiswa() {
+        return id_mahasiswa;
     }
 
-    public void setIdMahasiswa(String idMahasiswa) {
-        this.idMahasiswa = idMahasiswa;
+    public void setId_mahasiswa(String id_mahasiswa) {
+        this.id_mahasiswa = id_mahasiswa;
     }
 
     public String getName() {

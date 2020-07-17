@@ -41,6 +41,7 @@ import com.mango.autumnleaves.util.CustomLoadingDialog;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +72,16 @@ public class DetailBapActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveData() {
+//        mAdapter.updateData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onBackPressed();
+            }
+        }, INTENT_TEMP);
     }
 
     @Override
@@ -115,66 +126,96 @@ public class DetailBapActivity extends BaseActivity {
 //        mIzin.setText(": " + izin);
         mBapCatatan.setText(": " + catatan);
 
-        showRecycle(id_bap);
+//        showRecycle(id_bap);
+        mShowData(id_bap);
     }
 
-    private void showRecycle(String id) {
-        ArrayList<DetailBap> arrayList = new ArrayList<>();
-        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap")
-                .document(id).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                progressBar.setVisibility(View.GONE);
-                Log.d("HHHH", String.valueOf(documentSnapshot.get("mahasiswa")));
+    private void mShowData(String id_bap) {
+        CollectionReference reference = FirebaseFirestore.getInstance()
+                .collection("dosen").document(getFirebaseUserId())
+                .collection("bap").document(id_bap).collection("mahasiswa");
 
-                String objek = documentSnapshot.get("mahasiswa").toString();
-                String rep = objek.replace("{", "");
-                String rep2 = rep.replace("}", "");
-                String rep3 = rep2.replace(",", "',");
+        Query query = reference.orderBy("name", Query.Direction.ASCENDING);
 
-                String[] userId = rep3.split("\\]',");
+        FirestoreRecyclerOptions<DetailBap> options = new FirestoreRecyclerOptions.Builder<DetailBap>().setQuery(query, DetailBap.class).build();
+        mAdapter = new DetailBapAdapter(options, getFirebaseUserId(), id_bap);
+        progressBar.setVisibility(View.GONE);
 
-                for (int i = 0; i < userId.length; i++) {
-                    String[] pisahKeyValue = userId[i].split("=\\[");
+        mRecycleView = findViewById(R.id.recycleViewDetailBap);
+        mRecycleView.setHasFixedSize(true);
+        mRecycleView.setLayoutManager(new LinearLayoutManager(this));
+        mRecycleView.setAdapter(mAdapter);
+    }
 
-                    String realKey = null;
-                    String contentTmp = null;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
 
-                    for (int j = 0; j < pisahKeyValue.length ; j++) {
-                        realKey = pisahKeyValue[0].replace(" ", "");
-                        contentTmp = pisahKeyValue[1];
-                    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
+
+//    private void showRecycle(String id) {
+//        ArrayList<DetailBap> arrayList = new ArrayList<>();
+//        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap")
+//                .document(id).get()
+//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                progressBar.setVisibility(View.GONE);
+//                Log.d("HHHH", String.valueOf(documentSnapshot.get("mahasiswa")));
+//
+//                String objek = documentSnapshot.get("mahasiswa").toString();
+//                String rep = objek.replace("{", "");
+//                String rep2 = rep.replace("}", "");
+//                String rep3 = rep2.replace(",", "',");
+//
+//                String[] userId = rep3.split("\\]',");
+//
+//                for (int i = 0; i < userId.length; i++) {
+//                    String[] pisahKeyValue = userId[i].split("=\\[");
+//
+//                    String realKey = null;
+//                    String contentTmp = null;
+//
+//                    for (int j = 0; j < pisahKeyValue.length ; j++) {
+//                        realKey = pisahKeyValue[0].replace(" ", "");
+//                        contentTmp = pisahKeyValue[1];
+//                    }
+////                    Log.d("HAHAH", realKey);
+////                    Log.d("HAHAH", contentTmp);
+//
+//                    String nama = null;
+//                    String status = null;
+//
+//                    String[] splitContent = contentTmp.split("', ");
+//
+//                    for (int j = 0; j < splitContent.length; j++) {
+//                        nama = splitContent[0];
+//                        status = splitContent[1].replace("]", "");
+//                    }
+//
 //                    Log.d("HAHAH", realKey);
-//                    Log.d("HAHAH", contentTmp);
-
-                    String nama = null;
-                    String status = null;
-
-                    String[] splitContent = contentTmp.split("', ");
-
-                    for (int j = 0; j < splitContent.length; j++) {
-                        nama = splitContent[0];
-                        status = splitContent[1].replace("]", "");
-                    }
-
-                    Log.d("HAHAH", realKey);
-                    Log.d("HAHAH", nama);
-                    Log.d("HAHAH", status);
-
-                    DetailBap model = new DetailBap();
-
-                    model.setIdMahasiswa(realKey);
-                    model.setName(nama);
-                    model.setStatus(Integer.parseInt(status));
-                    arrayList.add(model);
-
-//                    Log.d("HAHAH", pisahKeyValue[0]);
-                }
-//                Log.d("HAHAH", split[0]);
-                setupRecycleView(arrayList, id);
-            }
-        });
+//                    Log.d("HAHAH", nama);
+//                    Log.d("HAHAH", status);
+//
+//                    DetailBap model = new DetailBap();
+//
+//                    model.setIdMahasiswa(realKey);
+//                    model.setName(nama);
+//                    model.setStatus(Integer.parseInt(status));
+//                    arrayList.add(model);
+//
+////                    Log.d("HAHAH", pisahKeyValue[0]);
+//                }
+////                Log.d("HAHAH", split[0]);
+//                setupRecycleView(arrayList, id);
+//            }
+//        });
 //        firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 //            @Override
 //            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -206,22 +247,14 @@ public class DetailBapActivity extends BaseActivity {
 //        mRecycleView.setHasFixedSize(true);
 //        mRecycleView.setLayoutManager(layoutManager);
 //        mRecycleView.setAdapter(mAdapter);
-    }
+//    }
+//
+//    private void setupRecycleView(ArrayList<DetailBap> arraylist, String idBap) {
+//        mAdapter = new DetailBapAdapter(this, arraylist, getFirebaseUserId(), idBap);
+//        mRecycleView = findViewById(R.id.recycleViewDetailBap);
+//        mRecycleView.setLayoutManager(new LinearLayoutManager(this));
+//        mRecycleView.setAdapter(mAdapter);
+//    }
 
-    private void setupRecycleView(ArrayList<DetailBap> arraylist, String idBap) {
-        mAdapter = new DetailBapAdapter(this, arraylist, getFirebaseUserId(), idBap);
-        mRecycleView = findViewById(R.id.recycleViewDetailBap);
-        mRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        mRecycleView.setAdapter(mAdapter);
-    }
 
-    private void saveData() {
-        mAdapter.updateData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onBackPressed();
-            }
-        }, INTENT_TEMP);
-    }
 }

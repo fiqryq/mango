@@ -40,93 +40,30 @@ import java.util.Map;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
 import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 
-public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.ViewHolder> {
+public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, DetailBapAdapter.ViewHolder> {
 
-    private Context mContext;
-    private List<DetailBap> mData;
-    private String mIdDosen;
-    private String mIdBap;
-    private String mIdMatkul ="";
-    private String mKelasMatkul ="";
-    private static int Post = 3000;
+    private String idDosen;
+    private String idBap;
 
-    public DetailBapAdapter(Context mContext, List<DetailBap> mData, String mIdDosen, String mIdBap) {
-        this.mContext = mContext;
-        this.mData = mData;
-        this.mIdDosen = mIdDosen;
-        this.mIdBap = mIdBap;
-    }
-
-    public DetailBapAdapter() {
-
-    }
-
-    DocumentReference reference;
-    Map<String, Object> dataBap;
-    Map<String, Object> idMahasiswa;
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        view = inflater.inflate(R.layout.list_mahasiswa_bap, parent, false);
-        return new ViewHolder(view);
+    public DetailBapAdapter(@NonNull FirestoreRecyclerOptions<DetailBap> options, String idDosen, String idBap) {
+        super(options);
+        this.idDosen = idDosen;
+        this.idBap = idBap;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d("CHECK_PARAMETER", mData.get(position).getIdMahasiswa());
-        int ai = position + 1;
-        holder.tvNo.setText(String.valueOf(ai));
-        holder.tvNamaMahasiswa.setText(mData.get(position).getName());
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull DetailBap model) {
+        int status = model.getStatus();
+        String nama = model.getName();
+        String idDokumen = getSnapshots().getSnapshot(position).getId();
 
-        DocumentReference documentReference = FirebaseFirestore.getInstance()
-                .collection("user").document(mIdDosen);
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
+        DocumentReference reference = FirebaseFirestore.getInstance()
+                .collection("dosen").document(idDosen)
+                .collection("bap").document(idBap)
+                .collection("mahasiswa").document(idDokumen);
 
-                        UserDosen userDosen = new UserDosen();
-                        userDosen.setNip(document.getString("nip"));
-                        // Doc Ref Dari user
-                        String nipRef = userDosen.getNip();
+        HashMap<String, Object> update = new HashMap<>();
 
-                        FirebaseFirestore.getInstance()
-                                .collection("jadwalDosen")
-                                .document(nipRef)
-                                .collection("jadwal")
-                                .whereEqualTo("hari", getNameDay())
-                                .whereLessThan("waktu_mulai", getHour())
-                                .orderBy("waktu_mulai", Query.Direction.DESCENDING)
-                                .limit(1)
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Jadwal jadwal = new Jadwal();
-                                        jadwal.setId(document.getString("id"));
-                                        jadwal.setKelas(document.getString("kelas"));
-                                        mIdMatkul = jadwal.getId();
-                                    }
-                                }
-                            }
-                        });
-                    }
-                }
-            }
-        });
-
-
-        reference = FirebaseFirestore.getInstance().collection("dosen").document(mIdDosen).collection("bap").document(mIdBap);
-        dataBap = new HashMap<>();
-        idMahasiswa = new HashMap<>();
-
-        int status = mData.get(position).getStatus();
 
         if (status == 1) {
             //hadir
@@ -134,6 +71,7 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
         } else if (status == 2) {
             //izin
             holder.radioIzin.setChecked(true);
+
         } else if (status == 3) {
             //sakit
             holder.radioSakit.setChecked(true);
@@ -142,81 +80,49 @@ public class DetailBapAdapter extends RecyclerView.Adapter<DetailBapAdapter.View
             holder.radioAlfa.setChecked(true);
         }
 
-        String nama = mData.get(position).getName();
-        idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 0));
-
-        holder.radioSakit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 3));
-                dataBap.put("mahasiswa", idMahasiswa);
-
-                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
         holder.radioAlfa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 0));
-                dataBap.put("mahasiswa", idMahasiswa);
-
-                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                update.put("status", 0);
+                reference.update(update);
             }
         });
 
         holder.radioIzin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 2));
-                dataBap.put("mahasiswa", idMahasiswa);
-
-                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                update.put("status", 2);
+                reference.update(update);
             }
         });
 
         holder.radioHadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                idMahasiswa.put(mData.get(position).getIdMahasiswa(), Arrays.asList(nama, 1));
-                dataBap.put("mahasiswa", idMahasiswa);
-
-                reference.update(dataBap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(mContext, "Update Berhasil", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                update.put("status", 1);
+                reference.update(update);
             }
         });
 
+        holder.radioSakit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update.put("status", 3);
+                reference.update(update);
+            }
+        });
 
-
-
+        int ai = position + 1;
+        holder.tvNo.setText(String.valueOf(ai));
+        holder.tvNamaMahasiswa.setText(nama);
     }
 
+    @NonNull
     @Override
-    public int getItemCount() {
-        return mData.size();
-    }
-
-    public void updateData() {
-
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_mahasiswa_bap,
+                parent, false);
+        return new ViewHolder(v);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

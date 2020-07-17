@@ -504,22 +504,30 @@ public class KelasActivity extends BaseActivity implements View.OnClickListener,
                 dataBap.put("kelas", Kelas);
                 dataBap.put("status", 1);
 
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    String key = data.getKey();
-                    String name = data.child("nama").getValue().toString();
-                    int status = Integer.parseInt(data.child("status").getValue().toString());
-
-                    idMahasiswa.put(key, Arrays.asList(name, status));
-
-                    dataBap.put("mahasiswa", idMahasiswa);
-                }
-
                 firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").add(dataBap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        showSuccessToast("Berhasil bapp");
+                        for (DataSnapshot data : snapshot.getChildren()) {
+                            String key = data.getKey();
+                            String name = data.child("nama").getValue().toString();
+                            int status = Integer.parseInt(data.child("status").getValue().toString());
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("id_mahasiswa", key);
+                            hashMap.put("name", name);
+                            hashMap.put("status", 0);
+
+                            firebaseFirestore.collection("dosen").document(getFirebaseUserId()).collection("bap").document(documentReference.getId()).collection("mahasiswa").add(hashMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    showSuccessToast("Berhasil bapp");
+                                }
+                            });
+                        }
                     }
                 });
+
+
             }
 
             @Override

@@ -19,7 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adapterdosen.KelasAdapter;
+import com.mango.autumnleaves.adapter.adapterdosen.LogMahasiswaAdapter;
 import com.mango.autumnleaves.model.Presensi;
+import com.mango.autumnleaves.model.dosen.LogMahasiswa;
 
 import java.util.ArrayList;
 
@@ -27,8 +29,8 @@ public class LogMahasiswaActivity extends AppCompatActivity {
 
     private RecyclerView mPresensiRecycleview;
     private View emptyview;
-    private KelasAdapter mAdapter;
-    private ArrayList<Presensi> mData;
+    private LogMahasiswaAdapter mAdapter;
+    private ArrayList<LogMahasiswa> mData;
     private ArrayList<String> mDataId;
     private DatabaseReference mDatabase;
     public String kelas;
@@ -61,10 +63,10 @@ public class LogMahasiswaActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         mPresensiRecycleview.setLayoutManager(linearLayoutManager);
 
-        mAdapter = new KelasAdapter(this, mData, mDataId, emptyview, new KelasAdapter.ClickHandler() {
+        mAdapter = new LogMahasiswaAdapter(this, mData, mDataId, emptyview, new LogMahasiswaAdapter.ClickHandlerMahasiswa() {
             @Override
             public void onItemClick(int position) {
-                //ketika rec di click
+
             }
 
             @Override
@@ -72,6 +74,7 @@ public class LogMahasiswaActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         progressBarLoadMhs.setVisibility(View.GONE);
         mPresensiRecycleview.setAdapter(mAdapter);
     }
@@ -79,7 +82,7 @@ public class LogMahasiswaActivity extends AppCompatActivity {
     private ChildEventListener childEventListener = new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            mData.add(dataSnapshot.getValue(Presensi.class));
+            mData.add(dataSnapshot.getValue(LogMahasiswa.class));
             mDataId.add(dataSnapshot.getKey());
             mAdapter.updateEmptyView();
             mAdapter.notifyDataSetChanged();
@@ -88,7 +91,7 @@ public class LogMahasiswaActivity extends AppCompatActivity {
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             int pos = mDataId.indexOf(dataSnapshot.getKey());
-            mData.set(pos, dataSnapshot.getValue(Presensi.class));
+            mData.set(pos, dataSnapshot.getValue(LogMahasiswa.class));
             mAdapter.notifyDataSetChanged();
         }
 
@@ -111,4 +114,10 @@ public class LogMahasiswaActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
