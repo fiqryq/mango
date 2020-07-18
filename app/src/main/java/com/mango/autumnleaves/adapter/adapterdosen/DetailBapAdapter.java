@@ -51,8 +51,9 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
     private String nipDosen;
     public String idMatkul = "";
     public String KelasMatkul = "";
-    public int Pertemuan = 0;
-    public DocumentReference statRef;
+    public long Pertemuan = 0;
+    public FirebaseFirestore statRef = FirebaseFirestore.getInstance();
+    public DocumentReference docReff;
 
     public DetailBapAdapter(@NonNull FirestoreRecyclerOptions<DetailBap> options, String idDosen, String idBap, String nipDosen) {
         super(options);
@@ -66,6 +67,7 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         int status = model.getStatus();
         String nama = model.getName();
         String idDokumen = getSnapshots().getSnapshot(position).getId();
+
 
 
         DocumentReference reference = FirebaseFirestore.getInstance()
@@ -119,60 +121,96 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         holder.radioAlfa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                statRef = (DocumentReference) FirebaseFirestore.getInstance()
-                        .collection("statistik").document("kelas")
+                statRef.collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots){
+                                Jadwal jadwal = new Jadwal();
+                                jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
+                                Pertemuan = (int) jadwal.getPertemuan();
+                            }
+                        });
+
+                docReff = FirebaseFirestore.getInstance().collection("statistik").document("kelas")
                         .collection(KelasMatkul).document(model.getId_mahasiswa())
                         .collection("jadwal").document(idMatkul);
 
                 update.put("status", 0);
                 reference.update(update);
-                updateStat.put("pertemuan", 1);
-                statRef.update(updateStat);
+                updateStat.put("pertemuan", Pertemuan - 1);
+                docReff.update(updateStat);
             }
         });
 
         holder.radioIzin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentReference statRef = (DocumentReference) FirebaseFirestore.getInstance()
-                        .collection("statistik").document("kelas")
+                statRef.collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots){
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
+                        Pertemuan = (int) jadwal.getPertemuan();
+                    }
+                });
+
+                docReff = FirebaseFirestore.getInstance().collection("statistik").document("kelas")
                         .collection(KelasMatkul).document(model.getId_mahasiswa())
                         .collection("jadwal").document(idMatkul);
 
                 update.put("status", 2);
                 reference.update(update);
-                updateStat.put("pertemuan", 1);
-                statRef.update(updateStat);
+                updateStat.put("pertemuan", Pertemuan + 1);
+                docReff.update(updateStat);
             }
         });
 
         holder.radioHadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentReference statRef = (DocumentReference) FirebaseFirestore.getInstance()
-                        .collection("statistik").document("kelas")
+                statRef.collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots){
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
+                        Pertemuan = (int) jadwal.getPertemuan();
+                    }
+                });
+
+                docReff = FirebaseFirestore.getInstance().collection("statistik").document("kelas")
                         .collection(KelasMatkul).document(model.getId_mahasiswa())
                         .collection("jadwal").document(idMatkul);
 
                 update.put("status", 1);
                 reference.update(update);
-                updateStat.put("pertemuan", 1);
-                statRef.update(updateStat);
+                updateStat.put("pertemuan", Pertemuan + 1);
+                docReff.update(updateStat);
             }
         });
 
         holder.radioSakit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentReference statRef = (DocumentReference) FirebaseFirestore.getInstance()
-                        .collection("statistik").document("kelas")
+                statRef.collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots){
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
+                        Pertemuan = (int) jadwal.getPertemuan();
+                    }
+                });
+
+                docReff = FirebaseFirestore.getInstance().collection("statistik").document("kelas")
                         .collection(KelasMatkul).document(model.getId_mahasiswa())
                         .collection("jadwal").document(idMatkul);
 
                 update.put("status", 3);
                 reference.update(update);
-                updateStat.put("pertemuan", 1);
-                statRef.update(updateStat);
+                updateStat.put("pertemuan", Pertemuan + 1);
+                docReff.update(updateStat);
             }
         });
 
