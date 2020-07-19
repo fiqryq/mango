@@ -24,6 +24,8 @@ import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.HistoryAdapter;
 import com.mango.autumnleaves.model.History;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasActivity;
+import com.mango.autumnleaves.util.CustomLoadingDialog;
 
 import java.util.ArrayList;
 
@@ -32,8 +34,8 @@ public class HistoryActivity extends BaseActivity {
     private ArrayList<History> arrayList;
     RecyclerView recyclerView;
     private String getid;
-    private ProgressBar progressBar;
     private FirebaseUser firebaseUser;
+    final CustomLoadingDialog loadingDialog = new CustomLoadingDialog(HistoryActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,6 @@ public class HistoryActivity extends BaseActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-
-        progressBar = findViewById(R.id.progressBarHistory);
         recyclerView = findViewById(R.id.rvHistory);
 
         recyclerView.setHasFixedSize(true);
@@ -52,7 +52,7 @@ public class HistoryActivity extends BaseActivity {
         arrayList = new ArrayList<>();
         showHistory();
 
-        progressBar.setVisibility(View.VISIBLE);
+        loadingDialog.startLoadingDialog();
 
     }
 
@@ -76,7 +76,7 @@ public class HistoryActivity extends BaseActivity {
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        progressBar.setVisibility(View.GONE);
+                        loadingDialog.dismissDialog();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 History history = new History();

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -56,23 +57,23 @@ public class DetailBapActivity extends BaseActivity {
 
     private static int INTENT_TEMP = 1000;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.edit_bap,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.edit_bap:
-                saveData();
-                loadingDialog.startLoadingDialog();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.edit_bap,menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.edit_bap:
+//                saveData();
+//                loadingDialog.startLoadingDialog();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void saveData() {
 //        mAdapter.updateData();
@@ -80,6 +81,7 @@ public class DetailBapActivity extends BaseActivity {
             @Override
             public void run() {
                 onBackPressed();
+                loadingDialog.dismissDialog();
                 showToast("berhasil Update");
             }
         }, INTENT_TEMP);

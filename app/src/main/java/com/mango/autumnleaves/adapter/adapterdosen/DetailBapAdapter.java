@@ -51,7 +51,7 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
     private String nipDosen;
     public String idMatkul = "";
     public String KelasMatkul = "";
-    public long Pertemuan = 0;
+    public long Pertemuan;
     public FirebaseFirestore statRef = FirebaseFirestore.getInstance();
     public DocumentReference docReff;
 
@@ -68,7 +68,20 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         String nama = model.getName();
         String idDokumen = getSnapshots().getSnapshot(position).getId();
 
-
+        holder.tvNamaMahasiswa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statRef.collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots){
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
+                        Pertemuan = (int) jadwal.getPertemuan();
+                    }
+                });
+            }
+        });
 
         DocumentReference reference = FirebaseFirestore.getInstance()
                 .collection("dosen").document(idDosen)
@@ -91,7 +104,6 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
                         Jadwal jadwal = new Jadwal();
                         jadwal.setId(document.getString("id"));
                         jadwal.setKelas(document.getString("kelas"));
-
                         idMatkul = jadwal.getId();
                         KelasMatkul = jadwal.getKelas();
                     }
@@ -118,29 +130,6 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
             holder.radioAlfa.setChecked(true);
         }
 
-        holder.radioAlfa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                statRef.collection("statistik").document("kelas")
-                        .collection(KelasMatkul).document(model.getId_mahasiswa())
-                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
-                            for (DocumentSnapshot doc : queryDocumentSnapshots){
-                                Jadwal jadwal = new Jadwal();
-                                jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
-                                Pertemuan = (int) jadwal.getPertemuan();
-                            }
-                        });
-
-                docReff = FirebaseFirestore.getInstance().collection("statistik").document("kelas")
-                        .collection(KelasMatkul).document(model.getId_mahasiswa())
-                        .collection("jadwal").document(idMatkul);
-
-                update.put("status", 0);
-                reference.update(update);
-                updateStat.put("pertemuan", Pertemuan - 1);
-                docReff.update(updateStat);
-            }
-        });
 
         holder.radioIzin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,8 +150,8 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
 
                 update.put("status", 2);
                 reference.update(update);
-                updateStat.put("pertemuan", Pertemuan + 1);
-                docReff.update(updateStat);
+//                updateStat.put("pertemuan", Pertemuan + 1);
+//                docReff.update(updateStat);
             }
         });
 
@@ -176,17 +165,47 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
                         Jadwal jadwal = new Jadwal();
                         jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
                         Pertemuan = (int) jadwal.getPertemuan();
+
                     }
                 });
+
+                update.put("status", 1);
+                reference.update(update);
 
                 docReff = FirebaseFirestore.getInstance().collection("statistik").document("kelas")
                         .collection(KelasMatkul).document(model.getId_mahasiswa())
                         .collection("jadwal").document(idMatkul);
 
-                update.put("status", 1);
-                reference.update(update);
                 updateStat.put("pertemuan", Pertemuan + 1);
                 docReff.update(updateStat);
+
+            }
+        });
+
+        holder.radioAlfa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statRef.collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    for (DocumentSnapshot doc : queryDocumentSnapshots){
+                        Jadwal jadwal = new Jadwal();
+                        jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
+                        Pertemuan = (int) jadwal.getPertemuan();
+
+                    }
+                });
+
+                update.put("status", 0);
+                reference.update(update);
+
+                docReff = FirebaseFirestore.getInstance().collection("statistik").document("kelas")
+                        .collection(KelasMatkul).document(model.getId_mahasiswa())
+                        .collection("jadwal").document(idMatkul);
+
+                updateStat.put("pertemuan", Pertemuan - 1);
+                docReff.update(updateStat);
+
             }
         });
 
@@ -209,14 +228,15 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
 
                 update.put("status", 3);
                 reference.update(update);
-                updateStat.put("pertemuan", Pertemuan + 1);
-                docReff.update(updateStat);
+//                updateStat.put("pertemuan", Pertemuan + 1);
+//                docReff.update(updateStat);
             }
         });
 
         int ai = position + 1;
         holder.tvNo.setText(String.valueOf(ai));
         holder.tvNamaMahasiswa.setText(nama);
+
     }
 
 

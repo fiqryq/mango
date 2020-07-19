@@ -70,7 +70,7 @@ public class ProximityContentAdapter extends BaseAdapter {
     private String idDokumen;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-    private DatabaseReference databaseReference;
+    private Task<Void> databaseReference;
     private FirebaseFirestore firebaseFirestore;
     private TextView contentMatakuliah;
     private String mhsKelas;
@@ -342,8 +342,9 @@ public class ProximityContentAdapter extends BaseAdapter {
                             }
                         });
 
-                        databaseReference = FirebaseDatabase.getInstance().getReference().child("data").child(kelasRef);
-                        databaseReference.child(firebaseAuth.getUid()).child("status").setValue(1);
+                        databaseReference = FirebaseDatabase.getInstance().getReference().child("data")
+                                .child(kelasRef).child(firebaseUser.getUid()).child("status").setValue(1);
+
 
                     }
                 });

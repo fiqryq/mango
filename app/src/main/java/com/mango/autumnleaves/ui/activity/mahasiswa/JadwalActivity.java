@@ -39,7 +39,9 @@ import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.adapter.adaptermahasiswa.JadwalAdapter;
 import com.mango.autumnleaves.model.Jadwal;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
+import com.mango.autumnleaves.ui.activity.dosen.kelas.KelasActivity;
 import com.mango.autumnleaves.util.Constant;
+import com.mango.autumnleaves.util.CustomLoadingDialog;
 import com.mango.autumnleaves.util.NotificationHelper;
 import com.mango.autumnleaves.util.ReminderBroadcast;
 
@@ -58,6 +60,7 @@ public class JadwalActivity extends BaseActivity {
     private ProgressBar progressBar;
     private TextView tvSekarang, tvDosen, tvMatakuliah, tvWaktuMulai, tvWaktuSelesai, tvRuangan, tvNodata;
     private FirebaseUser firebaseUser;
+    final CustomLoadingDialog loadingDialog = new CustomLoadingDialog(JadwalActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,6 @@ public class JadwalActivity extends BaseActivity {
         tvMatakuliah = findViewById(R.id.tv_detail_matkul);
         tvNodata = findViewById(R.id.tv_no_data);
 
-        progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.rvJadwalView);
 //        recyclerView.setHasFixedSize(true);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,8 +92,8 @@ public class JadwalActivity extends BaseActivity {
 //        jadwalrealtimedb();
         jadwalNow();
         jadwalAll();
-        progressBar.setVisibility(View.VISIBLE);
         tvSekarang.setText(getTimeNow());
+        loadingDialog.startLoadingDialog();
     }
 
     // Show Jadwal
@@ -194,7 +196,7 @@ public class JadwalActivity extends BaseActivity {
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        progressBar.setVisibility(View.GONE);
+                        loadingDialog.dismissDialog();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Jadwal jadwal = new Jadwal();

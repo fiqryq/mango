@@ -159,6 +159,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
         }
 
         if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA) && !android_id.equalsIgnoreCase(DeviceIdMahasiswa())){
+            loadingDialog.dismissDialog();
             showErrorToast("Device Id Tidak Cocok");
             logoutApps();
             firebaseAuth.signOut();
@@ -179,7 +180,7 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     @Override
     public void onFailedAuthFirebase() {
         showErrorToast("Login Gagal");
-
+        loadingDialog.dismissDialog();
     }
 
     @Override
@@ -189,6 +190,6 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
 
     @Override
     public void onHideProgress() {
-//        loadingDialog.dismissDialog();
+
     }
 }
