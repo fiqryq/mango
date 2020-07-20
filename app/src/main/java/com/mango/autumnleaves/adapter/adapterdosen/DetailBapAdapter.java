@@ -68,20 +68,15 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         String nama = model.getName();
         String idDokumen = getSnapshots().getSnapshot(position).getId();
 
-        holder.tvNamaMahasiswa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                statRef.collection("statistik").document("kelas")
-                        .collection(KelasMatkul).document(model.getId_mahasiswa())
-                        .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
-                    for (DocumentSnapshot doc : queryDocumentSnapshots){
-                        Jadwal jadwal = new Jadwal();
-                        jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
-                        Pertemuan = (int) jadwal.getPertemuan();
-                    }
-                });
+        holder.tvNamaMahasiswa.setOnClickListener(v -> statRef.collection("statistik").document("kelas")
+                .collection(KelasMatkul).document(model.getId_mahasiswa())
+                .collection("jadwal").whereEqualTo("id",idMatkul).limit(1).addSnapshotListener((queryDocumentSnapshots, e) -> {
+            for (DocumentSnapshot doc : queryDocumentSnapshots){
+                Jadwal jadwal = new Jadwal();
+                jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
+                Pertemuan = (int) jadwal.getPertemuan();
             }
-        });
+        }));
 
         DocumentReference reference = FirebaseFirestore.getInstance()
                 .collection("dosen").document(idDosen)
