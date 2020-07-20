@@ -145,11 +145,11 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
     }
 
     private void checkUserLogin(String cekPengguna) {
-//        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        @SuppressLint("HardwareIds") String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         onHideProgress();
-//         && android_id.equalsIgnoreCase(DeviceIdMahasiswa())
         if (cekPengguna != null) {
-            if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA)) {
+            if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA) && android_id.equalsIgnoreCase(DeviceIdMahasiswa())
+            ) {
                 Intent j = new Intent(LoginActivity.this, DashboardMahasiswaActivity.class);
                 startActivity(j);
                 finish();
@@ -159,13 +159,13 @@ public class LoginActivity extends BaseActivity implements LoginViewCallback {
                 finish();
             }
         }
-//
-//        if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA) && !android_id.equalsIgnoreCase(DeviceIdMahasiswa())){
-//            loadingDialog.dismissDialog();
-//            showErrorToast("Device Id Tidak Cocok");
-//            logoutApps();
-//            firebaseAuth.signOut();
-//        }
+
+        if (cekPengguna.equalsIgnoreCase(Constant.TAG_USER_MAHASISWA) && !android_id.equalsIgnoreCase(DeviceIdMahasiswa())){
+            loadingDialog.dismissDialog();
+            showErrorToast("Device Id Tidak Cocok");
+            logoutApps();
+            firebaseAuth.signOut();
+        }
 
     }
 

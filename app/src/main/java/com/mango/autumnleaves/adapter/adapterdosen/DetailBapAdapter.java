@@ -113,16 +113,31 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
         if (status == 1) {
             //hadir
             holder.radioHadir.setChecked(true);
+            holder.radioHadir.setEnabled(false);
+            holder.radioIzin.setEnabled(true);
+            holder.radioAlfa.setEnabled(true);
+            holder.radioSakit.setEnabled(true);
         } else if (status == 2) {
             //izin
             holder.radioIzin.setChecked(true);
-
+            holder.radioIzin.setEnabled(false);
+            holder.radioHadir.setEnabled(true);
+            holder.radioSakit.setEnabled(true);
+            holder.radioAlfa.setEnabled(true);
         } else if (status == 3) {
             //sakit
             holder.radioSakit.setChecked(true);
+            holder.radioSakit.setEnabled(false);
+            holder.radioIzin.setEnabled(true);
+            holder.radioHadir.setEnabled(true);
+            holder.radioAlfa.setEnabled(true);
         } else {
             //alfa
             holder.radioAlfa.setChecked(true);
+            holder.radioAlfa.setEnabled(false);
+            holder.radioSakit.setEnabled(true);
+            holder.radioIzin.setEnabled(true);
+            holder.radioHadir.setEnabled(true);
         }
 
 
@@ -160,7 +175,6 @@ public class DetailBapAdapter extends FirestoreRecyclerAdapter<DetailBap, Detail
                         Jadwal jadwal = new Jadwal();
                         jadwal.setPertemuan(doc.getLong("pertemuan").intValue());
                         Pertemuan = (int) jadwal.getPertemuan();
-
                     }
                 });
 
