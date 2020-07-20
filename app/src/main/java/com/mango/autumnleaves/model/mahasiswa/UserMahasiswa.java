@@ -8,13 +8,14 @@ public class UserMahasiswa {
     private String password;
     private String telp;
     private String kelamin;
-    private String ttl;
+    private String tempat_lahir;
     private String alamat;
     private String kode_kelas;
     private String uId;
     private String deviceId;
+    private String tgl_lahir;
 
-    public UserMahasiswa(Integer id_mahasiswa, String nim_mhs, String nama, String username, String password, String telp, String kelamin, String ttl, String alamat, String kode_kelas, String uId, String deviceId, String status, String tag, String gambar, String jurusan) {
+    public UserMahasiswa(Integer id_mahasiswa, String nim_mhs, String nama, String username, String password, String telp, String kelamin, String tempat_lahir, String alamat, String kode_kelas, String uId, String deviceId, String tgl_lahir, String status, String tag, String gambar, String jurusan) {
         this.id_mahasiswa = id_mahasiswa;
         this.nim_mhs = nim_mhs;
         this.nama = nama;
@@ -22,18 +23,35 @@ public class UserMahasiswa {
         this.password = password;
         this.telp = telp;
         this.kelamin = kelamin;
-        this.ttl = ttl;
+        this.tempat_lahir = tempat_lahir;
         this.alamat = alamat;
         this.kode_kelas = kode_kelas;
         this.uId = uId;
         this.deviceId = deviceId;
+        this.tgl_lahir = tgl_lahir;
         this.status = status;
         this.tag = tag;
         this.gambar = gambar;
         this.jurusan = jurusan;
     }
 
+    public String getTempat_lahir() {
+        return tempat_lahir;
+    }
+
+    public void setTempat_lahir(String tempat_lahir) {
+        this.tempat_lahir = tempat_lahir;
+    }
+
     public UserMahasiswa() {
+    }
+
+    public String getTgl_lahir() {
+        return tgl_lahir;
+    }
+
+    public void setTgl_lahir(String tgl_lahir) {
+        this.tgl_lahir = tgl_lahir;
     }
 
     public String getDeviceId() {
@@ -154,14 +172,6 @@ public class UserMahasiswa {
 
     public void setKelamin(String kelamin) {
         this.kelamin = kelamin;
-    }
-
-    public String getTtl() {
-        return ttl;
-    }
-
-    public void setTtl(String ttl) {
-        this.ttl = ttl;
     }
 
     public String getAlamat() {

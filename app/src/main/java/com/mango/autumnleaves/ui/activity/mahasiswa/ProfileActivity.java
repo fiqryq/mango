@@ -2,6 +2,7 @@ package com.mango.autumnleaves.ui.activity.mahasiswa;
 
 import androidx.annotation.NonNull;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class ProfileActivity extends BaseActivity {
     private ImageView mBack, mProfile;
     private View progressDialog;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +58,10 @@ public class ProfileActivity extends BaseActivity {
         tvNamaLengkap.setText(getNamaMhs());
         tvEmailUser.setText(firebaseAuth.getCurrentUser().getEmail());
         tvKontak.setText(getTlpMhs());
-        tvTTL.setText(getTtlMhs());
+        tvTTL.setText(getTempatLahir() + " " + gettglLahirMhs());
         tvAlamat.setText(getAlamatMhs());
         tvKelas.setText(getKelasMhs());
-        tvJurusan.setText(getJurusanMhs());
+        tvJurusan.setText(getJurusanMhs().toUpperCase());
         tvNim.setText(getNimMhs());
         Picasso.get().load(getProfileMhs()).into(mProfile);
 

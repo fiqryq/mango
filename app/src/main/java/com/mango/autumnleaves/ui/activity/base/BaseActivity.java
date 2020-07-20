@@ -83,6 +83,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_GAMBAR,"");
     }
 
+    protected String gettglLahirMhs(){
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_TGL_LAHIR,"");
+    }
+
     protected String getNimMhs(){
         return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_NIM,"");
     }
@@ -91,8 +95,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_TELP,"");
     }
 
-    protected String getTtlMhs(){
-        return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_TTL,"");
+    protected String getTempatLahir(){
+        return mSession.getPreferences().getString(Constant.KEY_SESSION_MAHASISWA_TEMPAT_LAHIR,"");
     }
 
     protected String getAlamatMhs(){

@@ -22,7 +22,7 @@ public class Session {
         editor.putString(Constant.KEY_SESSION_MAHASISWA_NIM, userMahasiswa.getNim_mhs());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_PASSWORD, userMahasiswa.getPassword());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_TELP, userMahasiswa.getTelp());
-        editor.putString(Constant.KEY_SESSION_MAHASISWA_TTL, userMahasiswa.getTtl());
+        editor.putString(Constant.KEY_SESSION_MAHASISWA_TEMPAT_LAHIR, userMahasiswa.getTempat_lahir());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_USERNAME, userMahasiswa.getUsername());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_TAG, userMahasiswa.getTag());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_STATUS, userMahasiswa.getStatus());
@@ -31,6 +31,7 @@ public class Session {
         editor.putString(Constant.KEY_MAHASISWA_JURUSAN, userMahasiswa.getJurusan());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_GAMBAR, userMahasiswa.getGambar());
         editor.putString(Constant.KEY_SESSION_MAHASISWA_DEVICE, userMahasiswa.getDeviceId());
+        editor.putString(Constant.KEY_SESSION_MAHASISWA_TGL_LAHIR, userMahasiswa.getTgl_lahir());
         editor.putString(Constant.KEY_IS_LOGIN, userMahasiswa.getTag());
         editor.putString(Constant.KEY_DEVICE_ID, userMahasiswa.getDeviceId());
         editor.putString(Constant.KEY_UID, userMahasiswa.getuId());
