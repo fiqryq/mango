@@ -2,10 +2,10 @@
 ![Android CI](https://github.com/fiqryq/Mango-Master/workflows/Android%20CI/badge.svg)
 ![Build Status](https://dev.azure.com/fiqrychoerudin/Mango/_apis/build/status/fiqryq.Mango-Master?branchName=master)
 
-Mango Is Attendance App using [Estimote Proximity Beacon](https://estimote.com/products/).
+Attendance App using [Estimote Proximity Beacon](https://estimote.com/products/).
 
 ## Prototype
-- Full Ui Manog [here](https://bit.ly/UIMango) 
+- Full Ui [here](https://bit.ly/UIMango)
 - interactive UI Dosen [here](https://bit.ly/PrototypeMangoDosen)
 - interactive UI Mahasiswa [here](https://bit.ly/ProtoMHS)
 
