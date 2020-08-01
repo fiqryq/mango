@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mango.autumnleaves.ui.activity.LoginActivity;
+import com.mango.autumnleaves.ui.activity.login.LoginActivity;
 import com.mango.autumnleaves.util.Constant;
 import com.mango.autumnleaves.util.Session;
 

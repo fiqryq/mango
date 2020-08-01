@@ -1,4 +1,4 @@
-package com.mango.autumnleaves.ui.activity;
+package com.mango.autumnleaves.ui.activity.login;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -13,19 +13,11 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
-import com.mango.autumnleaves.ui.activity.dosen.DetailBapActivity;
 import com.mango.autumnleaves.ui.activity.dosen.MainDosenActivity;
 import com.mango.autumnleaves.ui.activity.mahasiswa.DashboardMahasiswaActivity;
 import com.mango.autumnleaves.model.dosen.UserDosen;

@@ -1,20 +1,15 @@
 package com.mango.autumnleaves.mahasiswatest.uitest;
 
-import android.widget.TextView;
-
-import static androidx.test.espresso.Espresso.onData;
-import static org.hamcrest.core.StringContains.containsString;
 import androidx.test.espresso.Espresso;
 import static org.hamcrest.Matchers.anything;
-import androidx.test.espresso.ViewAction;
+
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.ui.activity.LoginActivity;
-import com.mango.autumnleaves.ui.activity.mahasiswa.DashboardMahasiswaActivity;
+import com.mango.autumnleaves.ui.activity.login.LoginActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

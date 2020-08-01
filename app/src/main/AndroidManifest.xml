@@ -126,7 +126,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activity.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme" />
 

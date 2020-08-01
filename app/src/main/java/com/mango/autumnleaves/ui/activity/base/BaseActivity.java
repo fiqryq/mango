@@ -2,30 +2,16 @@ package com.mango.autumnleaves.ui.activity.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.mango.autumnleaves.model.SesiKelas;
-import com.mango.autumnleaves.model.dosen.UserDosen;
-import com.mango.autumnleaves.ui.activity.LoginActivity;
+import com.mango.autumnleaves.ui.activity.login.LoginActivity;
 import com.mango.autumnleaves.util.Constant;
 import com.mango.autumnleaves.util.Session;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
-
-import static com.mango.autumnleaves.util.FunctionHelper.Func.getHour;
-import static com.mango.autumnleaves.util.FunctionHelper.Func.getNameDay;
 
 public abstract class BaseActivity extends AppCompatActivity {
 

@@ -6,7 +6,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import com.mango.autumnleaves.R;
-import com.mango.autumnleaves.ui.activity.LoginActivity;
 import com.mango.autumnleaves.ui.activity.mahasiswa.DashboardMahasiswaActivity;
 
 import org.junit.Rule;

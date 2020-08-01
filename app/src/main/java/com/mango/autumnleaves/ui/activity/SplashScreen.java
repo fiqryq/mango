@@ -1,14 +1,12 @@
 package com.mango.autumnleaves.ui.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.mango.autumnleaves.R;
 import com.mango.autumnleaves.ui.activity.base.BaseActivity;
-import com.mango.autumnleaves.util.Constant;
+import com.mango.autumnleaves.ui.activity.login.LoginActivity;
 
 public class SplashScreen extends BaseActivity {
 
@@ -22,7 +20,7 @@ public class SplashScreen extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreen.this,LoginActivity.class);
+                Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
